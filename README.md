@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://www.rtu.lv/en/">
-    <img src="img/rtu_logo_en-1978560996.png" alt="Riga Technical University (RTU) logo" width="600">
+    <img src="img/rtu_logo_en-1978560996.png" alt="Riga Technical University (RTU) logo" width="400">
   </a>
 </p>
 
