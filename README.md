@@ -1,5 +1,11 @@
 # Web Development DE0824 — Fall 2026
 
+<p align="center">
+  <a href="https://www.rtu.lv/en/">
+    <img src="https://img.logokit.com/rtu.lv" alt="Riga Technical University (RTU) logo" width="220">
+  </a>
+</p>
+
 Course materials and live-coding examples for **DE0824 Web Development** at Riga Technical University (RTU), DITEF.
 
 The course introduces the foundations of the modern Web platform through practical work with **HTML, CSS, JavaScript, browser developer tools, Git, and GitHub**. Most topics are developed incrementally during live-coding sessions, so the exact pace may change during the semester.
