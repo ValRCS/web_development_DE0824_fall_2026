@@ -32,6 +32,12 @@ style: |
   tr:nth-child(2n) { background: #f5f9fa; }
   section::after { font-size: 18px; color: #173d46; right: 300px; bottom: 126px; }
   section.title { padding: 0; }
+  section.illustrated > p, section.illustrated > ul, section.illustrated > ol { max-width: 500px; }
+  section.illustrated > p:has(img) { position: absolute; left: 650px; top: 166px; width: 375px; margin: 0; }
+  section.illustrated img { width: 375px; height: 375px; object-fit: contain; }
+  section.illustrated > p:has(img) + p { position: absolute; left: 650px; top: 548px; width: 375px; font-size: 17px; text-align: center; color: #49656c; }
+  section.illustrated li { margin-bottom: 14px; }
+
   section.compact { font-size: 25px; }
   section.compact li { margin-bottom: 9px; }
 ---
@@ -45,16 +51,16 @@ INSTRUCTOR NOTES — 1. Course direction
 Introduce DE0824 and the theme: Web Development for Digital Humanities in the AI Era. The supplied title artwork is the entire first slide; avoid duplicating its title, logos, or contact details. Frame the goal as becoming a researcher who can understand, modify, debug, and publish web materials. Ask who has edited a web page, worked with a digital collection, or used an AI coding assistant. No prior programming fluency is assumed.
 
 AUTHORING AND EXPORT
-This deck has 24 slides. Instructor notes are ordinary Marp HTML comments and are not visible on projected slides. The content background applies to slides 2–24 through front matter; the underscore-prefixed override affects only slide 1. The two JPGs must remain beside this file. These are local asset paths, not GitHub blob-page URLs.
+This deck has 24 slides. Instructor notes are ordinary Marp HTML comments and are not visible on projected slides. The content background applies to slides 2–24 through front matter; the underscore-prefixed override affects only slide 1. The two background JPGs must remain beside this file, and the assets/ folder must accompany it. These are local asset paths, not GitHub blob-page URLs.
 
 From the repository root, with Node.js and Chrome, Edge, or Firefox available, run:
 npx @marp-team/marp-cli@4.5.1 lectures/week01/DE0824_week01_web_development_digital_humanities.marp.md --pdf --allow-local-files -o lectures/week01/DE0824_week01_web_development_digital_humanities.pdf
-npx @marp-team/marp-cli@4.5.1 lectures/week01/DE0824_week01_web_development_digital_humanities.marp.md --pptx --allow-local-files -o lectures/week01/DE0824_week01_web_development_digital_humanities.pptx
+npx @marp-team/marp-cli@4.5.1 lectures/week01/DE0824_week01_web_development_digital_humanities.marp.md --pptx --image-scale 1 --allow-local-files -o lectures/week01/DE0824_week01_web_development_digital_humanities.pptx
 
 The pinned version makes repeat conversion more predictable. The local-file flag allows the converter to load the adjacent JPGs. Standard PPTX export preserves appearance as slide images and includes speaker notes; it is not a deck of independently editable text boxes. Keep this Markdown as the editable source. PDF normally contains the audience slides, not these instructor notes. Review notes before sharing an exported PPTX with students.
 
 CONTENT PROVENANCE
-Adapted from the supplied synopsis of Web_Course_RTU_2020.pdf and the agreed 2026 outline. The construction metaphor, internet/Web history, standards, core technologies, DOM, execution, skills, tools, and references are retained. The two construction-warning slides are combined; the former closing and course-direction objectives are integrated into this 24-slide sequence. Historical roadmap/building images are not embedded because their original assets are not supplied in this repository; their teaching points are preserved in text and discussion.
+Adapted from the supplied synopsis of Web_Course_RTU_2020.pdf and the agreed 2026 outline. The construction metaphor, internet/Web history, standards, core technologies, DOM, execution, skills, tools, and references are retained. The two construction-warning slides are combined; the former closing and course-direction objectives are integrated into this 24-slide sequence. Historical roadmap/building images are not embedded because their original assets are not supplied in this repository. Three newly generated conceptual illustrations support the collection, construction, and human-review examples; see assets/README.md for prompts and provenance.
 
 [Sources]
 - Title artwork: https://github.com/ValRCS/web_development_DE0824_fall_2026/blob/main/lectures/week01/DE0824_week1_title.jpg
@@ -88,38 +94,56 @@ Start with a question students already understand: how could someone discover an
 
 ---
 
+<!-- _class: illustrated -->
+
 # One collection, several layers
 
-**Example: a small collection of historical postcards**
+**Example: historical postcards**
 
-| Layer | What the visitor encounters |
-| --- | --- |
-| Source | A scan, transcription, and attribution |
-| Description | Place, date, creator, and identifier |
-| Interface | Browse items or filter by place |
-| Publication | A stable page with a link to the source |
+- **Source:** scan, transcription, attribution.
+- **Description:** place, date, creator, identifier.
+- **Interface:** browse or filter by place.
+- **Publication:** stable page and source link.
+
+![Conceptual collage of postcards and a digital collection](./assets/dh_collection.jpg)
+
+*AI illustration; not archival evidence.*
 
 <!--
 INSTRUCTOR NOTES — 3. A DH project example
 This is a proposed teaching example, not a claim about an existing collection. Begin with one item and one static HTML page. Later add CSS and a small JavaScript filter. Maps, timelines, and external APIs are possible extensions, not prerequisites. Define an API as a specified way for software to request data or operations from another component or service. Distinguish the historical object, its digital representation, its description, and the interface. A polished page cannot repair an unsupported date or incorrect attribution.
 Prediction question: if the date is unknown, should we leave it unknown or generate a plausible one? Preserve uncertainty explicitly.
+
+[Sources]
+- Illustration: ./assets/dh_collection.jpg; generated with OpenAI image generation, 7 September 2026. Conceptual teaching artwork, not a historical source. Prompt and provenance: ./assets/README.md.
+[/Sources]
 -->
 
 ---
+
+<!-- _class: illustrated -->
 
 # Build in small checkpoints
 
 1. Make the smallest working page.
 2. Add one meaningful change.
-3. Predict and inspect the browser result.
+3. Predict and inspect the result.
 4. Diagnose a mistake and fix its cause.
-5. Save a checkpoint; try a small variation.
+5. Save; try a small variation.
 
 **Structure first, then presentation and behaviour.**
 
+![Timber house frame on a solid foundation](./assets/build_foundations.jpg)
+
+*AI-generated construction metaphor.*
+
 <!--
 INSTRUCTOR NOTES — 4. How we will work
-Retain the 2020 house-frame metaphor: a sound structure makes later additions easier. Explain the live-coding rhythm: introduce a small concept, demonstrate it, let students reproduce the result, then ask for a variation. Give students time to inspect rather than judge success by typing speed. Show the difference between saving a file and refreshing the browser. A checkpoint can become a Git commit once that workflow has been introduced. Invite students to say where their result first diverged from the expected result.
+The generated house-frame illustration retains the 2020 metaphor: a sound structure makes later additions easier. Explain the live-coding rhythm: introduce a small concept, demonstrate it, let students reproduce the result, then ask for a variation. Give students time to inspect rather than judge success by typing speed. Show the difference between saving a file and refreshing the browser. A checkpoint can become a Git commit once that workflow has been introduced. Invite students to say where their result first diverged from the expected result.
+
+[Sources]
+- Illustration: ./assets/build_foundations.jpg; generated with OpenAI image generation, 7 September 2026. Conceptual teaching artwork, not a historical source. Prompt and provenance: ./assets/README.md.
+[/Sources]
 -->
 
 ---
@@ -363,16 +387,22 @@ Explain that an LLM response is not evidence that the code was executed. Some to
 
 ---
 
+<!-- _class: illustrated -->
+
 # An agent can act on files
 
-With suitable tools and permissions, a coding agent can:
+With tools and permission, an agent can:
 
-1. Inspect a repository and plan a change.
-2. Edit files and run commands or tests.
-3. Inspect results and revise its attempt.
-4. Propose changes for human review.
+1. Inspect files and plan a change.
+2. Edit files; run commands or tests.
+3. Inspect results and revise.
+4. Propose changes for our review.
 
-**We still define the task and judge the result.**
+**We define the task and judge the result.**
+
+![Researcher checking code and a browser preview](./assets/human_review.jpg)
+
+*AI-generated illustration of human review.*
 
 <!--
 INSTRUCTOR NOTES — 16. Agentic coding
@@ -380,6 +410,10 @@ Distinguish chat advice from a tool-using loop that observes results and takes f
 
 [Sources]
 - https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent
+[/Sources]
+
+[Sources]
+- Illustration: ./assets/human_review.jpg; generated with OpenAI image generation, 7 September 2026. Conceptual teaching artwork, not a historical source. Prompt and provenance: ./assets/README.md.
 [/Sources]
 -->
 
