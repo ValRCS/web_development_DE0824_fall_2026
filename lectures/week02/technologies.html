@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 2: Web Development Workflow | DE0824</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --page: #f7f8fa;
+            --surface: #ffffff;
+            --text: #172033;
+            --muted: #526078;
+            --accent: #005ea8;
+            --accent-soft: #e9f3fb;
+            --border: #d9e0e8;
+            --code: #eef1f5;
+            --max-width: 1050px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--page);
+            color: var(--text);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #0f2842;
+            color: white;
+            padding: 3.5rem 1.25rem 3rem;
+        }
+
+        header div,
+        main,
+        footer div {
+            width: min(var(--max-width), calc(100% - 2rem));
+            margin: 0 auto;
+        }
+
+        header p {
+            max-width: 780px;
+            font-size: 1.15rem;
+            color: #dce8f4;
+        }
+
+        header .course {
+            margin: 0 0 0.5rem;
+            font-size: 0.95rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(2.1rem, 5vw, 3.6rem);
+            line-height: 1.1;
+        }
+
+        h2 {
+            margin-top: 2.75rem;
+            padding-bottom: 0.35rem;
+            border-bottom: 2px solid var(--border);
+            font-size: 1.75rem;
+        }
+
+        h3 {
+            margin-top: 1.6rem;
+        }
+
+        main {
+            padding: 2rem 0 4rem;
+        }
+
+        .lead,
+        .note,
+        .checkpoint {
+            padding: 1rem 1.2rem;
+            border-left: 5px solid var(--accent);
+            background: var(--surface);
+        }
+
+        .lead {
+            font-size: 1.1rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 1rem;
+            margin: 1.25rem 0;
+        }
+
+        .card {
+            padding: 1rem 1.1rem;
+            border: 1px solid var(--border);
+            border-radius: 0.65rem;
+            background: var(--surface);
+        }
+
+        .card h3 {
+            margin-top: 0;
+        }
+
+        figure {
+            margin: 1.5rem 0 2rem;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 0.65rem;
+            background: var(--surface);
+        }
+
+        figure img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 0.35rem;
+        }
+
+        figcaption {
+            margin-top: 0.8rem;
+            color: var(--muted);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0 1.5rem;
+            background: var(--surface);
+        }
+
+        th,
+        td {
+            padding: 0.7rem 0.8rem;
+            border: 1px solid var(--border);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: var(--accent-soft);
+        }
+
+        code {
+            padding: 0.08rem 0.3rem;
+            border-radius: 0.25rem;
+            background: var(--code);
+            font-family: Consolas, "Courier New", monospace;
+        }
+
+        .workflow {
+            counter-reset: step;
+            list-style: none;
+            padding: 0;
+        }
+
+        .workflow li {
+            counter-increment: step;
+            position: relative;
+            margin: 0 0 0.8rem;
+            padding: 0.85rem 1rem 0.85rem 3.7rem;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            background: var(--surface);
+        }
+
+        .workflow li::before {
+            content: counter(step);
+            position: absolute;
+            top: 0.7rem;
+            left: 0.9rem;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            text-align: center;
+            line-height: 2rem;
+            font-weight: 700;
+        }
+
+        a {
+            color: #005a9c;
+        }
+
+        footer {
+            padding: 1.5rem 0 2.5rem;
+            border-top: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--muted);
+        }
+
+        @media (max-width: 650px) {
+            table {
+                font-size: 0.92rem;
+            }
+
+            th,
+            td {
+                padding: 0.55rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <p class="course">DE0824 Web Development · Week 2</p>
+            <h1>From editing a file to publishing a website</h1>
+            <p>
+                A practical map of the tools we will use in this course: Visual Studio Code,
+                Git, GitHub, GitHub Pages, and the everyday actions that connect them.
+            </p>
+        </div>
+    </header>
+
+    <main>
+        <p class="lead">
+            <strong>Goal for the first academic hour:</strong> understand where your files are,
+            what each tool is responsible for, and what actually happens when you save, commit,
+            pull, push, synchronize, and finally open the published page in a browser.
+        </p>
+
+        <h2>1. The generic web development workflow</h2>
+        <p>
+            At its simplest, web development is an editing-and-testing cycle. We create files,
+            view the result in a browser, revise the files, and eventually place a tested version
+            on a web server so that other people can request it over the Internet.
+        </p>
+
+        <figure>
+            <img
+                src="../../img/week2/WebDevelopment_Generic_workflow.jpg"
+                alt="Illustration of a generic web development workflow from editing files through local browser preview to a published website"
+            >
+            <figcaption>
+                Generic workflow: edit source files, preview and test locally, then publish them
+                to a web server for other browsers to access.
+            </figcaption>
+        </figure>
+
+        <div class="grid">
+            <section class="card">
+                <h3>Source files</h3>
+                <p>
+                    The website starts as ordinary text and media files. HTML describes content
+                    and structure; later we will add CSS for presentation and JavaScript for behavior.
+                </p>
+            </section>
+            <section class="card">
+                <h3>Local preview</h3>
+                <p>
+                    Your browser can open the files on your own computer. This lets you inspect
+                    the result immediately while you work, before anything is published.
+                </p>
+            </section>
+            <section class="card">
+                <h3>Published website</h3>
+                <p>
+                    A public web server makes the files available through URLs. Visitors do not
+                    need your editor or your Git history; their browser requests the published files.
+                </p>
+            </section>
+        </div>
+
+        <div class="note">
+            <strong>Digital Humanities perspective:</strong> think of the source files as the
+            working materials of a digital edition, exhibition, corpus interface, or research
+            project. The browser is one way of rendering those materials into something people
+            can inspect and use. The publication step makes a selected version publicly accessible.
+        </div>
+
+        <h2>2. The workflow used in this course</h2>
+        <p>
+            We will use a specific set of widely used tools to implement the generic workflow.
+            Each tool has a different responsibility. Keeping those responsibilities separate is
+            more important than memorizing buttons.
+        </p>
+
+        <figure>
+            <img
+                src="../../img/week2/WebDevelopment_DH0824_vscode_git_github_worfklow.jpg"
+                alt="Illustration of the DE0824 course workflow using Visual Studio Code, Git, GitHub, and GitHub Pages"
+            >
+            <figcaption>
+                DE0824 workflow: edit locally in VS Code, track versions with Git, synchronize the
+                repository with GitHub, and publish the web files through GitHub Pages.
+            </figcaption>
+        </figure>
+
+        <h2>3. What is each technology?</h2>
+
+        <div class="grid">
+            <section class="card">
+                <h3>Visual Studio Code</h3>
+                <p>
+                    <strong>VS Code</strong> is the code editor we use to work with HTML and other
+                    project files. It also provides a file explorer, terminal, Git interface,
+                    extensions, and integration with GitHub.
+                </p>
+                <p><strong>It edits files. It is not Git, GitHub, or the web server.</strong></p>
+            </section>
+
+            <section class="card">
+                <h3>Git</h3>
+                <p>
+                    <strong>Git</strong> is a distributed version control system. It runs on your
+                    computer and records the history of a repository as a sequence of commits.
+                </p>
+                <p>
+                    For research work, this is useful provenance: you can see what changed, when,
+                    and in which recorded version.
+                </p>
+            </section>
+
+            <section class="card">
+                <h3>GitHub</h3>
+                <p>
+                    <strong>GitHub</strong> is an online service that can host Git repositories.
+                    It gives our local repository a remote location that can be accessed from
+                    different computers and shared with others.
+                </p>
+                <p><strong>Git is the version-control technology; GitHub is a service built around it.</strong></p>
+            </section>
+
+            <section class="card">
+                <h3>GitHub Pages</h3>
+                <p>
+                    <strong>GitHub Pages</strong> is static web hosting connected to a GitHub
+                    repository. It can take HTML, CSS, JavaScript, images, and other static files
+                    from the repository and serve them through a public HTTPS URL.
+                </p>
+                <p>
+                    The repository view shows source and history. GitHub Pages shows the website
+                    as a browser visitor sees it.
+                </p>
+            </section>
+        </div>
+
+        <h2>4. Four places to keep mentally separate</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Place</th>
+                    <th>What is there?</th>
+                    <th>Typical action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Working folder</strong><br>your computer</td>
+                    <td>The files you are currently editing.</td>
+                    <td>Save a change in VS Code.</td>
+                </tr>
+                <tr>
+                    <td><strong>Local Git repository</strong><br>your computer</td>
+                    <td>Project files plus recorded commit history.</td>
+                    <td>Stage and commit.</td>
+                </tr>
+                <tr>
+                    <td><strong>Remote repository</strong><br>GitHub</td>
+                    <td>A remote copy of the Git repository and its branches.</td>
+                    <td>Push or pull commits.</td>
+                </tr>
+                <tr>
+                    <td><strong>Published site</strong><br>GitHub Pages</td>
+                    <td>Web files served to browsers through a public URL.</td>
+                    <td>Open and verify the website.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p class="checkpoint">
+            <strong>Key distinction:</strong> changing a file in VS Code does not automatically
+            create a Git commit; creating a commit does not automatically send it to GitHub; and
+            having files on GitHub is not quite the same thing as serving them as a website.
+        </p>
+
+        <h2>5. Vocabulary for the workflow</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Term</th>
+                    <th>Meaning in this course</th>
+                    <th>Useful mental model</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Repository</strong> or <strong>repo</strong></td>
+                    <td>A project tracked by Git, including its files and history.</td>
+                    <td>A research project folder with a formal change history.</td>
+                </tr>
+                <tr>
+                    <td><strong>Clone</strong></td>
+                    <td>Create a local copy of an existing Git repository, including its history, and connect it to the remote repository.</td>
+                    <td>Bring the project and its version history onto your computer.</td>
+                </tr>
+                <tr>
+                    <td><strong>Stage</strong></td>
+                    <td>Select changed files or parts of files for the next commit.</td>
+                    <td>Choose what belongs in the next recorded checkpoint.</td>
+                </tr>
+                <tr>
+                    <td><strong>Commit</strong></td>
+                    <td>Record the staged changes in the local Git history with a message.</td>
+                    <td>A named checkpoint in the project's history.</td>
+                </tr>
+                <tr>
+                    <td><strong>Push</strong></td>
+                    <td>Send local commits to the corresponding branch in the remote GitHub repository.</td>
+                    <td>Transfer your recorded checkpoints to GitHub.</td>
+                </tr>
+                <tr>
+                    <td><strong>Pull</strong></td>
+                    <td>Get changes from the remote repository and integrate them into your current local branch.</td>
+                    <td>Bring the newer shared history back to your computer.</td>
+                </tr>
+                <tr>
+                    <td><strong>Sync</strong></td>
+                    <td>In VS Code, a convenience operation that synchronizes the current branch with its remote, normally pulling incoming changes and pushing outgoing commits.</td>
+                    <td>Reconcile the local and GitHub copies in both directions.</td>
+                </tr>
+                <tr>
+                    <td><strong>main</strong></td>
+                    <td>The primary branch used by this course repository.</td>
+                    <td>The main line of recorded project history.</td>
+                </tr>
+                <tr>
+                    <td><strong>origin</strong></td>
+                    <td>The conventional Git name for the remote repository from which a project was cloned.</td>
+                    <td>A short local name that points to the GitHub repository.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>6. Saving, committing, pushing, and publishing are different</h2>
+        <p>
+            These actions are often confused when Git is new. They happen at different layers.
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Where does it happen?</th>
+                    <th>What changes?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Save</strong></td>
+                    <td>Your working folder</td>
+                    <td>The file on your computer is updated.</td>
+                </tr>
+                <tr>
+                    <td><strong>Commit</strong></td>
+                    <td>Your local Git repository</td>
+                    <td>A new recorded version is added to local history.</td>
+                </tr>
+                <tr>
+                    <td><strong>Push</strong></td>
+                    <td>Local Git → GitHub</td>
+                    <td>Your local commits are transferred to the remote repository.</td>
+                </tr>
+                <tr>
+                    <td><strong>Publish through GitHub Pages</strong></td>
+                    <td>GitHub → Web</td>
+                    <td>The selected repository files become available as a website.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>7. Our normal course routine</h2>
+        <ol class="workflow">
+            <li>
+                <strong>Open the repository folder in VS Code.</strong>
+                Make sure you are working in the intended project, not in a random copy of a file.
+            </li>
+            <li>
+                <strong>Synchronize or pull before starting.</strong>
+                This matters especially when the repository may have changed elsewhere.
+            </li>
+            <li>
+                <strong>Edit and save files.</strong>
+                For Week 2, the main file will be <code>index.html</code>.
+            </li>
+            <li>
+                <strong>Preview in a browser.</strong>
+                Observe the visible result, modify the source, and refresh. Development is an iterative cycle.
+            </li>
+            <li>
+                <strong>Inspect the Git changes.</strong>
+                VS Code's Source Control view shows which files changed and lets you inspect the differences.
+            </li>
+            <li>
+                <strong>Stage and commit a coherent change.</strong>
+                Use a short message that says what the checkpoint represents, for example <code>Add basic page headings and links</code>.
+            </li>
+            <li>
+                <strong>Push or Sync Changes.</strong>
+                Transfer the commit to GitHub and resolve incoming changes first if necessary.
+            </li>
+            <li>
+                <strong>Verify both GitHub and the GitHub Pages site.</strong>
+                The repository confirms that the source reached GitHub; the Pages URL confirms that the published site works in a browser.
+            </li>
+        </ol>
+
+        <h2>8. The same workflow from the terminal</h2>
+        <p>
+            VS Code gives us a graphical interface for Git, but it is useful to recognize the
+            commands underneath. We do not need to memorize all of them today.
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Intent</th>
+                    <th>Typical Git command</th>
+                    <th>VS Code equivalent</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Inspect current state</td>
+                    <td><code>git status</code></td>
+                    <td>Source Control view</td>
+                </tr>
+                <tr>
+                    <td>Get remote changes</td>
+                    <td><code>git pull</code></td>
+                    <td>Pull / Sync Changes</td>
+                </tr>
+                <tr>
+                    <td>Stage a file</td>
+                    <td><code>git add index.html</code></td>
+                    <td>Stage Changes (+)</td>
+                </tr>
+                <tr>
+                    <td>Create a checkpoint</td>
+                    <td><code>git commit -m "Describe the change"</code></td>
+                    <td>Commit</td>
+                </tr>
+                <tr>
+                    <td>Send commits to GitHub</td>
+                    <td><code>git push</code></td>
+                    <td>Push / Sync Changes</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>9. Why this matters in Digital Humanities</h2>
+        <p>
+            The tooling is not only for commercial software development. The same workflow is
+            valuable when a DH project contains a digital exhibition, scholarly edition, corpus
+            interface, research narrative, visualization, documentation site, or a small public
+            demonstrator for a research project.
+        </p>
+
+        <div class="grid">
+            <section class="card">
+                <h3>Reproducibility</h3>
+                <p>A commit identifies a specific recorded state of the project rather than an ambiguous file such as <code>final_v7_really_final.html</code>.</p>
+            </section>
+            <section class="card">
+                <h3>Provenance</h3>
+                <p>Git history helps reconstruct how a digital object changed and why particular edits were introduced.</p>
+            </section>
+            <section class="card">
+                <h3>Collaboration</h3>
+                <p>A remote repository provides a shared technical space for source files, history, review, and coordination.</p>
+            </section>
+            <section class="card">
+                <h3>Publication</h3>
+                <p>GitHub Pages provides a low-friction way to publish static research outputs and teaching examples directly from version-controlled source.</p>
+            </section>
+        </div>
+
+        <h2>10. What we are learning today, and what comes later</h2>
+        <p>
+            Today we concentrate on the workflow and on <strong>HTML</strong>: the language that
+            gives a web document its content and structure. We will deliberately use the browser's
+            default appearance while learning HTML.
+        </p>
+        <ul>
+            <li><strong>Week 2:</strong> development workflow and HTML basics.</li>
+            <li><strong>Week 3:</strong> more HTML, semantic structure, forms, tables, URLs, and accessibility basics.</li>
+            <li><strong>Week 4:</strong> CSS begins: presentation, selectors, cascade, typography, colors, and spacing.</li>
+            <li><strong>Later:</strong> JavaScript adds behavior and interaction.</li>
+        </ul>
+
+        <p class="note">
+            <strong>About this teaching page:</strong> it already uses CSS to make a long reference
+            page easier to read. You are not expected to understand that styling yet. During today's
+            live coding, we will work with much smaller HTML files and let the browser use its default styling.
+        </p>
+
+        <h2>11. Before we start coding: can you answer these?</h2>
+        <ol>
+            <li>What is the difference between Git and GitHub?</li>
+            <li>If you save <code>index.html</code>, has the change been committed?</li>
+            <li>If you commit locally, has the change reached GitHub?</li>
+            <li>What does <code>git push</code> move, and in which direction?</li>
+            <li>Why might you pull or sync before starting new work?</li>
+            <li>What is the difference between viewing a file on GitHub and viewing the same file through GitHub Pages?</li>
+            <li>Which part of our workflow provides the public website?</li>
+        </ol>
+
+        <h2>References</h2>
+        <ul>
+            <li><a href="https://code.visualstudio.com/docs/sourcecontrol/overview">Visual Studio Code: Source Control</a></li>
+            <li><a href="https://git-scm.com/doc">Git documentation</a></li>
+            <li><a href="https://docs.github.com/en/get-started/using-git/about-git">GitHub Docs: About Git</a></li>
+            <li><a href="https://docs.github.com/en/get-started/using-git/getting-changes-from-a-remote-repository">GitHub Docs: Getting changes from a remote repository</a></li>
+            <li><a href="https://docs.github.com/en/get-started/using-git/pushing-commits-to-a-remote-repository">GitHub Docs: Pushing commits to a remote repository</a></li>
+            <li><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages">GitHub Docs: What is GitHub Pages?</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Environment_setup/Dealing_with_files">MDN: Dealing with files</a></li>
+        </ul>
+    </main>
+
+    <footer>
+        <div>
+            DE0824 Web Development · Riga Technical University · DITEF · Fall 2026
+        </div>
+    </footer>
+</body>
+</html>
