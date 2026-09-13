@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 2: HTML Basics | DE0824</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --page: #f7f8fa;
+            --surface: #ffffff;
+            --text: #172033;
+            --muted: #526078;
+            --accent: #005ea8;
+            --accent-dark: #0f2842;
+            --accent-soft: #e9f3fb;
+            --border: #d9e0e8;
+            --code: #f1f3f6;
+            --code-text: #1b2738;
+            --success-soft: #edf8f1;
+            --warning-soft: #fff8e7;
+            --max-width: 1050px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--page);
+            color: var(--text);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            line-height: 1.65;
+        }
+
+        header {
+            background: var(--accent-dark);
+            color: white;
+            padding: 3.25rem 1.25rem 2.75rem;
+        }
+
+        header div,
+        nav div,
+        main,
+        footer div {
+            width: min(var(--max-width), calc(100% - 2rem));
+            margin: 0 auto;
+        }
+
+        header .course {
+            margin: 0 0 0.5rem;
+            font-size: 0.95rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: clamp(2.15rem, 5vw, 3.6rem);
+            line-height: 1.1;
+        }
+
+        header p {
+            max-width: 800px;
+            margin-bottom: 0;
+            color: #dce8f4;
+            font-size: 1.12rem;
+        }
+
+        nav {
+            border-bottom: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        nav div {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 0.85rem 0;
+        }
+
+        nav a {
+            font-weight: 650;
+            text-decoration: none;
+        }
+
+        main {
+            padding: 2rem 0 4rem;
+        }
+
+        h2 {
+            margin-top: 3rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 2px solid var(--border);
+            font-size: 1.75rem;
+            line-height: 1.3;
+        }
+
+        h3 {
+            margin-top: 1.65rem;
+            line-height: 1.35;
+        }
+
+        a {
+            color: #005a9c;
+        }
+
+        .lead,
+        .note,
+        .checkpoint,
+        .warning {
+            margin: 1.25rem 0;
+            padding: 1rem 1.2rem;
+            border-left: 5px solid var(--accent);
+            background: var(--surface);
+        }
+
+        .lead {
+            font-size: 1.08rem;
+        }
+
+        .checkpoint {
+            background: var(--success-soft);
+        }
+
+        .warning {
+            border-left-color: #b46a00;
+            background: var(--warning-soft);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+            gap: 1rem;
+            margin: 1.25rem 0;
+        }
+
+        .card,
+        .example {
+            border: 1px solid var(--border);
+            border-radius: 0.65rem;
+            background: var(--surface);
+        }
+
+        .card {
+            padding: 1rem 1.1rem;
+        }
+
+        .card h3 {
+            margin-top: 0;
+        }
+
+        .example {
+            margin: 1.25rem 0 1.6rem;
+            overflow: hidden;
+        }
+
+        .example h3 {
+            margin: 0;
+            padding: 0.8rem 1rem;
+            background: var(--accent-soft);
+            font-size: 1.05rem;
+        }
+
+        .example .explanation {
+            padding: 0.9rem 1rem 0;
+        }
+
+        pre {
+            margin: 0;
+            padding: 1rem;
+            overflow-x: auto;
+            background: var(--code);
+            color: var(--code-text);
+            border-top: 1px solid var(--border);
+            line-height: 1.5;
+            tab-size: 4;
+        }
+
+        code {
+            font-family: Consolas, "Courier New", monospace;
+        }
+
+        p code,
+        li code,
+        td code {
+            padding: 0.08rem 0.3rem;
+            border-radius: 0.25rem;
+            background: var(--code);
+        }
+
+        table {
+            width: 100%;
+            margin: 1rem 0 1.5rem;
+            border-collapse: collapse;
+            background: var(--surface);
+        }
+
+        th,
+        td {
+            padding: 0.7rem 0.8rem;
+            border: 1px solid var(--border);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: var(--accent-soft);
+        }
+
+        .demo-image {
+            display: block;
+            width: min(520px, 100%);
+            height: auto;
+            margin: 1rem 0;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            background: white;
+        }
+
+        .tasks li,
+        .checklist li {
+            margin-bottom: 0.55rem;
+        }
+
+        footer {
+            padding: 1.5rem 0 2.5rem;
+            border-top: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--muted);
+        }
+
+        @media (max-width: 650px) {
+            table {
+                font-size: 0.92rem;
+            }
+
+            th,
+            td {
+                padding: 0.55rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <p class="course">DE0824 Web Development · Week 2</p>
+            <h1>HTML basics: giving a web page structure and meaning</h1>
+            <p>
+                A guided introduction to the small set of HTML elements we need to build our first
+                structured pages: document structure, headings, paragraphs, lists, links, and images.
+            </p>
+        </div>
+    </header>
+
+    <nav aria-label="Course navigation">
+        <div>
+            <a href="../../index.html">Course home</a>
+            <a href="technologies.html">Week 2 workflow and technologies</a>
+            <a href="#practice">Practice tasks</a>
+            <a href="#references">References</a>
+        </div>
+    </nav>
+
+    <main>
+        <p class="lead">
+            <strong>Goal for the second academic hour:</strong> move from editing a single piece of
+            text to creating a small but properly structured HTML document. We will build these ideas
+            incrementally during live coding. This page is the reference you can inspect before,
+            during, and after the session.
+        </p>
+
+        <div class="note">
+            <strong>Important:</strong> this teaching page itself already uses some HTML elements
+            and CSS that we have not studied yet, simply to make a long reference page easier to read.
+            For Week 2, concentrate on the code examples in the grey boxes and on what they do in the browser.
+        </div>
+
+        <h2>1. What HTML is for</h2>
+        <p>
+            <strong>HTML</strong> stands for <strong>HyperText Markup Language</strong>. It is the
+            language browsers use to describe the content and structure of a web document.
+        </p>
+        <p>
+            The central idea for this week is simple: HTML should describe <strong>what a piece of
+            content is</strong>, not merely how we want it to look. Presentation will come later with CSS.
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Digital Humanities document idea</th>
+                    <th>HTML structure</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Title of a digital edition or collection</td>
+                    <td><code>&lt;h1&gt;</code></td>
+                </tr>
+                <tr>
+                    <td>Section heading</td>
+                    <td><code>&lt;h2&gt;</code>, <code>&lt;h3&gt;</code>, ...</td>
+                </tr>
+                <tr>
+                    <td>Paragraph of explanatory text</td>
+                    <td><code>&lt;p&gt;</code></td>
+                </tr>
+                <tr>
+                    <td>List of objects, sources, authors, or categories</td>
+                    <td><code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code></td>
+                </tr>
+                <tr>
+                    <td>Reference to another web resource</td>
+                    <td><code>&lt;a&gt;</code></td>
+                </tr>
+                <tr>
+                    <td>Scan, photograph, map, manuscript image, or logo</td>
+                    <td><code>&lt;img&gt;</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p class="checkpoint">
+            <strong>Key idea:</strong> a heading is a heading because of its role in the document,
+            not because the browser happens to display it in large bold text.
+        </p>
+
+        <h2>2. Start with a complete HTML document</h2>
+        <p>
+            An HTML file is an ordinary text file, usually with the <code>.html</code> extension.
+            A useful starting document looks like this:
+        </p>
+
+        <div class="example">
+            <h3>Example 1 · Minimal complete page</h3>
+            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Latvian Historical Newspapers&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Latvian Historical Newspapers&lt;/h1&gt;
+    &lt;p&gt;A small Digital Humanities collection.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Part</th>
+                    <th>Purpose</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>&lt;!DOCTYPE html&gt;</code></td>
+                    <td>Tells the browser to interpret the document using modern HTML rules.</td>
+                </tr>
+                <tr>
+                    <td><code>&lt;html lang="en"&gt;</code></td>
+                    <td>The root element. The <code>lang</code> attribute identifies the document language.</td>
+                </tr>
+                <tr>
+                    <td><code>&lt;head&gt;</code></td>
+                    <td>Information about the document rather than the main visible page content.</td>
+                </tr>
+                <tr>
+                    <td><code>&lt;meta charset="UTF-8"&gt;</code></td>
+                    <td>Declares UTF-8 text encoding, which we want for Latvian and other Unicode text.</td>
+                </tr>
+                <tr>
+                    <td><code>&lt;title&gt;</code></td>
+                    <td>The document title shown in the browser tab and used in other browser contexts.</td>
+                </tr>
+                <tr>
+                    <td><code>&lt;body&gt;</code></td>
+                    <td>The main content rendered in the browser window.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="checkpoint">
+            <strong>Prediction:</strong> change only the text inside <code>&lt;title&gt;</code>.
+            Where does the change appear? Then change the text inside <code>&lt;h1&gt;</code>.
+            Is the result in the same place?
+        </div>
+
+        <h2>3. Elements, tags, content, and attributes</h2>
+        <p>
+            We need four pieces of vocabulary. Consider this paragraph:
+        </p>
+
+        <div class="example">
+            <h3>Example 2 · A simple element</h3>
+            <pre><code>&lt;p&gt;A historical newspaper.&lt;/p&gt;</code></pre>
+        </div>
+
+        <ul>
+            <li><code>&lt;p&gt;</code> is the <strong>opening tag</strong>.</li>
+            <li><code>A historical newspaper.</code> is the <strong>content</strong>.</li>
+            <li><code>&lt;/p&gt;</code> is the <strong>closing tag</strong>.</li>
+            <li>The opening tag, content, and closing tag together form the <strong>element</strong>.</li>
+        </ul>
+
+        <p>
+            Elements can also have <strong>attributes</strong>. Attributes add information to the
+            element. A link needs to know where it should lead:
+        </p>
+
+        <div class="example">
+            <h3>Example 3 · An element with an attribute</h3>
+            <pre><code>&lt;a href="https://www.lnb.lv/"&gt;National Library of Latvia&lt;/a&gt;</code></pre>
+        </div>
+
+        <p>
+            Here <code>href</code> is the attribute name and <code>https://www.lnb.lv/</code> is its value.
+        </p>
+
+        <h2>4. Elements can be nested</h2>
+        <p>
+            HTML elements frequently contain other elements. For example, a paragraph can contain a link:
+        </p>
+
+        <div class="example">
+            <h3>Example 4 · Nesting</h3>
+            <pre><code>&lt;p&gt;
+    Explore the
+    &lt;a href="https://www.lnb.lv/"&gt;National Library of Latvia&lt;/a&gt;.
+&lt;/p&gt;</code></pre>
+        </div>
+
+        <p>
+            A useful rule is to think of nested HTML like properly nested parentheses. Close the
+            inner element before closing the outer one.
+        </p>
+
+        <div class="grid">
+            <section class="card">
+                <h3>Correct</h3>
+                <pre><code>&lt;p&gt;
+    Read &lt;strong&gt;this document&lt;/strong&gt;
+    carefully.
+&lt;/p&gt;</code></pre>
+            </section>
+            <section class="card">
+                <h3>Incorrect nesting</h3>
+                <pre><code>&lt;p&gt;
+    Read &lt;strong&gt;this document
+&lt;/p&gt;&lt;/strong&gt;</code></pre>
+            </section>
+        </div>
+
+        <div class="warning">
+            Browsers are deliberately tolerant of many HTML mistakes and may still display
+            something. <strong>"The browser displayed it" does not necessarily mean the markup is well structured.</strong>
+        </div>
+
+        <h2>5. Headings and paragraphs</h2>
+        <p>
+            Headings describe the hierarchy of a document. HTML provides heading levels
+            <code>&lt;h1&gt;</code> through <code>&lt;h6&gt;</code>. Paragraphs use <code>&lt;p&gt;</code>.
+        </p>
+
+        <div class="example">
+            <h3>Example 5 · A small document hierarchy</h3>
+            <pre><code>&lt;h1&gt;Latvian Historical Newspapers&lt;/h1&gt;
+
+&lt;p&gt;
+    This page introduces several digitised Latvian newspapers.
+&lt;/p&gt;
+
+&lt;h2&gt;Jaunākās Ziņas&lt;/h2&gt;
+
+&lt;p&gt;
+    Jaunākās Ziņas was an important Latvian daily newspaper.
+&lt;/p&gt;
+
+&lt;h2&gt;Digitised collections&lt;/h2&gt;
+
+&lt;p&gt;
+    Historical newspapers can be studied both as documents
+    and as machine-readable textual corpora.
+&lt;/p&gt;</code></pre>
+        </div>
+
+        <p>
+            Choose heading levels according to <strong>structure</strong>. Do not choose an
+            <code>&lt;h4&gt;</code> merely because you prefer its default size. CSS will later control appearance.
+        </p>
+
+        <div class="checkpoint">
+            <strong>Prediction:</strong> if you change an <code>&lt;h2&gt;</code> to an
+            <code>&lt;h5&gt;</code>, will the browser allow it? Has the document hierarchy improved or worsened?
+        </div>
+
+        <h2>6. Lists</h2>
+        <p>
+            Lists are common in research pages: collections, people, sources, metadata fields,
+            workflow steps, bibliographies, and many other kinds of grouped information.
+        </p>
+
+        <div class="grid">
+            <section class="card">
+                <h3>Unordered list</h3>
+                <p>Use when the order is not important.</p>
+                <pre><code>&lt;ul&gt;
+    &lt;li&gt;Newspapers&lt;/li&gt;
+    &lt;li&gt;Books&lt;/li&gt;
+    &lt;li&gt;Photographs&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+            </section>
+
+            <section class="card">
+                <h3>Ordered list</h3>
+                <p>Use when the sequence itself matters.</p>
+                <pre><code>&lt;ol&gt;
+    &lt;li&gt;Find the source&lt;/li&gt;
+    &lt;li&gt;Inspect the metadata&lt;/li&gt;
+    &lt;li&gt;Read or download the document&lt;/li&gt;
+    &lt;li&gt;Analyse the text&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+            </section>
+        </div>
+
+        <p>
+            In both cases, individual items are represented by <code>&lt;li&gt;</code>.
+        </p>
+
+        <div class="checkpoint">
+            <strong>Try it:</strong> change only <code>&lt;ul&gt;</code> and <code>&lt;/ul&gt;</code>
+            to <code>&lt;ol&gt;</code> and <code>&lt;/ol&gt;</code>. What visible change occurs?
+            Has the meaning changed as well?
+        </div>
+
+        <h2>7. Links: the "hypertext" in HTML</h2>
+        <p>
+            A web page becomes part of the Web by linking to other resources. The anchor element
+            <code>&lt;a&gt;</code> uses the <code>href</code> attribute to identify its destination.
+        </p>
+
+        <div class="example">
+            <h3>Example 6 · Absolute URL</h3>
+            <pre><code>&lt;a href="https://developer.mozilla.org/en-US/docs/Web/HTML"&gt;
+    Learn more about HTML on MDN
+&lt;/a&gt;</code></pre>
+        </div>
+
+        <p>
+            An <strong>absolute URL</strong> contains the full address, including the scheme and host.
+            It is typically used when linking to another website.
+        </p>
+
+        <div class="example">
+            <h3>Example 7 · Relative URL</h3>
+            <pre><code>&lt;a href="technologies.html"&gt;Week 2 workflow&lt;/a&gt;</code></pre>
+        </div>
+
+        <p>
+            A <strong>relative URL</strong> is interpreted relative to the current document's location.
+            Because this page and <code>technologies.html</code> are in the same folder, only the filename is needed.
+        </p>
+
+        <p>
+            To reach the course <code>index.html</code> from this page, we move up two folders:
+        </p>
+
+        <div class="example">
+            <h3>Example 8 · Moving up folders</h3>
+            <pre><code>&lt;a href="../../index.html"&gt;Course home&lt;/a&gt;</code></pre>
+        </div>
+
+        <pre><code>web_development_DE0824_fall_2026/
+├── index.html
+└── lectures/
+    └── week02/
+        ├── technologies.html
+        └── html_intro.html</code></pre>
+
+        <p class="checkpoint">
+            <strong>Debugging rule:</strong> when a relative link does not work, first ask:
+            "Where is the current HTML file, and where is the target file relative to it?"
+        </p>
+
+        <h2>8. Images</h2>
+        <p>
+            The <code>&lt;img&gt;</code> element embeds an image. Two attributes matter immediately:
+            <code>src</code> gives the image location, and <code>alt</code> provides a text alternative.
+        </p>
+
+        <div class="example">
+            <h3>Example 9 · Image from this repository</h3>
+            <pre><code>&lt;img
+    src="../../img/rtu_logo_en-1978560996.png"
+    alt="Riga Technical University logo"
+&gt;</code></pre>
+        </div>
+
+        <img
+            class="demo-image"
+            src="../../img/rtu_logo_en-1978560996.png"
+            alt="Riga Technical University logo"
+        >
+
+        <p>
+            Unlike a paragraph or heading, <code>&lt;img&gt;</code> is a <strong>void element</strong>:
+            it does not wrap content and therefore has no closing <code>&lt;/img&gt;</code> tag.
+        </p>
+
+        <p>
+            The <code>alt</code> text should communicate the image's meaning or function when the image
+            cannot be seen. It is important for accessibility and also helps when an image fails to load.
+        </p>
+
+        <div class="checkpoint">
+            <strong>Deliberately break it:</strong> change one character in the <code>src</code> filename,
+            refresh the browser, and observe what happens. Then use the path and VS Code's file explorer
+            to diagnose and repair the problem.
+        </div>
+
+        <h2>9. A small amount of inline meaning</h2>
+        <p>
+            If time permits, two useful elements inside paragraphs are <code>&lt;strong&gt;</code>
+            and <code>&lt;em&gt;</code>. Their purpose is semantic, even though browsers also give
+            them a visible default style.
+        </p>
+
+        <div class="example">
+            <h3>Example 10 · Importance and emphasis</h3>
+            <pre><code>&lt;p&gt;
+    This collection contains
+    &lt;strong&gt;primary historical sources&lt;/strong&gt;.
+&lt;/p&gt;
+
+&lt;p&gt;
+    Historical spelling may differ
+    &lt;em&gt;substantially&lt;/em&gt; from modern Latvian.
+&lt;/p&gt;</code></pre>
+        </div>
+
+        <ul>
+            <li><code>&lt;strong&gt;</code> marks strong importance.</li>
+            <li><code>&lt;em&gt;</code> marks emphasis.</li>
+        </ul>
+
+        <h2>10. Put the pieces together</h2>
+        <p>
+            By the end of this session, every part of the following small page should be understandable.
+        </p>
+
+        <div class="example">
+            <h3>Example 11 · Complete miniature Digital Humanities page</h3>
+            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Historical Newspaper Collection&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Historical Newspaper Collection&lt;/h1&gt;
+
+    &lt;p&gt;
+        A small collection of resources for studying
+        historical Latvian newspapers.
+    &lt;/p&gt;
+
+    &lt;h2&gt;Collections&lt;/h2&gt;
+
+    &lt;ul&gt;
+        &lt;li&gt;Newspapers&lt;/li&gt;
+        &lt;li&gt;Books&lt;/li&gt;
+        &lt;li&gt;Photographs&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;h2&gt;Research workflow&lt;/h2&gt;
+
+    &lt;ol&gt;
+        &lt;li&gt;Find a source&lt;/li&gt;
+        &lt;li&gt;Inspect its metadata&lt;/li&gt;
+        &lt;li&gt;Read or download the document&lt;/li&gt;
+        &lt;li&gt;Analyse the text&lt;/li&gt;
+    &lt;/ol&gt;
+
+    &lt;h2&gt;Resources&lt;/h2&gt;
+
+    &lt;p&gt;
+        Visit the
+        &lt;a href="https://www.lnb.lv/"&gt;National Library of Latvia&lt;/a&gt;.
+    &lt;/p&gt;
+
+    &lt;img
+        src="img/rtu_logo_en-1978560996.png"
+        alt="Riga Technical University logo"
+    &gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        </div>
+
+        <div class="note">
+            <strong>Notice the image path in the miniature example:</strong> it assumes that the
+            HTML file is in the repository root next to the <code>img</code> folder. Relative paths
+            always depend on where the current HTML file is located.
+        </div>
+
+        <h2 id="practice">11. Practice: modify a page rather than starting from nothing</h2>
+        <p>
+            During live coding we will build a similar page incrementally. Afterwards, make your
+            own small variation. The goal is to understand each change, not to type a large amount of markup.
+        </p>
+
+        <ol class="tasks">
+            <li>Add one new section using an <code>&lt;h2&gt;</code> and a <code>&lt;p&gt;</code>.</li>
+            <li>Add a list containing at least three items relevant to a DH topic.</li>
+            <li>Add one external link to a library, archive, museum, corpus, research project, or other DH resource.</li>
+            <li>Add one image that you control or that is already part of your repository, with appropriate <code>alt</code> text.</li>
+            <li>Save the file, refresh it in the browser, and verify each change.</li>
+        </ol>
+
+        <p>
+            <strong>Optional challenge:</strong> create a second HTML page and link the two pages
+            together using relative URLs.
+        </p>
+
+        <h2>12. Common mistakes to diagnose</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Symptom</th>
+                    <th>Likely cause</th>
+                    <th>What to inspect</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>A link gives a 404 page or opens the wrong file.</td>
+                    <td>Incorrect relative path or filename.</td>
+                    <td>Current file location, target location, spelling, and capitalization.</td>
+                </tr>
+                <tr>
+                    <td>An image is broken.</td>
+                    <td>Incorrect <code>src</code> path or missing file.</td>
+                    <td>Repository folders and exact filename.</td>
+                </tr>
+                <tr>
+                    <td>Unexpectedly large or small heading.</td>
+                    <td>Wrong heading level chosen for appearance rather than structure.</td>
+                    <td>The document hierarchy: <code>h1</code>, then appropriate subsection levels.</td>
+                </tr>
+                <tr>
+                    <td>Text appears but the structure seems strange.</td>
+                    <td>Missing or incorrectly nested closing tags.</td>
+                    <td>Indentation and matching opening/closing tags.</td>
+                </tr>
+                <tr>
+                    <td>Latvian characters display incorrectly.</td>
+                    <td>Encoding problem.</td>
+                    <td><code>&lt;meta charset="UTF-8"&gt;</code> and how the file was saved.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p class="warning">
+            A productive debugging habit is to change <strong>one thing at a time</strong>, save,
+            refresh, and observe. If the result is wrong, inspect the smallest recent change before rewriting the page.
+        </p>
+
+        <h2>13. What you should be able to do after Week 2</h2>
+        <ul class="checklist">
+            <li>Recognize the basic structure of a complete HTML document.</li>
+            <li>Explain the difference between an element, tag, content, and attribute.</li>
+            <li>Distinguish the document <code>&lt;head&gt;</code> from the visible <code>&lt;body&gt;</code>.</li>
+            <li>Create a logical hierarchy with headings and paragraphs.</li>
+            <li>Create ordered and unordered lists.</li>
+            <li>Create links and distinguish absolute URLs from relative URLs.</li>
+            <li>Insert an image using <code>src</code> and meaningful <code>alt</code> text.</li>
+            <li>Nest simple elements correctly.</li>
+            <li>Use VS Code and a browser together to edit, save, refresh, inspect, and debug a page.</li>
+        </ul>
+
+        <h2>14. What deliberately comes later</h2>
+        <p>
+            We are keeping Week 2 small. The following topics are useful, but they are easier to
+            understand after the basic document vocabulary is comfortable:
+        </p>
+
+        <ul>
+            <li>semantic page structure such as <code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;section&gt;</code>, and <code>&lt;footer&gt;</code>;</li>
+            <li>figures, quotations, citations, dates, and other richer document semantics;</li>
+            <li>tables and forms;</li>
+            <li>generic containers such as <code>&lt;div&gt;</code> and <code>&lt;span&gt;</code>;</li>
+            <li>CSS for presentation;</li>
+            <li>JavaScript for behavior and interaction.</li>
+        </ul>
+
+        <h2 id="references">References</h2>
+        <ul>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content">MDN: Structuring content with HTML</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Basic_HTML_syntax">MDN: Basic HTML syntax</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Headings_and_paragraphs">MDN: Headings and paragraphs</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Lists">MDN: Lists</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Creating_links">MDN: Creating links</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/HTML_images">MDN: Images in HTML</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements">MDN: HTML element reference</a></li>
+            <li><a href="https://html.spec.whatwg.org/dev/">WHATWG: HTML Living Standard, Web Developer Edition</a></li>
+        </ul>
+
+        <p class="note">
+            <strong>Next step:</strong> Week 3 expands from this small vocabulary into richer
+            semantic HTML documents while still keeping CSS and JavaScript separate.
+        </p>
+    </main>
+
+    <footer>
+        <div>
+            DE0824 Web Development · Riga Technical University · DITEF · Fall 2026
+        </div>
+    </footer>
+</body>
+</html>
