@@ -153,6 +153,19 @@
             font-family: Consolas, "Courier New", monospace;
         }
 
+        pre {
+            padding: 1rem 1.2rem;
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            background: var(--code);
+        }
+
+        pre code {
+            padding: 0;
+            background: transparent;
+        }
+
         .workflow {
             counter-reset: step;
             list-style: none;
@@ -340,6 +353,41 @@
                     as a browser visitor sees it.
                 </p>
             </section>
+        </div>
+
+        <h3>Configure Git once after installation</h3>
+        <p>
+            After installing Git on a computer, configure the name and email address that Git will
+            record as the author of your commits. Open a terminal in VS Code using
+            <strong>Terminal → New Terminal</strong> and run these two commands, replacing the
+            example values with your own name and email address:
+        </p>
+
+        <pre><code>git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"</code></pre>
+
+        <p>
+            Use the email address associated with your GitHub account if you want GitHub to connect
+            the commits to your account. These values are <strong>commit metadata</strong>; they are
+            not your GitHub password and they do not sign you in to GitHub.
+        </p>
+
+        <p>Check that the values were saved correctly:</p>
+
+        <pre><code>git config --global user.name
+git config --global user.email</code></pre>
+
+        <p>
+            The <code>--global</code> option makes this identity the default for repositories used by
+            your user account on this computer, so you normally configure it only once. Git can also
+            use repository-specific values, but we do not need that distinction for this course.
+        </p>
+
+        <div class="note">
+            <strong>Why this is required:</strong> Git needs an author name and email before it can
+            create normal commits. If they are missing, a commit may stop with an
+            <code>Author identity unknown</code> message. Push or Sync Changes transfers commits that
+            already exist, so configure your Git identity before making the first course commit.
         </div>
 
         <h2>4. Four places to keep mentally separate</h2>
