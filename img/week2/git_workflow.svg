@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Git workflow for the DE0824 course</title>
+  <desc id="desc">Diagram showing the relationship between local editing in Visual Studio Code, the local Git repository, the remote GitHub repository, and GitHub Pages publication. Arrows label save, stage and commit, push, pull, and publish.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f7f8fa; }
+      .panel { fill: #ffffff; stroke: #d9e0e8; stroke-width: 2; rx: 18; ry: 18; }
+      .title { font: 700 34px 'Segoe UI', Arial, sans-serif; fill: #172033; }
+      .subtitle { font: 500 20px 'Segoe UI', Arial, sans-serif; fill: #526078; }
+      .boxTitle { font: 700 24px 'Segoe UI', Arial, sans-serif; fill: #172033; }
+      .boxText { font: 400 19px 'Segoe UI', Arial, sans-serif; fill: #23324a; }
+      .small { font: 400 17px 'Segoe UI', Arial, sans-serif; fill: #526078; }
+      .accentSoft { fill: #e9f3fb; stroke: #cfe1f1; stroke-width: 2; rx: 14; ry: 14; }
+      .greenSoft { fill: #ebf7ef; stroke: #cce7d3; stroke-width: 2; rx: 14; ry: 14; }
+      .goldSoft { fill: #fff7df; stroke: #efd98b; stroke-width: 2; rx: 14; ry: 14; }
+      .arrowBlue { stroke: #005ea8; stroke-width: 5; fill: none; marker-end: url(#arrowBlue); }
+      .arrowDark { stroke: #23324a; stroke-width: 5; fill: none; marker-end: url(#arrowDark); }
+      .arrowGreen { stroke: #2c8b57; stroke-width: 5; fill: none; marker-end: url(#arrowGreen); }
+      .arrowLabel { font: 700 22px 'Segoe UI', Arial, sans-serif; fill: #172033; }
+      .legendText { font: 400 18px 'Segoe UI', Arial, sans-serif; fill: #23324a; }
+      .mono { font: 700 18px Consolas, 'Courier New', monospace; fill: #172033; }
+    </style>
+
+    <!-- Arrowheads reduced to 50% of the original 12 x 12 markers. -->
+    <marker id="arrowBlue" markerWidth="6" markerHeight="6" refX="5" refY="3"
+            orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L6,3 L0,6 z" fill="#005ea8"/>
+    </marker>
+    <marker id="arrowDark" markerWidth="6" markerHeight="6" refX="5" refY="3"
+            orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L6,3 L0,6 z" fill="#23324a"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="6" markerHeight="6" refX="5" refY="3"
+            orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L6,3 L0,6 z" fill="#2c8b57"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1200" height="760"/>
+
+  <text class="title" x="60" y="60">Git workflow in this course</text>
+  <text class="subtitle" x="60" y="95">Keep four things separate in your mind: editing, local history, remote sharing, and publication.</text>
+
+  <rect class="panel" x="60" y="150" width="320" height="180"/>
+  <rect class="panel" x="440" y="150" width="320" height="180"/>
+  <rect class="panel" x="820" y="150" width="320" height="180"/>
+  <rect class="panel" x="820" y="430" width="320" height="180"/>
+
+  <rect class="accentSoft" x="85" y="180" width="270" height="52"/>
+  <text class="boxTitle" x="100" y="214">1. Working files in VS Code</text>
+  <text class="boxText" x="100" y="258">You edit files such as index.html</text>
+  <text class="boxText" x="100" y="286">and save them on your computer.</text>
+  <text class="small" x="100" y="315">This changes the working folder only.</text>
+
+  <rect class="accentSoft" x="465" y="180" width="270" height="52"/>
+  <text class="boxTitle" x="480" y="214">2. Local Git repository</text>
+  <text class="boxText" x="480" y="258">Git records selected changes as</text>
+  <text class="boxText" x="480" y="286">commits in your local history.</text>
+  <text class="small" x="480" y="315">Still on your own computer.</text>
+
+  <rect class="accentSoft" x="845" y="180" width="270" height="52"/>
+  <text class="boxTitle" x="860" y="214">3. GitHub remote repository</text>
+  <text class="boxText" x="860" y="258">A remote copy on GitHub stores</text>
+  <text class="boxText" x="860" y="286">shared history and code.</text>
+  <text class="small" x="860" y="315">This is where push and pull connect.</text>
+
+  <rect class="greenSoft" x="845" y="460" width="270" height="52"/>
+  <text class="boxTitle" x="860" y="494">4. GitHub Pages website</text>
+  <text class="boxText" x="860" y="538">The published website is served</text>
+  <text class="boxText" x="860" y="566">to visitors through a public URL.</text>
+  <text class="small" x="860" y="595">Browsers see the site, not your editor.</text>
+
+  <path class="arrowBlue" d="M380 240 L440 240"/>
+  <text class="arrowLabel" x="392" y="225">save</text>
+
+  <path class="arrowDark" d="M760 240 L820 240"/>
+  <text class="arrowLabel" x="765" y="225">push</text>
+
+  <path class="arrowDark" d="M820 280 L760 280"/>
+  <text class="arrowLabel" x="765" y="306">pull</text>
+
+  <path class="arrowGreen" d="M980 330 L980 430"/>
+  <text class="arrowLabel" x="996" y="390">publish</text>
+
+  <rect class="goldSoft" x="425" y="380" width="350" height="120"/>
+  <text class="boxTitle" x="445" y="415">What happens between editing and Git?</text>
+  <text class="boxText" x="445" y="452">You usually stage changes and then create a commit.</text>
+  <text class="mono" x="445" y="484">git add .    git commit -m "Describe the change"</text>
+
+  <path class="arrowBlue" d="M250 330 C250 430, 330 475, 425 475"/>
+  <path class="arrowBlue" d="M775 475 C810 475, 820 430, 820 330"/>
+  <text class="arrowLabel" x="305" y="395">stage + commit</text>
+
+  <rect class="panel" x="60" y="560" width="700" height="145"/>
+  <text class="boxTitle" x="85" y="600">How students often confuse the steps</text>
+  <text class="legendText" x="85" y="635">1. <tspan font-weight="700">Save</tspan> writes file changes to disk.</text>
+  <text class="legendText" x="85" y="663">2. <tspan font-weight="700">Commit</tspan> records a version in local Git history.</text>
+  <text class="legendText" x="390" y="635">3. <tspan font-weight="700">Push</tspan> sends local commits to GitHub.</text>
+  <text class="legendText" x="390" y="663">4. <tspan font-weight="700">Pull</tspan> brings remote commits back to your computer.</text>
+  <text class="legendText" x="85" y="691">5. <tspan font-weight="700">Publish</tspan> makes the site available through GitHub Pages.</text>
+</svg>
