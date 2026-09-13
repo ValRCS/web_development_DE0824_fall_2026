@@ -8,6 +8,12 @@
 
 Course materials and live-coding examples for **DE0824 Web Development** at Riga Technical University (RTU), DITEF.
 
+## Live course website
+
+The course pages are published with GitHub Pages:
+
+[https://valrcs.github.io/web_development_DE0824_fall_2026/](https://valrcs.github.io/web_development_DE0824_fall_2026/)
+
 The course introduces the foundations of the modern Web platform through practical work with **HTML, CSS, JavaScript, browser developer tools, Git, and GitHub**. Most topics are developed incrementally during live-coding sessions, so the exact pace may change during the semester.
 
 ## Approximate syllabus
