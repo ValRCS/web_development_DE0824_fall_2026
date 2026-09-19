@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 3: Intermediate HTML and Semantic Structure | DE0824</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --page: #f7f8fa;
+            --surface: #ffffff;
+            --text: #172033;
+            --muted: #526078;
+            --accent: #005ea8;
+            --accent-dark: #0f2842;
+            --accent-soft: #e9f3fb;
+            --border: #d9e0e8;
+            --code: #f1f3f6;
+            --code-text: #1b2738;
+            --success-soft: #edf8f1;
+            --warning-soft: #fff8e7;
+            --max-width: 1050px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--page);
+            color: var(--text);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            line-height: 1.65;
+        }
+
+        header.page-header {
+            background: var(--accent-dark);
+            color: white;
+            padding: 3.25rem 1.25rem 2.75rem;
+        }
+
+        header.page-header > div,
+        nav.course-nav > div,
+        main,
+        footer.page-footer > div {
+            width: min(var(--max-width), calc(100% - 2rem));
+            margin: 0 auto;
+        }
+
+        header.page-header .course {
+            margin: 0 0 0.5rem;
+            font-size: 0.95rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        header.page-header h1 {
+            margin: 0;
+            font-size: clamp(2.15rem, 5vw, 3.6rem);
+            line-height: 1.1;
+        }
+
+        header.page-header p {
+            max-width: 850px;
+            margin-bottom: 0;
+            color: #dce8f4;
+            font-size: 1.12rem;
+        }
+
+        nav.course-nav {
+            border-bottom: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        nav.course-nav > div {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 0.85rem 0;
+        }
+
+        nav.course-nav a {
+            font-weight: 650;
+            text-decoration: none;
+        }
+
+        main {
+            padding: 2rem 0 4rem;
+        }
+
+        h2 {
+            margin-top: 3rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 2px solid var(--border);
+            font-size: 1.75rem;
+            line-height: 1.3;
+        }
+
+        h3 {
+            margin-top: 1.65rem;
+            line-height: 1.35;
+        }
+
+        a {
+            color: #005a9c;
+        }
+
+        .lead,
+        .note,
+        .checkpoint,
+        .warning {
+            margin: 1.25rem 0;
+            padding: 1rem 1.2rem;
+            border-left: 5px solid var(--accent);
+            background: var(--surface);
+        }
+
+        .lead {
+            font-size: 1.08rem;
+        }
+
+        .checkpoint {
+            background: var(--success-soft);
+        }
+
+        .warning {
+            border-left-color: #b46a00;
+            background: var(--warning-soft);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+            gap: 1rem;
+            margin: 1.25rem 0;
+        }
+
+        .card,
+        .example {
+            border: 1px solid var(--border);
+            border-radius: 0.65rem;
+            background: var(--surface);
+        }
+
+        .card {
+            padding: 1rem 1.1rem;
+        }
+
+        .card h3 {
+            margin-top: 0;
+        }
+
+        .example {
+            margin: 1.25rem 0 1.6rem;
+            overflow: hidden;
+        }
+
+        .example h3 {
+            margin: 0;
+            padding: 0.8rem 1rem;
+            background: var(--accent-soft);
+            font-size: 1.05rem;
+        }
+
+        .example .explanation {
+            padding: 0.9rem 1rem 0;
+        }
+
+        pre {
+            margin: 0;
+            padding: 1rem;
+            overflow-x: auto;
+            background: var(--code);
+            color: var(--code-text);
+            border-top: 1px solid var(--border);
+            line-height: 1.5;
+            tab-size: 4;
+        }
+
+        code {
+            font-family: Consolas, "Courier New", monospace;
+        }
+
+        p code,
+        li code,
+        td code,
+        th code {
+            padding: 0.08rem 0.3rem;
+            border-radius: 0.25rem;
+            background: var(--code);
+        }
+
+        table {
+            width: 100%;
+            margin: 1rem 0 1.5rem;
+            border-collapse: collapse;
+            background: var(--surface);
+        }
+
+        th,
+        td {
+            padding: 0.7rem 0.8rem;
+            border: 1px solid var(--border);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: var(--accent-soft);
+        }
+
+        .demo-figure {
+            width: min(520px, 100%);
+            margin: 1.25rem 0;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 0.65rem;
+            background: var(--surface);
+        }
+
+        .demo-figure img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .demo-figure figcaption {
+            margin-top: 0.65rem;
+            color: var(--muted);
+        }
+
+        .element-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 0.85rem 0 1.25rem;
+        }
+
+        .element-links a {
+            display: inline-block;
+            padding: 0.25rem 0.55rem;
+            border: 1px solid var(--border);
+            border-radius: 0.35rem;
+            background: var(--surface);
+            text-decoration: none;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 0.92rem;
+        }
+
+        .tasks li,
+        .checklist li {
+            margin-bottom: 0.55rem;
+        }
+
+        footer.page-footer {
+            padding: 1.5rem 0 2.5rem;
+            border-top: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--muted);
+        }
+
+        @media (max-width: 650px) {
+            table {
+                font-size: 0.92rem;
+            }
+
+            th,
+            td {
+                padding: 0.55rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <div>
+            <p class="course">DE0824 Web Development · Week 3</p>
+            <h1>Intermediate HTML: semantic structure and richer documents</h1>
+            <p>
+                We now move from a small collection of basic HTML elements to pages that describe
+                meaningful document regions, structured data, user input, media, quotations, dates,
+                figures, and embedded resources.
+            </p>
+        </div>
+    </header>
+
+    <nav class="course-nav" aria-label="Course navigation">
+        <div>
+            <a href="../../index.html">Course home</a>
+            <a href="../week02/html_intro.html">Week 2 HTML basics</a>
+            <a href="#practice">Practice tasks</a>
+            <a href="#reference">Element reference</a>
+        </div>
+    </nav>
+
+    <main>
+        <p class="lead">
+            <strong>Week 3 goal:</strong> build a semantically meaningful HTML page without using CSS
+            for the student's own page. By the end of this session, the browser output may still look
+            plain, but the document should have a clear structure that both people and software can understand.
+        </p>
+
+        <div class="note">
+            <strong>About this teaching page:</strong> like the Week 2 reference page, this document
+            uses CSS internally to make a long teaching resource easier to read. The examples we are
+            learning from remain HTML-focused. CSS itself begins in Week 4.
+        </div>
+
+        <h2>1. Start from the Week 2 vocabulary</h2>
+        <p>
+            Week 2 established the basic HTML document and the most frequently used content elements:
+            headings, paragraphs, lists, links, images, and simple inline meaning. We will keep using
+            those elements rather than re-teaching them.
+        </p>
+
+        <div class="example">
+            <h3>Starting point · A simple Week 2 page</h3>
+            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Latvian Cultural Heritage Collection&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Latvian Cultural Heritage Collection&lt;/h1&gt;
+
+    &lt;p&gt;
+        A small collection of digitised cultural heritage resources.
+    &lt;/p&gt;
+
+    &lt;h2&gt;Collections&lt;/h2&gt;
+    &lt;ul&gt;
+        &lt;li&gt;Historical newspapers&lt;/li&gt;
+        &lt;li&gt;Photographs&lt;/li&gt;
+        &lt;li&gt;Manuscripts&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        </div>
+
+        <p class="checkpoint">
+            <strong>Question:</strong> the page above has meaningful content, but can a browser,
+            search engine, accessibility tool, or future programmer easily tell which part is navigation,
+            which part is the main content, and which part is supplementary information?
+        </p>
+
+        <h2>2. Semantic page structure</h2>
+        <p>
+            HTML provides elements whose names describe common regions of a document. These are often
+            called <strong>semantic elements</strong> because they communicate the role of the content,
+            not merely its visual appearance.
+        </p>
+
+        <div class="element-links">
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/header">&lt;header&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/nav">&lt;nav&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/main">&lt;main&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/section">&lt;section&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/article">&lt;article&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/aside">&lt;aside&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/footer">&lt;footer&gt;</a>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Element</th>
+                    <th>Typical role</th>
+                    <th>Possible Digital Humanities example</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>&lt;header&gt;</code></td>
+                    <td>Introductory material for a page or section.</td>
+                    <td>Project title, collection title, short introduction.</td>
+                </tr>
+                <tr>
+                    <td><code>&lt;nav&gt;</code></td>
+                    <td>A major set of navigation links.</td>
+                    <td>Home, Collection, People, Places, About.</td>
+                </tr>
+                <tr>
+                    <td><code>&lt;main&gt;</code></td>
+                    <td>The dominant content of the current page.</td>
+                    <td>The actual edition, catalogue, essay, or collection record.</td>
+                </tr>
+                <tr>
+                    <td><code>&lt;section&gt;</code></td>
+                    <td>A thematic section, normally with a heading.</td>
+                    <td>Description, Metadata, Sources, Bibliography.</td>
+                </tr>
+                <tr>
+                    <td><code>&lt;article&gt;</code></td>
+                    <td>A self-contained composition that could make sense independently.</td>
+                    <td>One newspaper record, manuscript record, blog entry, or research note.</td>
+                </tr>
+                <tr>
+                    <td><code>&lt;aside&gt;</code></td>
+                    <td>Related but secondary content.</td>
+                    <td>Glossary, contextual note, related objects, author biography.</td>
+                </tr>
+                <tr>
+                    <td><code>&lt;footer&gt;</code></td>
+                    <td>Closing information for a page or section.</td>
+                    <td>Copyright, provenance, contact information, related links.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="example">
+            <h3>Example 1 · Turning a flat page into a semantic document</h3>
+            <pre><code>&lt;body&gt;
+    &lt;header&gt;
+        &lt;h1&gt;Latvian Cultural Heritage Collection&lt;/h1&gt;
+
+        &lt;nav&gt;
+            &lt;a href="index.html"&gt;Home&lt;/a&gt;
+            &lt;a href="collection.html"&gt;Collection&lt;/a&gt;
+            &lt;a href="about.html"&gt;About&lt;/a&gt;
+        &lt;/nav&gt;
+    &lt;/header&gt;
+
+    &lt;main&gt;
+        &lt;section&gt;
+            &lt;h2&gt;About the collection&lt;/h2&gt;
+            &lt;p&gt;
+                This project introduces selected digitised cultural
+                heritage objects from Latvia.
+            &lt;/p&gt;
+        &lt;/section&gt;
+
+        &lt;section&gt;
+            &lt;h2&gt;Featured objects&lt;/h2&gt;
+
+            &lt;article&gt;
+                &lt;h3&gt;Historical newspaper&lt;/h3&gt;
+                &lt;p&gt;A digitised newspaper from the early twentieth century.&lt;/p&gt;
+            &lt;/article&gt;
+        &lt;/section&gt;
+
+        &lt;aside&gt;
+            &lt;h2&gt;Related resources&lt;/h2&gt;
+            &lt;p&gt;Links to external catalogues can appear here.&lt;/p&gt;
+        &lt;/aside&gt;
+    &lt;/main&gt;
+
+    &lt;footer&gt;
+        &lt;p&gt;DE0824 example project&lt;/p&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;</code></pre>
+        </div>
+
+        <div class="checkpoint">
+            <strong>Prediction:</strong> if you replace every semantic container above with
+            <code>&lt;div&gt;</code>, the browser may display almost the same thing. What information
+            about the document would be lost?
+        </div>
+
+        <h3>Section or article?</h3>
+        <p>
+            This distinction is not based on appearance. A useful working rule is:
+            use <code>&lt;section&gt;</code> for a thematic part of a larger document, and
+            <code>&lt;article&gt;</code> for content that is reasonably self-contained.
+        </p>
+
+        <div class="grid">
+            <section class="card">
+                <h3>Good use of section</h3>
+                <pre><code>&lt;section&gt;
+    &lt;h2&gt;Bibliography&lt;/h2&gt;
+    ...
+&lt;/section&gt;</code></pre>
+            </section>
+
+            <section class="card">
+                <h3>Good use of article</h3>
+                <pre><code>&lt;article&gt;
+    &lt;h2&gt;Object 1542&lt;/h2&gt;
+    ...
+&lt;/article&gt;</code></pre>
+            </section>
+        </div>
+
+        <p class="note">
+            A semantic element is not automatically "better" merely because it has a meaningful name.
+            Choose the element that actually describes the role of the content.
+        </p>
+
+        <h2>3. Identifying and grouping elements: id, class, div, and span</h2>
+        <p>
+            Before we begin CSS next week, we need to understand two global attributes and two generic
+            container elements that appear throughout real HTML.
+        </p>
+
+        <div class="element-links">
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/id">id attribute</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/class">class attribute</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/div">&lt;div&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/span">&lt;span&gt;</a>
+        </div>
+
+        <h3>The id attribute</h3>
+        <p>
+            An <code>id</code> identifies one specific element in the document. One immediate use is
+            linking directly to a particular part of the current page.
+        </p>
+
+        <div class="example">
+            <h3>Example 2 · Linking to an element by id</h3>
+            <pre><code>&lt;nav&gt;
+    &lt;a href="#bibliography"&gt;Jump to bibliography&lt;/a&gt;
+&lt;/nav&gt;
+
+...
+
+&lt;section id="bibliography"&gt;
+    &lt;h2&gt;Bibliography&lt;/h2&gt;
+    ...
+&lt;/section&gt;</code></pre>
+        </div>
+
+        <h3>The class attribute</h3>
+        <p>
+            A <code>class</code> places one or more elements into a named category. Many elements may
+            share the same class. This becomes particularly important when we start CSS selectors.
+        </p>
+
+        <div class="example">
+            <h3>Example 3 · Several elements in the same category</h3>
+            <pre><code>&lt;article class="collection-item"&gt;...&lt;/article&gt;
+&lt;article class="collection-item"&gt;...&lt;/article&gt;
+&lt;article class="collection-item"&gt;...&lt;/article&gt;</code></pre>
+        </div>
+
+        <h3>Generic containers</h3>
+        <p>
+            <code>&lt;div&gt;</code> is a generic block-level container and <code>&lt;span&gt;</code>
+            is a generic inline container. Use a semantic element when one describes the content;
+            use these generic containers when no more meaningful HTML element fits.
+        </p>
+
+        <div class="example">
+            <h3>Example 4 · Generic grouping</h3>
+            <pre><code>&lt;div class="metadata"&gt;
+    &lt;p&gt;Creator: Rainis&lt;/p&gt;
+    &lt;p&gt;Date: 1905&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;
+    Original language:
+    &lt;span class="language"&gt;Latvian&lt;/span&gt;.
+&lt;/p&gt;</code></pre>
+        </div>
+
+        <p class="warning">
+            Do not replace every element with <code>&lt;div&gt;</code>. Generic containers are useful,
+            but semantic HTML gives the document more information about what its content means.
+        </p>
+
+        <h2>4. Figures and captions</h2>
+        <p>
+            Images in scholarly and cultural-heritage pages frequently belong together with a caption,
+            source, identifier, or explanatory note. HTML provides a semantic structure for this.
+        </p>
+
+        <div class="element-links">
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/figure">&lt;figure&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/figcaption">&lt;figcaption&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img">&lt;img&gt;</a>
+        </div>
+
+        <div class="example">
+            <h3>Example 5 · Image with a semantic caption</h3>
+            <pre><code>&lt;figure&gt;
+    &lt;img
+        src="../../img/rtu_logo_en-1978560996.png"
+        alt="Riga Technical University logo"
+    &gt;
+
+    &lt;figcaption&gt;
+        Riga Technical University logo used in the DE0824 course repository.
+    &lt;/figcaption&gt;
+&lt;/figure&gt;</code></pre>
+        </div>
+
+        <figure class="demo-figure">
+            <img
+                src="../../img/rtu_logo_en-1978560996.png"
+                alt="Riga Technical University logo"
+            >
+            <figcaption>
+                Riga Technical University logo used in the DE0824 course repository.
+            </figcaption>
+        </figure>
+
+        <p>
+            Remember that <code>alt</code> text and a visible <code>&lt;figcaption&gt;</code> are not
+            the same thing. Alternative text communicates the image when it cannot be seen; a caption
+            is visible document content associated with the figure.
+        </p>
+
+        <h2>5. Quotations, citations, dates, and abbreviations</h2>
+        <p>
+            HTML can represent more than headings and paragraphs. For scholarly text it is useful to
+            mark quotations, titles of cited works, machine-readable dates, and abbreviations explicitly.
+        </p>
+
+        <div class="element-links">
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/blockquote">&lt;blockquote&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/q">&lt;q&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/cite">&lt;cite&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/time">&lt;time&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/abbr">&lt;abbr&gt;</a>
+        </div>
+
+        <div class="example">
+            <h3>Example 6 · A block quotation and a cited work</h3>
+            <pre><code>&lt;blockquote cite="https://example.org/source"&gt;
+    &lt;p&gt;
+        A longer quotation from a historical source can be represented
+        as a block quotation.
+    &lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;
+    Source: &lt;cite&gt;Title of the Historical Work&lt;/cite&gt;
+&lt;/p&gt;</code></pre>
+        </div>
+
+        <p>
+            Use <code>&lt;blockquote&gt;</code> for a substantial quotation presented as a block.
+            For a short quotation inside a sentence, <code>&lt;q&gt;</code> is available.
+            The <code>&lt;cite&gt;</code> element represents the title of a cited creative work.
+        </p>
+
+        <div class="example">
+            <h3>Example 7 · Human-readable and machine-readable date</h3>
+            <pre><code>&lt;p&gt;
+    Latvia proclaimed independence on
+    &lt;time datetime="1918-11-18"&gt;18 November 1918&lt;/time&gt;.
+&lt;/p&gt;</code></pre>
+        </div>
+
+        <p>
+            This illustrates an important Web principle: the visible text can be written naturally
+            for readers while an attribute supplies a standardized value for software.
+        </p>
+
+        <div class="example">
+            <h3>Example 8 · Abbreviation with its expansion</h3>
+            <pre><code>&lt;p&gt;
+    &lt;abbr title="Riga Technical University"&gt;RTU&lt;/abbr&gt;
+    offers the DE0824 Web Development course.
+&lt;/p&gt;</code></pre>
+        </div>
+
+        <h2>6. Description lists for terms and metadata</h2>
+        <p>
+            Week 2 introduced ordered and unordered lists. A description list is useful when content
+            naturally consists of names and associated values or explanations.
+        </p>
+
+        <div class="element-links">
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dl">&lt;dl&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dt">&lt;dt&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dd">&lt;dd&gt;</a>
+        </div>
+
+        <div class="example">
+            <h3>Example 9 · Cultural heritage metadata</h3>
+            <pre><code>&lt;dl&gt;
+    &lt;dt&gt;Creator&lt;/dt&gt;
+    &lt;dd&gt;Rainis&lt;/dd&gt;
+
+    &lt;dt&gt;Date&lt;/dt&gt;
+    &lt;dd&gt;1905&lt;/dd&gt;
+
+    &lt;dt&gt;Language&lt;/dt&gt;
+    &lt;dd&gt;Latvian&lt;/dd&gt;
+
+    &lt;dt&gt;Object type&lt;/dt&gt;
+    &lt;dd&gt;Manuscript&lt;/dd&gt;
+&lt;/dl&gt;</code></pre>
+        </div>
+
+        <p class="checkpoint">
+            <strong>Choose the structure:</strong> would this metadata be better represented by four
+            unrelated paragraphs, an unordered list, a description list, or a data table? More than
+            one representation may be valid, but the structure should reflect the relationships in the data.
+        </p>
+
+        <h2>7. Tables: representing tabular data</h2>
+        <p>
+            Tables are appropriate when information genuinely has rows and columns. They are not a
+            page-layout mechanism.
+        </p>
+
+        <div class="element-links">
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/table">&lt;table&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/caption">&lt;caption&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/thead">&lt;thead&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/tbody">&lt;tbody&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/tr">&lt;tr&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/th">&lt;th&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/td">&lt;td&gt;</a>
+        </div>
+
+        <div class="example">
+            <h3>Example 10 · A small data table</h3>
+            <pre><code>&lt;table&gt;
+    &lt;caption&gt;Selected historical newspapers&lt;/caption&gt;
+
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th scope="col"&gt;Title&lt;/th&gt;
+            &lt;th scope="col"&gt;Year&lt;/th&gt;
+            &lt;th scope="col"&gt;Language&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Jaunākās Ziņas&lt;/td&gt;
+            &lt;td&gt;1911&lt;/td&gt;
+            &lt;td&gt;Latvian&lt;/td&gt;
+        &lt;/tr&gt;
+
+        &lt;tr&gt;
+            &lt;td&gt;Baltijas Vēstnesis&lt;/td&gt;
+            &lt;td&gt;1868&lt;/td&gt;
+            &lt;td&gt;Latvian&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+        </div>
+
+        <p>
+            A table row uses <code>&lt;tr&gt;</code>. Header cells use <code>&lt;th&gt;</code> and data
+            cells use <code>&lt;td&gt;</code>. The <code>scope="col"</code> attribute explicitly
+            associates a header with its column, which improves the structural meaning and accessibility
+            of the table.
+        </p>
+
+        <p class="warning">
+            Historically, HTML tables were sometimes abused to position page content. Do not do that.
+            Use tables for tabular data; CSS will handle layout beginning next week.
+        </p>
+
+        <h2>8. Forms: collecting user input</h2>
+        <p>
+            Forms introduce another important role for HTML: describing controls that accept data from
+            the user. We are not building a server in Week 3; the goal is to understand the HTML structure.
+            Later JavaScript can also read and react to these controls.
+        </p>
+
+        <div class="element-links">
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/form">&lt;form&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/label">&lt;label&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input">&lt;input&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/textarea">&lt;textarea&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/select">&lt;select&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/option">&lt;option&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/button">&lt;button&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/fieldset">&lt;fieldset&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/legend">&lt;legend&gt;</a>
+        </div>
+
+        <div class="example">
+            <h3>Example 11 · A simple collection search form</h3>
+            <pre><code>&lt;form&gt;
+    &lt;label for="search"&gt;Search the collection:&lt;/label&gt;
+    &lt;input id="search" name="search" type="text"&gt;
+
+    &lt;button type="submit"&gt;Search&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+        </div>
+
+        <p>
+            The <code>for="search"</code> attribute on the label matches the
+            <code>id="search"</code> on the input. This creates an explicit relationship between the
+            text label and the control.
+        </p>
+
+        <div class="example">
+            <h3>Example 12 · Several common form controls</h3>
+            <pre><code>&lt;form&gt;
+    &lt;fieldset&gt;
+        &lt;legend&gt;Catalogue search&lt;/legend&gt;
+
+        &lt;p&gt;
+            &lt;label for="query"&gt;Search term:&lt;/label&gt;
+            &lt;input
+                id="query"
+                name="query"
+                type="text"
+                required
+            &gt;
+        &lt;/p&gt;
+
+        &lt;p&gt;
+            &lt;label for="year"&gt;Year:&lt;/label&gt;
+            &lt;input
+                id="year"
+                name="year"
+                type="number"
+                min="1500"
+                max="2026"
+            &gt;
+        &lt;/p&gt;
+
+        &lt;p&gt;
+            &lt;label for="language"&gt;Language:&lt;/label&gt;
+            &lt;select id="language" name="language"&gt;
+                &lt;option value="lv"&gt;Latvian&lt;/option&gt;
+                &lt;option value="en"&gt;English&lt;/option&gt;
+                &lt;option value="de"&gt;German&lt;/option&gt;
+            &lt;/select&gt;
+        &lt;/p&gt;
+
+        &lt;p&gt;
+            &lt;label for="notes"&gt;Research notes:&lt;/label&gt;&lt;br&gt;
+            &lt;textarea id="notes" name="notes" rows="4"&gt;&lt;/textarea&gt;
+        &lt;/p&gt;
+
+        &lt;button type="submit"&gt;Search&lt;/button&gt;
+    &lt;/fieldset&gt;
+&lt;/form&gt;</code></pre>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Purpose</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>type</code></td>
+                    <td>Chooses the kind of input control, such as text, number, email, date, checkbox, or radio.</td>
+                </tr>
+                <tr>
+                    <td><code>name</code></td>
+                    <td>Names the value when form data is submitted or processed.</td>
+                </tr>
+                <tr>
+                    <td><code>value</code></td>
+                    <td>Provides or represents the control's value.</td>
+                </tr>
+                <tr>
+                    <td><code>required</code></td>
+                    <td>Indicates that the user must provide a value before normal form submission.</td>
+                </tr>
+                <tr>
+                    <td><code>min</code> / <code>max</code></td>
+                    <td>Set boundaries for compatible controls such as numbers and dates.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p class="warning">
+            A placeholder is not a substitute for a <code>&lt;label&gt;</code>. Labels describe controls
+            persistently and establish useful semantic and accessibility relationships.
+        </p>
+
+        <h2>9. Audio and video</h2>
+        <p>
+            HTML can embed media directly. This is relevant to oral histories, interviews, field
+            recordings, archival film, and other Digital Humanities material.
+        </p>
+
+        <div class="element-links">
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/audio">&lt;audio&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/video">&lt;video&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/source">&lt;source&gt;</a>
+        </div>
+
+        <div class="example">
+            <h3>Example 13 · Audio</h3>
+            <pre><code>&lt;audio controls&gt;
+    &lt;source src="audio/interview.mp3" type="audio/mpeg"&gt;
+    Your browser does not support embedded audio.
+&lt;/audio&gt;</code></pre>
+        </div>
+
+        <div class="example">
+            <h3>Example 14 · Video</h3>
+            <pre><code>&lt;video controls&gt;
+    &lt;source src="video/archive-film.webm" type="video/webm"&gt;
+    Your browser does not support embedded video.
+&lt;/video&gt;</code></pre>
+        </div>
+
+        <p>
+            The <code>controls</code> Boolean attribute asks the browser to provide its standard media
+            controls. The <code>&lt;source&gt;</code> element identifies a media resource and its MIME type.
+        </p>
+
+        <p class="note">
+            Media files can be large. In real projects we must consider bandwidth, formats, licensing,
+            captions or transcripts, and whether a dedicated media platform is more appropriate than
+            serving the file ourselves.
+        </p>
+
+        <h2>10. Embedding external content with iframe</h2>
+        <p>
+            An <code>&lt;iframe&gt;</code> embeds another browsing context—effectively another web page—
+            inside the current page. Common examples include YouTube videos, maps, and specialized
+            external viewers.
+        </p>
+
+        <div class="element-links">
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/iframe">&lt;iframe&gt;</a>
+        </div>
+
+        <div class="example">
+            <h3>Example 15 · Generic embedded resource</h3>
+            <pre><code>&lt;iframe
+    src="https://example.org/embedded-resource"
+    title="Interactive map of historical locations"
+&gt;&lt;/iframe&gt;</code></pre>
+        </div>
+
+        <p>
+            Use the provider's official embed code when one is supplied. Not every web page can be
+            embedded, and third-party embeds can have privacy, security, and performance implications.
+            A meaningful <code>title</code> helps identify the embedded content.
+        </p>
+
+        <h2>11. A few useful text-structure elements</h2>
+        <p>
+            These elements are useful but do not need an entire lecture section of their own.
+        </p>
+
+        <div class="element-links">
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/hr">&lt;hr&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/br">&lt;br&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/pre">&lt;pre&gt;</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/code">&lt;code&gt;</a>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Element</th>
+                    <th>Meaning</th>
+                    <th>Common mistake</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>&lt;hr&gt;</code></td>
+                    <td>A thematic break between paragraph-level topics.</td>
+                    <td>Thinking of it only as a decorative horizontal line.</td>
+                </tr>
+                <tr>
+                    <td><code>&lt;br&gt;</code></td>
+                    <td>A line break that is actually part of the content, such as poetry or an address.</td>
+                    <td>Using repeated <code>&lt;br&gt;</code> elements to create visual spacing.</td>
+                </tr>
+                <tr>
+                    <td><code>&lt;pre&gt;</code></td>
+                    <td>Preformatted text where whitespace is significant.</td>
+                    <td>Using it merely because the default font looks different.</td>
+                </tr>
+                <tr>
+                    <td><code>&lt;code&gt;</code></td>
+                    <td>A fragment of computer code.</td>
+                    <td>Using it as a general-purpose monospace style.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="example">
+            <h3>Example 16 · Code displayed as document content</h3>
+            <pre><code>&lt;pre&gt;&lt;code&gt;
+&amp;lt;h1&amp;gt;Historical Collection&amp;lt;/h1&amp;gt;
+&amp;lt;p&amp;gt;A small example page.&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;</code></pre>
+        </div>
+
+        <h2>12. Put the pieces together</h2>
+        <p>
+            A useful Week 3 endpoint is a small cultural-heritage record containing real document
+            structure rather than a flat sequence of headings and paragraphs.
+        </p>
+
+        <div class="example">
+            <h3>Example 17 · Complete semantic Digital Humanities page</h3>
+            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Cultural Heritage Object&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;h1&gt;Digital Heritage Collection&lt;/h1&gt;
+
+        &lt;nav&gt;
+            &lt;a href="index.html"&gt;Home&lt;/a&gt;
+            &lt;a href="#object"&gt;Object&lt;/a&gt;
+            &lt;a href="#metadata"&gt;Metadata&lt;/a&gt;
+        &lt;/nav&gt;
+    &lt;/header&gt;
+
+    &lt;main&gt;
+        &lt;article id="object" class="collection-item"&gt;
+            &lt;header&gt;
+                &lt;h2&gt;Historical Manuscript&lt;/h2&gt;
+                &lt;p&gt;
+                    Digitised on
+                    &lt;time datetime="2026-09-19"&gt;19 September 2026&lt;/time&gt;.
+                &lt;/p&gt;
+            &lt;/header&gt;
+
+            &lt;figure&gt;
+                &lt;img
+                    src="img/manuscript.jpg"
+                    alt="First page of the digitised manuscript"
+                &gt;
+                &lt;figcaption&gt;
+                    First page of the manuscript.
+                &lt;/figcaption&gt;
+            &lt;/figure&gt;
+
+            &lt;section&gt;
+                &lt;h3&gt;Description&lt;/h3&gt;
+                &lt;p&gt;
+                    This example represents a digitised cultural heritage object.
+                &lt;/p&gt;
+            &lt;/section&gt;
+
+            &lt;section id="metadata"&gt;
+                &lt;h3&gt;Metadata&lt;/h3&gt;
+
+                &lt;dl&gt;
+                    &lt;dt&gt;Creator&lt;/dt&gt;
+                    &lt;dd&gt;Unknown&lt;/dd&gt;
+
+                    &lt;dt&gt;Date&lt;/dt&gt;
+                    &lt;dd&gt;Early twentieth century&lt;/dd&gt;
+
+                    &lt;dt&gt;Language&lt;/dt&gt;
+                    &lt;dd&gt;Latvian&lt;/dd&gt;
+                &lt;/dl&gt;
+            &lt;/section&gt;
+
+            &lt;aside&gt;
+                &lt;h3&gt;Research note&lt;/h3&gt;
+                &lt;p&gt;
+                    The object may contain historical spelling and abbreviations.
+                &lt;/p&gt;
+            &lt;/aside&gt;
+        &lt;/article&gt;
+
+        &lt;section&gt;
+            &lt;h2&gt;Search related objects&lt;/h2&gt;
+
+            &lt;form&gt;
+                &lt;label for="search-related"&gt;Search term:&lt;/label&gt;
+                &lt;input
+                    id="search-related"
+                    name="search"
+                    type="text"
+                &gt;
+                &lt;button type="submit"&gt;Search&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/section&gt;
+    &lt;/main&gt;
+
+    &lt;footer&gt;
+        &lt;p&gt;DE0824 Web Development example&lt;/p&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        </div>
+
+        <p class="checkpoint">
+            <strong>Inspect it in Developer Tools:</strong> open the browser's Elements/Inspector panel
+            and expand the nested elements. The HTML source has become a tree describing the page's
+            structure. Later JavaScript will interact with this tree as the DOM.
+        </p>
+
+        <h2>13. Common mistakes to diagnose</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Symptom or code smell</th>
+                    <th>Likely issue</th>
+                    <th>What to ask</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Almost everything is wrapped in <code>&lt;div&gt;</code>.</td>
+                    <td>Semantic elements have not been considered.</td>
+                    <td>Does HTML already provide an element for this role?</td>
+                </tr>
+                <tr>
+                    <td>A <code>&lt;section&gt;</code> contains unrelated content and has no clear theme.</td>
+                    <td>The grouping may not really be a section.</td>
+                    <td>Can I give this section a meaningful heading?</td>
+                </tr>
+                <tr>
+                    <td>A table is used to put content side by side.</td>
+                    <td>HTML is being used for visual layout.</td>
+                    <td>Is this genuinely row-and-column data?</td>
+                </tr>
+                <tr>
+                    <td>Clicking a form label does not focus its input.</td>
+                    <td>The label's <code>for</code> does not match the input's <code>id</code>.</td>
+                    <td>Are the two attribute values exactly identical?</td>
+                </tr>
+                <tr>
+                    <td>An internal link does nothing.</td>
+                    <td>The fragment identifier does not match an element <code>id</code>.</td>
+                    <td>Does <code>href="#name"</code> match <code>id="name"</code>?</td>
+                </tr>
+                <tr>
+                    <td>An image has a visible caption but meaningless or missing alternative text.</td>
+                    <td><code>figcaption</code> has been confused with <code>alt</code>.</td>
+                    <td>What should someone understand if they cannot see the image?</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 id="practice">14. Practice tasks</h2>
+        <p>
+            Start from the small page you created in Week 2. Do not rewrite everything from scratch.
+            Improve its structure incrementally and inspect the result after each change.
+        </p>
+
+        <ol class="tasks">
+            <li>Wrap the introductory part of the page in a semantic <code>&lt;header&gt;</code>.</li>
+            <li>Add a <code>&lt;nav&gt;</code> containing links to at least two sections of the same page using fragment identifiers.</li>
+            <li>Place the dominant content inside <code>&lt;main&gt;</code>.</li>
+            <li>Create at least two meaningful <code>&lt;section&gt;</code> elements with headings.</li>
+            <li>Represent one self-contained cultural-heritage item using <code>&lt;article&gt;</code>.</li>
+            <li>Place an image and its caption inside <code>&lt;figure&gt;</code> and <code>&lt;figcaption&gt;</code>.</li>
+            <li>Add a small metadata block using <code>&lt;dl&gt;</code>, <code>&lt;dt&gt;</code>, and <code>&lt;dd&gt;</code>.</li>
+            <li>Add a simple table containing genuine row-and-column data.</li>
+            <li>Add one labeled form control and a button.</li>
+            <li>Add a semantic <code>&lt;footer&gt;</code> at the end of the page.</li>
+        </ol>
+
+        <p>
+            <strong>Optional challenge:</strong> include a date with <code>&lt;time&gt;</code>, a quotation
+            with <code>&lt;blockquote&gt;</code>, or an embedded external resource with
+            <code>&lt;iframe&gt;</code>.
+        </p>
+
+        <h2>15. What you should be able to do after Week 3</h2>
+        <ul class="checklist">
+            <li>Explain why semantic HTML is preferable to generic containers when a suitable semantic element exists.</li>
+            <li>Structure a page using <code>header</code>, <code>nav</code>, <code>main</code>, <code>section</code>, <code>article</code>, <code>aside</code>, and <code>footer</code>.</li>
+            <li>Use <code>id</code> for unique identifiers and internal fragment links.</li>
+            <li>Use <code>class</code> to describe a reusable category of elements.</li>
+            <li>Use <code>div</code> and <code>span</code> when no more meaningful semantic element fits.</li>
+            <li>Associate images with captions using <code>figure</code> and <code>figcaption</code>.</li>
+            <li>Represent metadata using description lists where appropriate.</li>
+            <li>Create a semantically structured data table.</li>
+            <li>Create basic labeled form controls.</li>
+            <li>Understand the basic role of native audio/video and external iframe embeds.</li>
+            <li>Inspect the nested HTML tree using browser Developer Tools.</li>
+        </ul>
+
+        <h2>16. The bridge to Week 4</h2>
+        <p>
+            At this point our page should be structurally meaningful but visually plain. That is
+            intentional. HTML answers questions such as:
+        </p>
+
+        <ul>
+            <li>What is the main content?</li>
+            <li>What is a section?</li>
+            <li>What is navigation?</li>
+            <li>Which text is a heading?</li>
+            <li>Which values belong to a table?</li>
+            <li>Which text labels a form control?</li>
+        </ul>
+
+        <p>
+            Week 4 introduces CSS, which answers a different set of questions: colors, fonts,
+            spacing, borders, sizing, and layout. Keeping these responsibilities separate makes both
+            HTML and CSS easier to understand and debug.
+        </p>
+
+        <p class="checkpoint">
+            <strong>Week 3 principle:</strong> first make the document structure correct and meaningful.
+            Then use CSS to control how that structure is presented.
+        </p>
+
+        <h2 id="reference">17. MDN element reference</h2>
+        <p>
+            The following links lead to the authoritative MDN reference pages for the HTML elements
+            and global attributes introduced or used substantively in this lesson.
+        </p>
+
+        <div class="grid">
+            <section class="card">
+                <h3>Page structure</h3>
+                <ul>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/header"><code>&lt;header&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/nav"><code>&lt;nav&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/main"><code>&lt;main&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/section"><code>&lt;section&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/article"><code>&lt;article&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/aside"><code>&lt;aside&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/footer"><code>&lt;footer&gt;</code></a></li>
+                </ul>
+            </section>
+
+            <section class="card">
+                <h3>Grouping and document semantics</h3>
+                <ul>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/id"><code>id</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/class"><code>class</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/div"><code>&lt;div&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/span"><code>&lt;span&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/figure"><code>&lt;figure&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/figcaption"><code>&lt;figcaption&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/blockquote"><code>&lt;blockquote&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/q"><code>&lt;q&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/cite"><code>&lt;cite&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/time"><code>&lt;time&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/abbr"><code>&lt;abbr&gt;</code></a></li>
+                </ul>
+            </section>
+
+            <section class="card">
+                <h3>Lists and tables</h3>
+                <ul>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dl"><code>&lt;dl&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dt"><code>&lt;dt&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dd"><code>&lt;dd&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/table"><code>&lt;table&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/caption"><code>&lt;caption&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/thead"><code>&lt;thead&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/tbody"><code>&lt;tbody&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/tr"><code>&lt;tr&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/th"><code>&lt;th&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/td"><code>&lt;td&gt;</code></a></li>
+                </ul>
+            </section>
+
+            <section class="card">
+                <h3>Forms</h3>
+                <ul>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/form"><code>&lt;form&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/label"><code>&lt;label&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input"><code>&lt;input&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/textarea"><code>&lt;textarea&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/select"><code>&lt;select&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/option"><code>&lt;option&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/button"><code>&lt;button&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/fieldset"><code>&lt;fieldset&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/legend"><code>&lt;legend&gt;</code></a></li>
+                </ul>
+            </section>
+
+            <section class="card">
+                <h3>Media and embedding</h3>
+                <ul>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/audio"><code>&lt;audio&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/video"><code>&lt;video&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/source"><code>&lt;source&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/iframe"><code>&lt;iframe&gt;</code></a></li>
+                </ul>
+            </section>
+
+            <section class="card">
+                <h3>Useful text structure</h3>
+                <ul>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/hr"><code>&lt;hr&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/br"><code>&lt;br&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/pre"><code>&lt;pre&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/code"><code>&lt;code&gt;</code></a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img"><code>&lt;img&gt;</code></a></li>
+                </ul>
+            </section>
+        </div>
+
+        <h3>Broader references</h3>
+        <ul>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Structuring_documents">MDN: Structuring documents</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements">MDN: HTML elements reference</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/HTML_table_basics">MDN: HTML table basics</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms">MDN: Web forms</a></li>
+            <li><a href="https://html.spec.whatwg.org/dev/">WHATWG: HTML Living Standard, Web Developer Edition</a></li>
+        </ul>
+    </main>
+
+    <footer class="page-footer">
+        <div>
+            DE0824 Web Development · Riga Technical University · DITEF · Fall 2026
+        </div>
+    </footer>
+</body>
+</html>
