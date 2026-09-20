@@ -220,6 +220,25 @@
             background: white;
         }
 
+        .concept-figure {
+            margin: 1.5rem 0 2rem;
+        }
+
+        .concept-figure img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border: 1px solid var(--border);
+            border-radius: 0.65rem;
+            background: white;
+        }
+
+        .concept-figure figcaption {
+            margin-top: 0.55rem;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
         .tasks li,
         .checklist li {
             margin-bottom: 0.55rem;
@@ -288,6 +307,16 @@
             The central idea for this week is simple: HTML should describe <strong>what a piece of
             content is</strong>, not merely how we want it to look. Presentation will come later with CSS.
         </p>
+
+        <figure class="concept-figure">
+            <img
+                src="../../img/week2/Week2_HTML_intro.jpg"
+                alt="Diagram showing HTML source code being parsed by a browser into a document structure and rendered as a web page"
+            >
+            <figcaption>
+                HTML is stored as text. The browser parses that text into a structured document and renders the result as a web page.
+            </figcaption>
+        </figure>
 
         <table>
             <thead>
@@ -397,6 +426,17 @@
             We need four pieces of vocabulary. Consider this paragraph:
         </p>
 
+        <figure class="concept-figure">
+            <img
+                src="../../img/week2/Week2_Typical_HTML_Element.jpg"
+                alt="Annotated diagram of a typical HTML element showing the opening tag, content, closing tag, and an example attribute"
+                loading="lazy"
+            >
+            <figcaption>
+                A typical HTML element combines tags and content; attributes add extra information to an element.
+            </figcaption>
+        </figure>
+
         <div class="example">
             <h3>Example 2 · A simple element</h3>
             <pre><code>&lt;p&gt;A historical newspaper.&lt;/p&gt;</code></pre>
@@ -427,6 +467,18 @@
         <p>
             HTML elements frequently contain other elements. For example, a paragraph can contain a link:
         </p>
+
+        <figure class="concept-figure">
+            <img
+                src="../../img/week2/Week2_HTML_element_nesting_self_closing_elements.jpg"
+                alt="Diagram showing nested HTML elements as a tree structure and examples of empty elements such as img and br"
+                loading="lazy"
+            >
+            <figcaption>
+                Elements can be nested inside other elements. Some HTML elements, such as <code>&lt;img&gt;</code> and
+                <code>&lt;br&gt;</code>, are empty elements and do not wrap inner content.
+            </figcaption>
+        </figure>
 
         <div class="example">
             <h3>Example 4 · Nesting</h3>
