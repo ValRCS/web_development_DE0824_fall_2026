@@ -210,6 +210,16 @@
             background: var(--accent-soft);
         }
 
+        .hero-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            margin: 0 0 1.75rem;
+            border: 1px solid var(--border);
+            border-radius: 0.65rem;
+            background: var(--surface);
+        }
+
         .demo-figure {
             width: min(520px, 100%);
             margin: 1.25rem 0;
@@ -295,6 +305,12 @@
     </nav>
 
     <main>
+        <img
+            class="hero-image"
+            src="../../img/week3/week3-semantic-tags-intro.jpg"
+            alt="Digital Humanities illustration showing a richly structured web page with semantic HTML regions such as header, navigation, main content, sections, articles, an aside, figures, metadata, tables, media, and a footer"
+        >
+
         <p class="lead">
             <strong>Week 3 goal:</strong> build a semantically meaningful HTML page without using CSS
             for the student's own page. By the end of this session, the browser output may still look
