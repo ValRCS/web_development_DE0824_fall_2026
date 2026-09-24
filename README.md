@@ -23,9 +23,9 @@ The following schedule is based on the Fall 2025 course and is **subject to adju
 | Week | Main topics |
 | --- | --- |
 | 1 | Course introduction; how the Web works; development environment; browser developer tools; first HTML page; Git/GitHub workflow |
-| 2 | HTML basics: document structure, elements, attributes, headings, paragraphs, links, images, lists |
-| 3 | More HTML: semantic structure, tables, forms, relative and absolute URLs, accessibility basics |
-| 4 | CSS basics: selectors, declarations, cascade, inheritance, colors, typography, spacing |
+| <a href="https://valrcs.github.io/web_development_DE0824_fall_2026/lectures/week02/html_intro.html" target="_blank" rel="noopener noreferrer">2</a> | HTML basics: document structure, elements, attributes, headings, paragraphs, links, images, lists |
+| <a href="https://valrcs.github.io/web_development_DE0824_fall_2026/lectures/week03/intermediate_html.html" target="_blank" rel="noopener noreferrer">3</a> | More HTML: semantic structure, tables, forms, relative and absolute URLs, accessibility basics |
+| <a href="https://valrcs.github.io/web_development_DE0824_fall_2026/lectures/week04/css_intro.html" target="_blank" rel="noopener noreferrer">4</a> | CSS basics: selectors, declarations, cascade, inheritance, colors, typography, spacing |
 | 5 | CSS box model, sizing, positioning, and layout fundamentals |
 | 6 | Responsive design, media queries, and Flexbox |
 | 7 | CSS Grid, pseudo-classes, and further responsive layout practice |
