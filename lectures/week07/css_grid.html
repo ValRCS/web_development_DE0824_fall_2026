@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 7: CSS Grid | DE0824</title>
+<style>
+:root{color-scheme:light;--page:#f7f8fa;--surface:#fff;--text:#172033;--muted:#526078;--accent:#005ea8;--accent-dark:#0f2842;--accent-soft:#e9f3fb;--border:#d9e0e8;--code:#f1f3f6;--code-text:#1b2738;--success-soft:#edf8f1;--warning-soft:#fff8e7;--max-width:1050px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.65}
+header.page-header{background:var(--accent-dark);color:white;padding:3.25rem 1.25rem 2.75rem}
+header.page-header>div,nav.course-nav>div,main,footer.page-footer>div{width:min(var(--max-width),calc(100% - 2rem));margin:0 auto}
+header.page-header .course{margin:0 0 .5rem;font-size:.95rem;letter-spacing:.04em;text-transform:uppercase}
+header.page-header h1{margin:0;font-size:clamp(2.15rem,5vw,3.6rem);line-height:1.1}
+header.page-header p{max-width:850px;margin-bottom:0;color:#dce8f4;font-size:1.12rem}
+nav.course-nav{border-bottom:1px solid var(--border);background:var(--surface)}
+nav.course-nav>div{display:flex;flex-wrap:wrap;gap:1rem;padding:.85rem 0}
+nav.course-nav a{font-weight:650;text-decoration:none}
+main{padding:2rem 0 4rem}
+h2{margin-top:3rem;padding-bottom:.4rem;border-bottom:2px solid var(--border);font-size:1.75rem;line-height:1.3}
+h3{margin-top:1.65rem;line-height:1.35}a{color:#005a9c}
+.lead,.note,.checkpoint,.warning{margin:1.25rem 0;padding:1rem 1.2rem;border-left:5px solid var(--accent);background:var(--surface)}
+.lead{font-size:1.08rem}.checkpoint{background:var(--success-soft)}.warning{border-left-color:#b46a00;background:var(--warning-soft)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1.25rem 0}
+.card,.example,.diagram,.demo{border:1px solid var(--border);border-radius:.65rem;background:var(--surface)}
+.card{padding:1rem 1.1rem}.card h3{margin-top:0}
+.example{margin:1.25rem 0 1.6rem;overflow:hidden}.example h3{margin:0;padding:.8rem 1rem;background:var(--accent-soft);font-size:1.05rem}.example .explanation{padding:.9rem 1rem 0}
+pre{margin:0;padding:1rem;overflow-x:auto;background:var(--code);color:var(--code-text);border-top:1px solid var(--border);line-height:1.5;tab-size:4}
+code{font-family:Consolas,"Courier New",monospace}p code,li code,td code,th code{padding:.08rem .3rem;border-radius:.25rem;background:var(--code)}
+table{width:100%;margin:1rem 0 1.5rem;border-collapse:collapse;background:var(--surface)}
+th,td{padding:.7rem .8rem;border:1px solid var(--border);text-align:left;vertical-align:top}th{background:var(--accent-soft)}
+.diagram,.demo{margin:1.25rem 0;padding:1rem;overflow-x:auto}
+.grid-demo{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;padding:1rem;border:2px dashed #7b8da3}
+.grid-demo>div{min-height:70px;padding:1rem;border:2px solid #2874a6;border-radius:.4rem;background:#dcecf8;font-weight:700;text-align:center}
+.track-demo{display:grid;grid-template-columns:1fr 2fr 1fr;gap:.5rem;min-width:500px}
+.track-demo>div{padding:1rem;border:2px solid #2874a6;background:#dcecf8;text-align:center;font-weight:700}
+.area-demo{display:grid;grid-template-areas:"head head" "side content" "foot foot";grid-template-columns:minmax(130px,1fr) 3fr;gap:.5rem;min-width:480px}
+.area-demo>div{padding:1rem;border:2px solid #2874a6;background:#dcecf8;font-weight:700;text-align:center}.area-head{grid-area:head}.area-side{grid-area:side}.area-content{grid-area:content}.area-foot{grid-area:foot}
+.tasks li,.checklist li{margin-bottom:.55rem}
+footer.page-footer{padding:1.5rem 0 2.5rem;border-top:1px solid var(--border);background:var(--surface);color:var(--muted)}
+@media(max-width:650px){table{font-size:.92rem}th,td{padding:.55rem}.area-demo{min-width:0;grid-template-areas:"head" "side" "content" "foot";grid-template-columns:1fr}.track-demo{min-width:0}}
+</style>
+</head>
+<body>
+<header class="page-header"><div>
+<p class="course">DE0824 Web Development · Week 7</p>
+<h1>CSS Grid: two-dimensional layout</h1>
+<p>Week 6 used Flexbox to arrange items mainly along one axis. This week we add CSS Grid: a browser-native layout system designed for rows and columns working together.</p>
+</div></header>
+<nav class="course-nav" aria-label="Course navigation"><div>
+<a href="../../index.html">Course home</a>
+<a href="../week06/flexbox_responsive.html">Week 6 Flexbox</a>
+<a href="#responsive">Responsive Grid</a>
+<a href="#pseudo">Pseudo-classes</a>
+<a href="#practice">Practice</a>
+<a href="#references">References</a>
+</div></nav>
+<main>
+<p class="lead"><strong>Week 7 goal:</strong> build and debug two-dimensional layouts with CSS Grid. By the end of the session you should be able to create grid containers, define flexible tracks, use gaps, understand automatic placement, place selected items, create responsive grids, use named grid areas, and decide when Grid or Flexbox is the clearer layout tool.</p>
+<div class="note"><strong>Connection to Week 6:</strong> Grid does not replace Flexbox. A useful first approximation is <strong>Flexbox for one-dimensional relationships</strong> and <strong>Grid for two-dimensional relationships</strong>. Real pages frequently use both.</div>
+
+<h2>1. From Flexbox to Grid</h2>
+<p>Imagine the same digital collection cards used in Week 6. Flexbox is excellent when we primarily care about arranging a sequence of cards. Grid becomes especially useful when we want the cards to follow shared rows and columns.</p>
+<div class="example"><h3>Starting HTML</h3><pre><code>&lt;section class="collections"&gt;
+    &lt;article class="collection"&gt;Manuscripts&lt;/article&gt;
+    &lt;article class="collection"&gt;Newspapers&lt;/article&gt;
+    &lt;article class="collection"&gt;Photographs&lt;/article&gt;
+    &lt;article class="collection"&gt;Maps&lt;/article&gt;
+    &lt;article class="collection"&gt;Letters&lt;/article&gt;
+    &lt;article class="collection"&gt;Books&lt;/article&gt;
+&lt;/section&gt;</code></pre></div>
+<div class="example"><h3>The smallest useful Grid</h3><pre><code>.collections {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+}</code></pre></div>
+<div class="demo"><div class="grid-demo"><div>Manuscripts</div><div>Newspapers</div><div>Photographs</div><div>Maps</div><div>Letters</div><div>Books</div></div></div>
+<p class="checkpoint"><strong>Live-coding checkpoint:</strong> view the articles first in normal flow, then with <code>display: flex</code>, and finally with <code>display: grid</code> plus three columns. Inspect the parent and its direct children in DevTools.</p>
+
+<h2>2. Grid container, items, tracks, lines, and cells</h2>
+<p>An element with <code>display: grid</code> becomes a <strong>grid container</strong>. Its direct children become <strong>grid items</strong>. The grid is formed from horizontal and vertical lines.</p>
+<div class="cards">
+<section class="card"><h3>Track</h3><p>The space between two adjacent grid lines: a row track or column track.</p></section>
+<section class="card"><h3>Cell</h3><p>The smallest area bounded by one pair of row lines and one pair of column lines.</p></section>
+<section class="card"><h3>Area</h3><p>One or more adjacent cells. Areas can also be given names.</p></section>
+<section class="card"><h3>Gap</h3><p>Space between tracks, using the same <code>gap</code> idea encountered with Flexbox.</p></section>
+</div>
+<p class="warning"><strong>Common mistake:</strong> as with Flexbox, put <code>display: grid</code> on the <em>parent</em> of the elements you want Grid to arrange.</p>
+
+<h2>3. Define columns with track sizes</h2>
+<p>Grid lets us define track sizes explicitly. Start with fixed dimensions to make the mechanism visible, then move quickly to flexible sizing.</p>
+<div class="example"><h3>Three fixed-width columns</h3><pre><code>.collections {
+    display: grid;
+    grid-template-columns: 200px 200px 200px;
+}</code></pre></div>
+<p>Fixed widths are easy to understand but often make poor responsive layouts. CSS Grid provides the <code>fr</code> unit to distribute available space.</p>
+
+<h2>4. The <code>fr</code> unit: fractions of available space</h2>
+<div class="example"><h3>Equal flexible columns</h3><pre><code>.collections {
+    grid-template-columns: 1fr 1fr 1fr;
+}</code></pre></div>
+<div class="example"><h3>The middle track receives a larger share</h3><pre><code>.collections {
+    grid-template-columns: 1fr 2fr 1fr;
+}</code></pre></div>
+<div class="diagram"><div class="track-demo"><div>1fr</div><div>2fr</div><div>1fr</div></div></div>
+<p>You can combine fixed and flexible tracks:</p>
+<pre><code>.page {
+    grid-template-columns: 220px 1fr;
+}</code></pre>
+<p>This is a natural pattern for a fixed-ish filter/sidebar region beside flexible main content.</p>
+
+<h2>5. Avoid repetition with <code>repeat()</code></h2>
+<p>Instead of writing the same track size repeatedly, use <code>repeat()</code>.</p>
+<div class="example"><h3>Equivalent three-column definitions</h3><pre><code>grid-template-columns: 1fr 1fr 1fr;
+
+/* The same idea, more clearly expressed */
+grid-template-columns: repeat(3, 1fr);</code></pre></div>
+<p class="checkpoint"><strong>Prediction:</strong> what happens if you change <code>3</code> to <code>2</code> while leaving six cards in the HTML? Test before reading the next section.</p>
+
+<h2>6. Rows and automatic placement</h2>
+<p>If we define three columns and have six items, the browser automatically places the first three into the first row and creates another row for the remaining items. This is <strong>automatic placement</strong>.</p>
+<pre><code>.collections {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}</code></pre>
+<p>The declared columns belong to the <strong>explicit grid</strong>. Additional tracks that Grid creates as needed belong to the <strong>implicit grid</strong>. For introductory layouts, automatic rows are often exactly what we want.</p>
+<div class="note"><strong>Do not over-specify:</strong> you usually do not need to declare a fixed number of rows for a collection whose number of records may change.</div>
+
+<h2>7. Place selected items using grid lines</h2>
+<p>Grid lines are numbered. A three-column grid has four vertical grid lines. We can tell an item which lines it should span.</p>
+<div class="example"><h3>Make one record span two columns</h3><pre><code>.featured {
+    grid-column: 1 / 3;
+}</code></pre></div>
+<p>A useful alternative expresses the intention without depending on a particular starting line:</p>
+<pre><code>.featured {
+    grid-column: span 2;
+}</code></pre>
+<p class="checkpoint"><strong>DevTools checkpoint:</strong> enable the browser's Grid overlay/inspector. Identify the column lines, then compare them with the numbers used by <code>grid-column</code>.</p>
+
+<h2 id="responsive">8. Responsive Grid with a media query</h2>
+<p>Week 6 introduced mobile-first media queries. They work naturally with Grid. Start with one column and introduce more columns when the content has enough space.</p>
+<div class="example"><h3>Narrow layout first</h3><pre><code>.collections {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+@media (min-width: 700px) {
+    .collections {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}</code></pre></div>
+<p>This is explicit and easy to reason about: one layout below the content-driven breakpoint and another above it.</p>
+
+<h2>9. Responsive tracks with <code>minmax()</code> and <code>auto-fit</code></h2>
+<p>Grid can also respond to available space without a media query. This is one of its most useful collection-layout patterns.</p>
+<div class="example"><h3>As many useful columns as fit</h3><pre><code>.collections {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}</code></pre></div>
+<table>
+<thead><tr><th>Part</th><th>Role</th></tr></thead>
+<tbody>
+<tr><td><code>repeat(...)</code></td><td>Create a repeated set of tracks.</td></tr>
+<tr><td><code>auto-fit</code></td><td>Fit as many repeated tracks as the available space allows.</td></tr>
+<tr><td><code>minmax(220px, 1fr)</code></td><td>Each track should not become narrower than about 220px, but may grow to share available space.</td></tr>
+</tbody>
+</table>
+<p class="checkpoint"><strong>Resize slowly:</strong> watch the number of columns change. Compare this behavior with the explicit media-query version. Neither technique is universally “better”; choose the one that expresses the layout requirement clearly.</p>
+
+<h2>10. Named grid areas</h2>
+<p>For page-level layouts, named areas can make the intended structure unusually readable. The strings in <code>grid-template-areas</code> act like a small textual map of the layout.</p>
+<div class="example"><h3>A digital archive page</h3><pre><code>.archive-page {
+    display: grid;
+    grid-template-areas:
+        "header  header"
+        "filters results"
+        "footer  footer";
+    grid-template-columns: 220px 1fr;
+    gap: 1rem;
+}
+
+.site-header { grid-area: header; }
+.filters     { grid-area: filters; }
+.results     { grid-area: results; }
+.site-footer { grid-area: footer; }</code></pre></div>
+<div class="diagram"><div class="area-demo"><div class="area-head">header</div><div class="area-side">filters</div><div class="area-content">results</div><div class="area-foot">footer</div></div></div>
+<p>Named areas are not required for every Grid. They are particularly useful when the page has meaningful regions whose arrangement changes at different widths.</p>
+
+<h2>11. Make named areas responsive</h2>
+<div class="example"><h3>One semantic document, two arrangements</h3><pre><code>.archive-page {
+    display: grid;
+    grid-template-areas:
+        "header"
+        "filters"
+        "results"
+        "footer";
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+@media (min-width: 800px) {
+    .archive-page {
+        grid-template-areas:
+            "header  header"
+            "filters results"
+            "footer  footer";
+        grid-template-columns: 220px 1fr;
+    }
+}</code></pre></div>
+<div class="warning"><strong>Keep meaningful HTML source order:</strong> Grid can change visual placement without changing the document's semantic or reading order. Do not use visual rearrangement as a substitute for sensible HTML structure.</div>
+
+<h2>12. Grid and Flexbox work together</h2>
+<p>There is no requirement to choose one layout system for the entire page. A Grid item can contain a Flexbox layout, and a flex item can itself contain a Grid.</p>
+<div class="example"><h3>Grid outside, Flexbox inside</h3><pre><code>.collections {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.collection {
+    display: flex;
+    flex-direction: column;
+}
+
+.collection a {
+    margin-top: auto;
+}</code></pre></div>
+<table>
+<thead><tr><th>Question</th><th>Likely starting point</th></tr></thead>
+<tbody>
+<tr><td>Do the items mainly need distribution/alignment along one row or column?</td><td>Flexbox</td></tr>
+<tr><td>Do rows and columns need to work together?</td><td>Grid</td></tr>
+<tr><td>Is it simply ordinary document content flowing from top to bottom?</td><td>Normal flow — perhaps no special layout system</td></tr>
+<tr><td>Does the page contain both kinds of relationships?</td><td>Combine Grid and Flexbox where each is useful</td></tr>
+</tbody>
+</table>
+
+<h2>13. Modern Grid: <code>subgrid</code> (good to know)</h2>
+<p>A normal nested grid creates its own independent tracks. With <code>subgrid</code>, a nested grid can instead use tracks defined by its parent. This is useful when content inside several grid items must align to the same outer tracks.</p>
+<div class="example"><h3>Conceptual example</h3><pre><code>.outer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.nested {
+    display: grid;
+    grid-column: 1 / 4;
+    grid-template-columns: subgrid;
+}</code></pre></div>
+<div class="note"><strong>2026 status:</strong> <code>subgrid</code> is a broadly available CSS Grid feature in current browsers. It is useful modern CSS, but it is not a required Week 7 technique. First become comfortable with ordinary Grid.</div>
+
+<h2>14. Debugging Grid</h2>
+<p>Do not debug Grid by randomly changing properties. Inspect the structure and ask specific questions.</p>
+<table>
+<thead><tr><th>Symptom</th><th>Likely issue</th><th>What to inspect</th></tr></thead>
+<tbody>
+<tr><td>The intended children are not arranged.</td><td><code>display: grid</code> is on the wrong element.</td><td>Find the common parent of the intended grid items.</td></tr>
+<tr><td>Columns overflow a narrow viewport.</td><td>Tracks have rigid widths or unsuitable minimums.</td><td>Inspect computed track sizes and try flexible sizing.</td></tr>
+<tr><td>An item spans unexpected columns.</td><td>Grid line numbers or <code>span</code> differ from your mental model.</td><td>Turn on the Grid overlay and display line numbers.</td></tr>
+<tr><td>A named-area layout does not appear.</td><td>Area names do not match, or the template is invalid.</td><td>Compare every <code>grid-area</code> name with the template.</td></tr>
+<tr><td>Grid styling affects only some descendants.</td><td>Only direct children are grid items.</td><td>Inspect the DOM hierarchy.</td></tr>
+</tbody>
+</table>
+
+<h2 id="pseudo">15. Brief CSS selector extension: pseudo-classes</h2>
+<p>A <strong>pseudo-class</strong> selects an element based on a state or structural condition rather than adding another class to the HTML. You have probably already seen <code>:hover</code>.</p>
+<div class="example"><h3>Interaction states</h3><pre><code>.collection:hover {
+    background-color: #eef6fc;
+}
+
+.collection a:focus-visible {
+    outline: 3px solid #005ea8;
+    outline-offset: 3px;
+}</code></pre></div>
+<p><code>:focus-visible</code> is particularly useful for keeping keyboard focus visible. Do not rely on hover alone to communicate information or interaction.</p>
+<div class="example"><h3>Structural pseudo-classes</h3><pre><code>.collection:first-child {
+    /* first matching child */
+}
+
+.collection:last-child {
+    /* last matching child */
+}
+
+.collection:nth-child(odd) {
+    /* 1st, 3rd, 5th, ... */
+}</code></pre></div>
+<p>The purpose here is recognition and simple use. Pseudo-classes form a much larger selector family; consult the reference when you need a particular state or structural relationship.</p>
+
+<h2>16. Integrated example: a responsive archive</h2>
+<p>At this point we can combine semantic HTML from Week 3, box styling from Weeks 4–5, responsive thinking and Flexbox from Week 6, and Grid from Week 7.</p>
+<div class="example"><h3>Core page layout</h3><pre><code>.archive-page {
+    display: grid;
+    grid-template-areas:
+        "filters"
+        "results";
+    gap: 1.5rem;
+}
+
+.result-list {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+@media (min-width: 800px) {
+    .archive-page {
+        grid-template-areas: "filters results";
+        grid-template-columns: 220px 1fr;
+    }
+}
+
+.filters { grid-area: filters; }
+.results { grid-area: results; }</code></pre></div>
+<p class="checkpoint"><strong>Prediction and modification:</strong> before editing, explain what will happen at 799px and 800px. Then change the sidebar width, the card minimum, and the gap independently. Identify which part of the layout each change controls.</p>
+
+<h2 id="practice">17. Optional practice</h2>
+<ol class="tasks">
+<li>Start with six simple archive records in normal flow.</li>
+<li>Turn their parent into a three-column Grid.</li>
+<li>Replace repeated <code>1fr</code> values with <code>repeat()</code>.</li>
+<li>Make one featured record span two columns.</li>
+<li>Replace the fixed three-column definition with <code>repeat(auto-fit, minmax(...))</code>.</li>
+<li>Add a filter/sidebar region and main results region using named grid areas.</li>
+<li>Make that page-level layout one column on narrow screens.</li>
+<li>Use DevTools Grid overlay to explain where the grid lines and tracks are.</li>
+</ol>
+<div class="note"><strong>Grid Garden:</strong> the interactive <a href="https://cssgridgarden.com/" target="_blank" rel="noopener noreferrer">CSS Grid Garden</a> game is excellent optional reinforcement. It lets you practise Grid properties through short visual puzzles.</div>
+
+<h2>18. What you should know after Week 7</h2>
+<ul class="checklist">
+<li>Why CSS Grid is described as a two-dimensional layout system.</li>
+<li>The difference between a grid container and grid items.</li>
+<li>Rows, columns, tracks, lines, cells, areas, and gaps.</li>
+<li>How <code>fr</code>, <code>repeat()</code>, <code>minmax()</code>, and <code>auto-fit</code> help define tracks.</li>
+<li>How automatic placement creates additional rows.</li>
+<li>How to span an item across grid tracks.</li>
+<li>How named areas can describe a page layout.</li>
+<li>How Grid participates in responsive design.</li>
+<li>Why Grid and Flexbox are complementary rather than competing technologies.</li>
+<li>How to inspect and debug Grid using browser Developer Tools.</li>
+<li>What common pseudo-classes such as <code>:hover</code>, <code>:focus-visible</code>, and <code>:nth-child()</code> represent.</li>
+</ul>
+
+<h2 id="references">19. References</h2>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Grids" target="_blank" rel="noopener noreferrer">MDN Learn: CSS grid layout</a> — beginner-oriented Grid tutorial.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout" target="_blank" rel="noopener noreferrer">MDN: CSS Grid Layout</a> — authoritative guide and reference hub.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout/Basic_concepts" target="_blank" rel="noopener noreferrer">MDN: Basic concepts of grid layout</a> — terminology and core Grid model.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/grid-template-areas" target="_blank" rel="noopener noreferrer">MDN: grid-template-areas</a> — named-area reference.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout/Subgrid" target="_blank" rel="noopener noreferrer">MDN: Subgrid</a> — modern nested-track alignment.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/Pseudo-classes" target="_blank" rel="noopener noreferrer">MDN: Pseudo-classes</a> — selector reference.</li>
+<li><a href="https://css-tricks.com/snippets/css/complete-guide-grid/" target="_blank" rel="noopener noreferrer">CSS-Tricks: A Complete Guide to CSS Grid</a> — useful visual supplementary reference.</li>
+<li><a href="https://cssgridgarden.com/" target="_blank" rel="noopener noreferrer">CSS Grid Garden</a> — interactive practice game.</li>
+</ul>
+<div class="note"><strong>Next week:</strong> Week 8 can build on these layouts with CSS transitions, transforms, animations, and a brief look at external CSS libraries and the wider CSS ecosystem.</div>
+</main>
+<footer class="page-footer"><div>
+<p>DE0824 Web Development · Riga Technical University · Week 7</p>
+<p><a href="../../index.html">Course home</a> · <a href="../week06/flexbox_responsive.html">Previous: Week 6</a> · <a href="#references">References</a></p>
+</div></footer>
+</body>
+</html>
