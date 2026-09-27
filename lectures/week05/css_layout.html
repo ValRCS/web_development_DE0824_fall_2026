@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 5: CSS Layout Foundations and the Box Model | DE0824</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --page: #f7f8fa;
+            --surface: #ffffff;
+            --text: #172033;
+            --muted: #526078;
+            --accent: #005ea8;
+            --accent-dark: #0f2842;
+            --accent-soft: #e9f3fb;
+            --border: #d9e0e8;
+            --code: #f1f3f6;
+            --code-text: #1b2738;
+            --success-soft: #edf8f1;
+            --warning-soft: #fff8e7;
+            --max-width: 1050px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--page);
+            color: var(--text);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            line-height: 1.65;
+        }
+
+        header.page-header {
+            background: var(--accent-dark);
+            color: white;
+            padding: 3.25rem 1.25rem 2.75rem;
+        }
+
+        header.page-header > div,
+        nav.course-nav > div,
+        main,
+        footer.page-footer > div {
+            width: min(var(--max-width), calc(100% - 2rem));
+            margin: 0 auto;
+        }
+
+        header.page-header .course {
+            margin: 0 0 0.5rem;
+            font-size: 0.95rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        header.page-header h1 {
+            margin: 0;
+            font-size: clamp(2.15rem, 5vw, 3.6rem);
+            line-height: 1.1;
+        }
+
+        header.page-header p {
+            max-width: 850px;
+            margin-bottom: 0;
+            color: #dce8f4;
+            font-size: 1.12rem;
+        }
+
+        nav.course-nav {
+            border-bottom: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        nav.course-nav > div {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 0.85rem 0;
+        }
+
+        nav.course-nav a {
+            font-weight: 650;
+            text-decoration: none;
+        }
+
+        main { padding: 2rem 0 4rem; }
+
+        h2 {
+            margin-top: 3rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 2px solid var(--border);
+            font-size: 1.75rem;
+            line-height: 1.3;
+        }
+
+        h3 { margin-top: 1.65rem; line-height: 1.35; }
+        a { color: #005a9c; }
+
+        .lead, .note, .checkpoint, .warning {
+            margin: 1.25rem 0;
+            padding: 1rem 1.2rem;
+            border-left: 5px solid var(--accent);
+            background: var(--surface);
+        }
+
+        .lead { font-size: 1.08rem; }
+        .checkpoint { background: var(--success-soft); }
+        .warning { border-left-color: #b46a00; background: var(--warning-soft); }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+            gap: 1rem;
+            margin: 1.25rem 0;
+        }
+
+        .card, .example, .diagram {
+            border: 1px solid var(--border);
+            border-radius: 0.65rem;
+            background: var(--surface);
+        }
+
+        .card { padding: 1rem 1.1rem; }
+        .card h3 { margin-top: 0; }
+
+        .example { margin: 1.25rem 0 1.6rem; overflow: hidden; }
+        .example h3 {
+            margin: 0;
+            padding: 0.8rem 1rem;
+            background: var(--accent-soft);
+            font-size: 1.05rem;
+        }
+        .example .explanation { padding: 0.9rem 1rem 0; }
+
+        pre {
+            margin: 0;
+            padding: 1rem;
+            overflow-x: auto;
+            background: var(--code);
+            color: var(--code-text);
+            border-top: 1px solid var(--border);
+            line-height: 1.5;
+            tab-size: 4;
+        }
+
+        code { font-family: Consolas, "Courier New", monospace; }
+        p code, li code, td code, th code {
+            padding: 0.08rem 0.3rem;
+            border-radius: 0.25rem;
+            background: var(--code);
+        }
+
+        table {
+            width: 100%;
+            margin: 1rem 0 1.5rem;
+            border-collapse: collapse;
+            background: var(--surface);
+        }
+
+        th, td {
+            padding: 0.7rem 0.8rem;
+            border: 1px solid var(--border);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th { background: var(--accent-soft); }
+
+        .diagram {
+            margin: 1.25rem auto;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+
+        .box-model {
+            min-width: 500px;
+            text-align: center;
+            font-family: Consolas, "Courier New", monospace;
+        }
+
+        .margin-box { padding: 1.2rem; background: #f5e8c8; }
+        .border-box { padding: 0.45rem; background: #d7b47a; }
+        .padding-box { padding: 1.2rem; background: #dceecf; }
+        .content-box { padding: 1.5rem; background: #cfe5f5; }
+
+        .box-label {
+            display: block;
+            margin-bottom: 0.35rem;
+            font-weight: 700;
+        }
+
+        .tasks li, .checklist li { margin-bottom: 0.55rem; }
+
+        footer.page-footer {
+            padding: 1.5rem 0 2.5rem;
+            border-top: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--muted);
+        }
+
+        @media (max-width: 650px) {
+            table { font-size: 0.92rem; }
+            th, td { padding: 0.55rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <div>
+            <p class="course">DE0824 Web Development · Week 5</p>
+            <h1>CSS layout foundations: boxes, spacing, and sizing</h1>
+            <p>
+                Week 4 introduced CSS rules, selectors, colors, and typography. This week we ask a
+                different question: how much space does an element occupy, and how does the browser
+                arrange that space on the page?
+            </p>
+        </div>
+    </header>
+
+    <nav class="course-nav" aria-label="Course navigation">
+        <div>
+            <a href="../../index.html">Course home</a>
+            <a href="../week04/css_intro.html">Week 4 CSS</a>
+            <a href="#practice">Optional practice</a>
+            <a href="#references">CSS references</a>
+        </div>
+    </nav>
+
+    <main>
+        <p class="lead">
+            <strong>Week 5 goal:</strong> understand the browser's basic layout model. By the end of
+            the session you should be able to reason about normal flow, content, padding, borders,
+            margins, width and height, <code>box-sizing</code>, overflow, and basic positioning—and
+            inspect all of these in browser Developer Tools.
+        </p>
+
+        <div class="note">
+            <strong>Scope:</strong> this week is about the geometry of ordinary CSS boxes.
+            <strong>Flexbox and Grid are deliberately not part of Week 5.</strong> They are much easier
+            to understand after the box model and normal document flow are clear.
+        </div>
+
+        <h2>1. From styling to layout</h2>
+        <p>
+            In Week 4 we mostly changed how content looked: fonts, text sizes, colors, and backgrounds.
+            But every visible HTML element also occupies space. The browser must decide how large that
+            space is and where it belongs relative to other elements.
+        </p>
+
+        <div class="example">
+            <h3>Starting point · A small digital collection record</h3>
+            <pre><code>&lt;article class="record"&gt;
+    &lt;h2&gt;The Castle&lt;/h2&gt;
+    &lt;p&gt;Franz Kafka · 1926&lt;/p&gt;
+    &lt;p&gt;A bibliographic record from a digital literature collection.&lt;/p&gt;
+&lt;/article&gt;</code></pre>
+        </div>
+
+        <div class="example">
+            <h3>Week 4 CSS · Appearance</h3>
+            <pre><code>.record {
+    background-color: #f4f1e8;
+    color: #243b53;
+    font-size: 18px;
+}</code></pre>
+        </div>
+
+        <p class="checkpoint">
+            <strong>Prediction:</strong> why does the background extend farther than the text?
+            Why does another <code>&lt;article&gt;</code> normally appear below this one? What creates
+            space between the text and the edge of its background? These are layout questions.
+        </p>
+
+        <h2>2. Layout already exists: normal flow</h2>
+        <p>
+            A page has layout even before we write layout CSS. In <strong>normal flow</strong>, block
+            elements such as headings, paragraphs, sections, and articles normally form boxes that
+            follow one another vertically. Inline content such as links and emphasized text normally
+            participates in lines of text.
+        </p>
+
+        <div class="grid">
+            <section class="card">
+                <h3>Block behavior</h3>
+                <pre><code>&lt;h2&gt;Title&lt;/h2&gt;
+&lt;p&gt;First paragraph.&lt;/p&gt;
+&lt;p&gt;Second paragraph.&lt;/p&gt;</code></pre>
+                <p>These elements normally form separate boxes, one after another.</p>
+            </section>
+            <section class="card">
+                <h3>Inline behavior</h3>
+                <pre><code>&lt;p&gt;
+    Read the &lt;a href="..."&gt;catalogue&lt;/a&gt;
+    for details.
+&lt;/p&gt;</code></pre>
+                <p>The link normally remains inside the surrounding line of text.</p>
+            </section>
+        </div>
+
+        <p>
+            The <code>display</code> property controls the type of box an element generates. For now,
+            recognize these useful values:
+        </p>
+
+        <table>
+            <thead><tr><th>Value</th><th>Beginner working model</th></tr></thead>
+            <tbody>
+                <tr><td><code>block</code></td><td>Creates a block box that normally starts on a new line.</td></tr>
+                <tr><td><code>inline</code></td><td>Participates in a line of text; width/height do not behave like a normal block.</td></tr>
+                <tr><td><code>inline-block</code></td><td>Flows inline but can be sized more like a block.</td></tr>
+                <tr><td><code>none</code></td><td>The element generates no display box.</td></tr>
+            </tbody>
+        </table>
+
+        <h2>3. The CSS box model</h2>
+        <p>
+            The central Week 5 mental model is that an element generates a rectangular box. From the
+            inside outward, we can distinguish <strong>content → padding → border → margin</strong>.
+        </p>
+
+        <div class="diagram" aria-label="CSS box model diagram">
+            <div class="box-model">
+                <div class="margin-box">
+                    <span class="box-label">margin</span>
+                    <div class="border-box">
+                        <span class="box-label">border</span>
+                        <div class="padding-box">
+                            <span class="box-label">padding</span>
+                            <div class="content-box">
+                                <span class="box-label">content</span>
+                                text, image, or other content
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table>
+            <thead><tr><th>Area</th><th>Meaning</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Content</strong></td><td>The element's actual text, image, or child content.</td></tr>
+                <tr><td><strong>Padding</strong></td><td>Space between the content and its border; the element's background extends through it.</td></tr>
+                <tr><td><strong>Border</strong></td><td>The boundary surrounding the content and padding.</td></tr>
+                <tr><td><strong>Margin</strong></td><td>Space outside the border, separating this box from surrounding boxes.</td></tr>
+            </tbody>
+        </table>
+
+        <p class="checkpoint">
+            <strong>Say it in order:</strong> content → padding → border → margin. If you can identify
+            those four regions in Developer Tools, many apparently mysterious spacing problems become
+            ordinary geometry.
+        </p>
+
+        <h2>4. Padding: space inside the box</h2>
+        <div class="example">
+            <h3>Example 1 · Give content room inside its background</h3>
+            <pre><code>.record {
+    background-color: #f4f1e8;
+    padding: 20px;
+}</code></pre>
+        </div>
+
+        <p>
+            Padding belongs inside the element's border. It can be controlled separately on each side:
+        </p>
+
+        <div class="example">
+            <h3>Example 2 · Four padding properties</h3>
+            <pre><code>.record {
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+}</code></pre>
+        </div>
+
+        <p>The shorthand form can describe several sides at once:</p>
+        <pre><code>padding: 20px;              /* all four sides */
+padding: 10px 20px;         /* top/bottom, left/right */
+padding: 10px 20px 30px;    /* top, left/right, bottom */
+padding: 10px 20px 30px 40px; /* top, right, bottom, left */</code></pre>
+
+        <p class="note">
+            For four values, read clockwise from the top: <strong>top → right → bottom → left</strong>.
+            You do not need to memorize every shorthand combination immediately; use DevTools and the
+            reference when needed.
+        </p>
+
+        <h2>5. Borders: make the boundary visible</h2>
+        <div class="example">
+            <h3>Example 3 · Border shorthand</h3>
+            <pre><code>.record {
+    padding: 20px;
+    border: 2px solid #243b53;
+}</code></pre>
+        </div>
+
+        <p>The shorthand combines three separate properties:</p>
+        <pre><code>border-width: 2px;
+border-style: solid;
+border-color: #243b53;</code></pre>
+
+        <p>
+            A small <code>border-radius</code> can round the corners:
+        </p>
+        <pre><code>border-radius: 8px;</code></pre>
+
+        <h2>6. Margin: space outside the box</h2>
+        <div class="example">
+            <h3>Example 4 · Separate records from one another</h3>
+            <pre><code>.record {
+    padding: 20px;
+    border: 2px solid #243b53;
+    margin-bottom: 24px;
+}</code></pre>
+        </div>
+
+        <div class="grid">
+            <section class="card">
+                <h3>Padding</h3>
+                <p>Space <strong>inside</strong> the border, between content and border.</p>
+            </section>
+            <section class="card">
+                <h3>Margin</h3>
+                <p>Space <strong>outside</strong> the border, between this box and nearby boxes.</p>
+            </section>
+        </div>
+
+        <p class="checkpoint">
+            <strong>Prediction:</strong> start with a box that has a background color. Replace
+            <code>padding: 20px</code> with <code>margin: 20px</code>. Which space still has the
+            element's background color, and which does not?
+        </p>
+
+        <h3>A useful complication: vertical margin collapsing</h3>
+        <p>
+            In normal block flow, adjoining vertical margins can sometimes <strong>collapse</strong>
+            rather than simply add together. For example, a bottom margin of 30px followed by a top
+            margin of 20px may result in a 30px gap rather than 50px.
+        </p>
+
+        <p class="note">
+            You do not need the complete margin-collapsing algorithm this week. Remember the debugging
+            lesson: if vertical margins do not add up as expected, inspect the boxes before adding
+            arbitrary extra spacing.
+        </p>
+
+        <h2>7. Width, height, and useful constraints</h2>
+        <p>
+            Block boxes normally use the available inline space. We can constrain their dimensions,
+            but fixed dimensions should be used deliberately.
+        </p>
+
+        <div class="example">
+            <h3>Example 5 · Fixed width</h3>
+            <pre><code>.record {
+    width: 500px;
+}</code></pre>
+        </div>
+
+        <div class="example">
+            <h3>Example 6 · A more adaptable reading column</h3>
+            <pre><code>main {
+    width: 80%;
+    max-width: 900px;
+}</code></pre>
+        </div>
+
+        <p>
+            <code>width: 80%</code> relates the box to its containing block. <code>max-width</code>
+            prevents it from becoming excessively wide on a large screen. Similarly,
+            <code>min-width</code>, <code>min-height</code>, and <code>max-height</code> can express
+            limits rather than one rigid dimension.
+        </p>
+
+        <p class="warning">
+            Avoid setting a fixed <code>height</code> merely to make text boxes look equal. Text can
+            grow because of content, fonts, zoom, or screen size. Constraining height can create
+            overflow.
+        </p>
+
+        <h2>8. Why a 300px box can become 350px</h2>
+        <p>
+            By default, CSS uses <code>box-sizing: content-box</code>. A declared
+            <code>width</code> then describes the <strong>content area only</strong>. Horizontal
+            padding and borders are added outside that width.
+        </p>
+
+        <div class="example">
+            <h3>Example 7 · Calculate the rendered width</h3>
+            <pre><code>.box {
+    width: 300px;
+    padding: 20px;
+    border: 5px solid black;
+}</code></pre>
+        </div>
+
+        <pre><code>content width:       300px
+left + right padding: 40px
+left + right border:  10px
+--------------------------------
+total border-box:    350px</code></pre>
+
+        <p class="checkpoint">
+            <strong>Prediction:</strong> before opening DevTools, calculate the total width. Then
+            inspect the element and verify the browser's measurements.
+        </p>
+
+        <h2>9. <code>box-sizing: border-box</code></h2>
+        <p>
+            With <code>border-box</code>, the declared width includes the content, padding, and
+            border. The browser fits those parts inside the requested width.
+        </p>
+
+        <div class="example">
+            <h3>Example 8 · Keep the complete box at 300px</h3>
+            <pre><code>.box {
+    box-sizing: border-box;
+    width: 300px;
+    padding: 20px;
+    border: 5px solid black;
+}</code></pre>
+        </div>
+
+        <p>
+            A common stylesheet convention is to make this sizing model the default:
+        </p>
+        <pre><code>* {
+    box-sizing: border-box;
+}</code></pre>
+
+        <p class="note">
+            This rule is not magic boilerplate. It changes how declared dimensions are calculated.
+            We use it because reasoning about the final outer size of a component is often simpler
+            when padding and borders are included in that size.
+        </p>
+
+        <h2>10. Inspect the box model in Developer Tools</h2>
+        <p>
+            The box-model diagram in browser Developer Tools is one of the most useful CSS debugging
+            aids. Do not estimate spacing by eye when the browser can show the computed values.
+        </p>
+
+        <ol class="tasks">
+            <li>Open your page and right-click a visible element → <strong>Inspect</strong>.</li>
+            <li>Select the exact element in the Elements/Inspector panel.</li>
+            <li>Find the box-model visualization in the Styles, Computed, or Layout tools.</li>
+            <li>Identify its content dimensions, padding, border, and margin.</li>
+            <li>Temporarily change a padding or margin value and watch the page update.</li>
+            <li>Toggle <code>box-sizing</code> between <code>content-box</code> and <code>border-box</code>.</li>
+            <li>Resize the browser and observe which dimensions change.</li>
+        </ol>
+
+        <p class="checkpoint">
+            <strong>Debugging habit:</strong> when spacing looks wrong, inspect the element and its
+            neighboring element before changing CSS. Determine whether the unexpected space comes
+            from content size, padding, border, margin, or the surrounding layout.
+        </p>
+
+        <h2>11. Center a readable page without Flexbox or Grid</h2>
+        <p>
+            The box model already lets us create a useful document layout. A block with a constrained
+            width can be centered horizontally by using automatic left and right margins.
+        </p>
+
+        <div class="example">
+            <h3>Example 9 · A simple reading column</h3>
+            <pre><code>main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}</code></pre>
+        </div>
+
+        <p>
+            Here <code>max-width</code> limits the line length, <code>margin: 0 auto</code> distributes
+            the remaining horizontal space to both sides, and <code>padding</code> prevents content
+            from touching the edge on narrow screens.
+        </p>
+
+        <p class="checkpoint">
+            <strong>Try it:</strong> resize the browser window. The page can adapt to available space
+            even though we have not yet introduced media queries, Flexbox, or Grid.
+        </p>
+
+        <h2>12. Overflow: what if content does not fit?</h2>
+        <div class="example">
+            <h3>Example 10 · Deliberately create an overflow problem</h3>
+            <pre><code>.description {
+    width: 300px;
+    height: 80px;
+}</code></pre>
+        </div>
+
+        <p>
+            If the content needs more space than the dimensions allow, it overflows. The
+            <code>overflow</code> property controls how that situation is handled.
+        </p>
+
+        <table>
+            <thead><tr><th>Value</th><th>Effect</th></tr></thead>
+            <tbody>
+                <tr><td><code>visible</code></td><td>Overflowing content remains visible; this is the usual initial behavior.</td></tr>
+                <tr><td><code>hidden</code></td><td>Content outside the box is clipped.</td></tr>
+                <tr><td><code>auto</code></td><td>The browser provides scrolling when needed.</td></tr>
+                <tr><td><code>scroll</code></td><td>The box becomes a scroll container, with scrolling UI as appropriate.</td></tr>
+            </tbody>
+        </table>
+
+        <p class="warning">
+            <code>overflow: hidden</code> can hide the symptom without solving the layout problem.
+            First ask why the content does not fit.
+        </p>
+
+        <h2>13. Basic positioning</h2>
+        <p>
+            Most elements should remain in normal flow. The <code>position</code> property lets us
+            change that behavior when a design genuinely requires it.
+        </p>
+
+        <h3><code>position: static</code></h3>
+        <p>
+            This is the normal default. Offset properties such as <code>top</code> and
+            <code>left</code> do not reposition a statically positioned element.
+        </p>
+
+        <h3><code>position: relative</code></h3>
+        <div class="example">
+            <h3>Example 11 · Offset an element from its normal position</h3>
+            <pre><code>.label {
+    position: relative;
+    top: 10px;
+    left: 20px;
+}</code></pre>
+        </div>
+
+        <p>
+            The element still keeps its place in normal flow, but its rendered position is offset.
+            Relative positioning is also important because it can establish the containing block for
+            an absolutely positioned descendant.
+        </p>
+
+        <h3><code>position: absolute</code></h3>
+        <div class="example">
+            <h3>Example 12 · Position a label inside a card</h3>
+            <pre><code>.record {
+    position: relative;
+}
+
+.record-label {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}</code></pre>
+        </div>
+
+        <p>
+            The absolutely positioned label is taken out of normal flow. With the positioned
+            <code>.record</code> ancestor, its offsets are measured relative to that containing block.
+        </p>
+
+        <p class="note">
+            <code>position: fixed</code> positions relative to a viewport-related containing block in
+            ordinary cases, while <code>position: sticky</code> can behave like normal flow until a
+            scrolling threshold is reached. Recognize these values, but they are not the main Week 5
+            skill.
+        </p>
+
+        <h2>14. Common layout problems to diagnose</h2>
+        <table>
+            <thead><tr><th>Symptom</th><th>Likely concept</th><th>What to inspect</th></tr></thead>
+            <tbody>
+                <tr><td>A 500px element is wider than 500px.</td><td>Default <code>content-box</code> sizing.</td><td>Width, horizontal padding, borders, and <code>box-sizing</code>.</td></tr>
+                <tr><td>Text touches the border.</td><td>Missing or insufficient padding.</td><td>Padding values in the box-model diagram.</td></tr>
+                <tr><td>Two elements are too close together.</td><td>External spacing.</td><td>Margins on both neighboring boxes.</td></tr>
+                <tr><td>Vertical margins do not add as expected.</td><td>Margin collapsing.</td><td>Computed margins and surrounding block structure.</td></tr>
+                <tr><td>Text escapes from a fixed-height box.</td><td>Overflow.</td><td>Height constraint, content size, and <code>overflow</code>.</td></tr>
+                <tr><td><code>width</code> seems ineffective on a link or span.</td><td>Inline formatting behavior.</td><td>The element's <code>display</code> value.</td></tr>
+                <tr><td><code>top: 20px</code> does nothing.</td><td>Static positioning.</td><td>The computed <code>position</code> value.</td></tr>
+                <tr><td>An absolute element overlaps other content.</td><td>It is outside normal flow.</td><td>Its containing block and surrounding normal-flow boxes.</td></tr>
+            </tbody>
+        </table>
+
+        <div class="grid">
+            <section class="card">
+                <h3>Debug this width</h3>
+                <pre><code>article {
+    width: 500px;
+    padding: 30px;
+}</code></pre>
+                <p>Under <code>content-box</code>, why is the rendered box wider than 500px?</p>
+            </section>
+            <section class="card">
+                <h3>Debug this overflow</h3>
+                <pre><code>article {
+    height: 80px;
+}</code></pre>
+                <p>What happens when the article contains more text than fits in 80px?</p>
+            </section>
+            <section class="card">
+                <h3>Debug this inline box</h3>
+                <pre><code>span {
+    width: 300px;
+}</code></pre>
+                <p>Why does an ordinary inline <code>&lt;span&gt;</code> not behave like a 300px block?</p>
+            </section>
+        </div>
+
+        <h2>15. Put the pieces together</h2>
+        <p>
+            A small cultural-heritage catalogue page can now gain structure and readable spacing
+            without using a layout system.
+        </p>
+
+        <div class="example">
+            <h3>Example 13 · Week 5 layout CSS</h3>
+            <pre><code>* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: #f4f1e8;
+    color: #252525;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.6;
+}
+
+main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.record {
+    position: relative;
+    margin-bottom: 24px;
+    padding: 20px;
+    border: 1px solid #b8b2a4;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.record h2 {
+    margin-top: 0;
+}
+
+.record-label {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+}</code></pre>
+        </div>
+
+        <p>
+            Every declaration here should now be explainable in terms of a box: how it is sized,
+            how much internal or external space it has, and where it participates in normal flow.
+        </p>
+
+        <h2 id="practice">16. Optional at-home practice</h2>
+        <p>
+            Start from a small HTML page you already created. The goal is not to redesign it
+            elaborately, but to make deliberate layout changes and explain their effects.
+        </p>
+
+        <ol class="tasks">
+            <li>Add <code>box-sizing: border-box</code> and explain what it changes.</li>
+            <li>Add padding to at least one content container.</li>
+            <li>Add a visible border so you can see the box boundary.</li>
+            <li>Use margins to separate neighboring sections or records.</li>
+            <li>Give the main content a useful <code>max-width</code> and center it with automatic margins.</li>
+            <li>Create one deliberately over-constrained box and observe its overflow.</li>
+            <li>Use Developer Tools to identify content, padding, border, and margin values.</li>
+            <li>Change one block element to <code>inline</code> or one inline element to <code>inline-block</code> and explain the difference.</li>
+            <li>Create one small <code>position: relative</code> / <code>position: absolute</code> example.</li>
+            <li>Deliberately introduce one spacing or sizing bug, diagnose it in DevTools, and fix it.</li>
+        </ol>
+
+        <p>
+            <strong>Optional challenge:</strong> create two versions of the same 300px-wide card,
+            one using <code>content-box</code> and one using <code>border-box</code>. Give both the
+            same padding and border and explain their different measured widths.
+        </p>
+
+        <h2>17. What you should be able to do after Week 5</h2>
+        <ul class="checklist">
+            <li>Explain that browsers perform layout even without custom layout CSS.</li>
+            <li>Describe the basic difference between block and inline formatting behavior.</li>
+            <li>Identify content, padding, border, and margin in the CSS box model.</li>
+            <li>Distinguish internal spacing (padding) from external spacing (margin).</li>
+            <li>Use padding, margin, and border shorthand deliberately.</li>
+            <li>Use <code>width</code>, <code>height</code>, and min/max constraints appropriately.</li>
+            <li>Calculate the outer width of a simple <code>content-box</code>.</li>
+            <li>Explain the difference between <code>content-box</code> and <code>border-box</code>.</li>
+            <li>Recognize a vertical margin-collapsing situation.</li>
+            <li>Recognize and diagnose overflow.</li>
+            <li>Center a constrained block with automatic horizontal margins.</li>
+            <li>Explain the beginner-level difference between static, relative, and absolute positioning.</li>
+            <li>Use Developer Tools to inspect computed box dimensions and spacing.</li>
+        </ul>
+
+        <h2>18. What deliberately comes later</h2>
+        <p>
+            Week 5 gives us the geometry needed to understand more powerful CSS layout mechanisms.
+            We deliberately stop before those mechanisms so that their behavior will have a clear
+            foundation.
+        </p>
+        <ul>
+            <li><strong>Week 6:</strong> responsive design, media queries, and Flexbox.</li>
+            <li><strong>Week 7:</strong> CSS Grid, pseudo-classes, and further responsive layout practice.</li>
+            <li><strong>Week 8:</strong> transitions, transforms, animations, and selected external web resources.</li>
+        </ul>
+
+        <h2 id="references">19. CSS layout references</h2>
+        <div class="grid">
+            <section class="card">
+                <h3>Box model</h3>
+                <ul>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Box_model">MDN: The box model</a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Box_model">MDN: CSS box model</a></li>
+                    <li><a href="https://www.w3.org/TR/css-box-3/">W3C: CSS Box Model Module Level 3</a></li>
+                </ul>
+            </section>
+            <section class="card">
+                <h3>Flow and display</h3>
+                <ul>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Introduction">MDN: Introduction to CSS layout</a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Normal_Flow">MDN: Normal flow</a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/display">MDN: display</a></li>
+                </ul>
+            </section>
+            <section class="card">
+                <h3>Sizing and overflow</h3>
+                <ul>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing">MDN: box-sizing</a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/width">MDN: width</a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/max-width">MDN: max-width</a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/overflow">MDN: overflow</a></li>
+                </ul>
+            </section>
+            <section class="card">
+                <h3>Spacing and positioning</h3>
+                <ul>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/padding">MDN: padding</a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin">MDN: margin</a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_box_model/Mastering_margin_collapsing">MDN: Mastering margin collapsing</a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/position">MDN: position</a></li>
+                </ul>
+            </section>
+        </div>
+
+        <p class="note">
+            <strong>Next step:</strong> once individual boxes and normal flow make sense, Week 6 can
+            introduce responsive design and Flexbox as deliberate ways of arranging multiple boxes.
+        </p>
+    </main>
+
+    <footer class="page-footer">
+        <div>DE0824 Web Development · Riga Technical University · DITEF · Fall 2026</div>
+    </footer>
+</body>
+</html>
