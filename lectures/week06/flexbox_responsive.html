@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 6: Flexbox and Responsive Design | DE0824</title>
+<style>
+:root{color-scheme:light;--page:#f7f8fa;--surface:#fff;--text:#172033;--muted:#526078;--accent:#005ea8;--accent-dark:#0f2842;--accent-soft:#e9f3fb;--border:#d9e0e8;--code:#f1f3f6;--code-text:#1b2738;--success-soft:#edf8f1;--warning-soft:#fff8e7;--max-width:1050px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.65}
+header.page-header{background:var(--accent-dark);color:white;padding:3.25rem 1.25rem 2.75rem}
+header.page-header>div,nav.course-nav>div,main,footer.page-footer>div{width:min(var(--max-width),calc(100% - 2rem));margin:0 auto}
+header.page-header .course{margin:0 0 .5rem;font-size:.95rem;letter-spacing:.04em;text-transform:uppercase}
+header.page-header h1{margin:0;font-size:clamp(2.15rem,5vw,3.6rem);line-height:1.1}
+header.page-header p{max-width:850px;margin-bottom:0;color:#dce8f4;font-size:1.12rem}
+nav.course-nav{border-bottom:1px solid var(--border);background:var(--surface)}
+nav.course-nav>div{display:flex;flex-wrap:wrap;gap:1rem;padding:.85rem 0}
+nav.course-nav a{font-weight:650;text-decoration:none}
+main{padding:2rem 0 4rem}
+h2{margin-top:3rem;padding-bottom:.4rem;border-bottom:2px solid var(--border);font-size:1.75rem;line-height:1.3}
+h3{margin-top:1.65rem;line-height:1.35} a{color:#005a9c}
+.lead,.note,.checkpoint,.warning{margin:1.25rem 0;padding:1rem 1.2rem;border-left:5px solid var(--accent);background:var(--surface)}
+.lead{font-size:1.08rem}.checkpoint{background:var(--success-soft)}.warning{border-left-color:#b46a00;background:var(--warning-soft)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:1rem;margin:1.25rem 0}
+.card,.example,.diagram,.demo{border:1px solid var(--border);border-radius:.65rem;background:var(--surface)}
+.card{padding:1rem 1.1rem}.card h3{margin-top:0}
+.example{margin:1.25rem 0 1.6rem;overflow:hidden}.example h3{margin:0;padding:.8rem 1rem;background:var(--accent-soft);font-size:1.05rem}.example .explanation{padding:.9rem 1rem 0}
+pre{margin:0;padding:1rem;overflow-x:auto;background:var(--code);color:var(--code-text);border-top:1px solid var(--border);line-height:1.5;tab-size:4}
+code{font-family:Consolas,"Courier New",monospace}p code,li code,td code,th code{padding:.08rem .3rem;border-radius:.25rem;background:var(--code)}
+table{width:100%;margin:1rem 0 1.5rem;border-collapse:collapse;background:var(--surface)}
+th,td{padding:.7rem .8rem;border:1px solid var(--border);text-align:left;vertical-align:top}th{background:var(--accent-soft)}
+.diagram,.demo{margin:1.25rem 0;padding:1rem;overflow-x:auto}
+.axis-demo{display:flex;min-width:520px;align-items:center;gap:1rem;padding:2rem;border:2px dashed #7b8da3;background:#f9fbfd}
+.axis-demo .item,.flex-demo .item,.wrap-demo .item{padding:1rem;border:2px solid #2874a6;border-radius:.4rem;background:#dcecf8;font-weight:700;text-align:center}
+.axis-arrow{font-weight:800;color:#8a4b00}
+.flex-demo{display:flex;justify-content:space-between;align-items:center;gap:1rem;min-height:150px;padding:1rem;border:2px dashed #7b8da3}
+.wrap-demo{display:flex;flex-wrap:wrap;gap:1rem;padding:1rem;border:2px dashed #7b8da3}
+.wrap-demo .item{flex:1 1 180px}
+.tasks li,.checklist li{margin-bottom:.55rem}
+footer.page-footer{padding:1.5rem 0 2.5rem;border-top:1px solid var(--border);background:var(--surface);color:var(--muted)}
+@media(max-width:650px){table{font-size:.92rem}th,td{padding:.55rem}.axis-demo{min-width:0;flex-direction:column}.axis-arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+<header class="page-header"><div>
+<p class="course">DE0824 Web Development · Week 6</p>
+<h1>Flexbox and responsive design</h1>
+<p>Week 5 gave us the geometry of individual CSS boxes. This week we arrange groups of those boxes, distribute available space, and make layouts adapt when the viewport changes.</p>
+</div></header>
+<nav class="course-nav" aria-label="Course navigation"><div>
+<a href="../../index.html">Course home</a>
+<a href="../week05/css_layout.html">Week 5 layout foundations</a>
+<a href="#responsive">Responsive design</a>
+<a href="#practice">Optional practice</a>
+<a href="#references">References</a>
+</div></nav>
+<main>
+<p class="lead"><strong>Week 6 goal:</strong> use Flexbox to build one-dimensional layouts and understand the first principles of responsive web design. By the end of the session you should be able to identify flex containers and flex items, reason about the main and cross axes, align and wrap items, give items flexible sizes, and use a simple mobile-first media query.</p>
+<div class="note"><strong>Connection to Week 5:</strong> the box model has not disappeared. Every flex item is still a CSS box with content, padding, border, and margin. Flexbox changes <em>how a container lays out its direct children</em>.</div>
+
+<h2>1. From individual boxes to groups of boxes</h2>
+<p>Suppose a digital collection contains several records. With ordinary block layout, the articles naturally appear one below another.</p>
+<div class="example"><h3>Starting HTML · three collection records</h3><pre><code>&lt;section class="collections"&gt;
+    &lt;article class="collection"&gt;Manuscripts&lt;/article&gt;
+    &lt;article class="collection"&gt;Newspapers&lt;/article&gt;
+    &lt;article class="collection"&gt;Photographs&lt;/article&gt;
+&lt;/section&gt;</code></pre></div>
+<p>That is useful normal-flow behavior. But what if we want the records to share a row when enough space is available? This is a layout problem for the parent container.</p>
+<div class="example"><h3>The smallest Flexbox rule</h3><pre><code>.collections {
+    display: flex;
+}</code></pre></div>
+<p class="checkpoint"><strong>Live-coding checkpoint:</strong> first view the articles without Flexbox. Predict what will change, add <code>display: flex</code> to the parent, and inspect the result. Then remove the declaration and compare again.</p>
+
+<h2>2. Flex container and flex items</h2>
+<p>When an element has <code>display: flex</code>, it becomes a <strong>flex container</strong>. Its <strong>direct children</strong> become <strong>flex items</strong>.</p>
+<div class="grid">
+<section class="card"><h3>Container</h3><p>The parent controls the overall flex layout.</p><pre><code>.collections {
+    display: flex;
+}</code></pre></section>
+<section class="card"><h3>Items</h3><p>The direct children participate in that flex layout.</p><pre><code>&lt;section class="collections"&gt;
+    &lt;article&gt;...&lt;/article&gt;
+    &lt;article&gt;...&lt;/article&gt;
+&lt;/section&gt;</code></pre></section>
+</div>
+<p class="warning"><strong>Common mistake:</strong> putting <code>display: flex</code> on the cards when your intention is to arrange the cards. Ask: <em>which element is the parent of the things I want to arrange?</em></p>
+
+<h2>3. Flexbox is one-dimensional</h2>
+<p>Flexbox lays out items along one primary dimension at a time: a <strong>row</strong> or a <strong>column</strong>. This is why it is described as a one-dimensional layout system.</p>
+<div class="diagram"><div class="axis-demo" aria-label="Flexbox main axis illustration">
+<div class="item">A</div><span class="axis-arrow">main axis →</span><div class="item">B</div><div class="item">C</div>
+</div></div>
+<p>The two essential directions are:</p>
+<ul>
+<li><strong>Main axis:</strong> defined by <code>flex-direction</code>.</li>
+<li><strong>Cross axis:</strong> perpendicular to the main axis.</li>
+</ul>
+<div class="example"><h3>Change the main axis</h3><pre><code>.collections {
+    display: flex;
+    flex-direction: row;    /* default */
+}
+
+/* Try this next */
+.collections {
+    flex-direction: column;
+}</code></pre></div>
+<p class="checkpoint"><strong>Important mental model:</strong> do not memorize “justify = horizontal” and “align = vertical.” Instead remember: <code>justify-content</code> works along the <strong>main axis</strong>, while <code>align-items</code> works along the <strong>cross axis</strong>.</p>
+
+<h2>4. Distribute space with <code>justify-content</code></h2>
+<p>If the flex items do not consume all available space on the main axis, the container can decide where that free space goes.</p>
+<div class="demo"><div class="flex-demo"><div class="item">Manuscripts</div><div class="item">Maps</div><div class="item">Books</div></div></div>
+<div class="example"><h3>Useful values to experiment with</h3><pre><code>.collections {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Try:
+   flex-start
+   flex-end
+   center
+   space-between
+   space-around
+   space-evenly
+*/</code></pre></div>
+<p class="checkpoint"><strong>Prediction:</strong> before changing each value in DevTools, predict where the first item, last item, and unused space will go.</p>
+
+<h2>5. Align items on the cross axis</h2>
+<p><code>align-items</code> controls how the items align on the cross axis. Give the container some visible cross-axis space while experimenting.</p>
+<div class="example"><h3>Center items on the cross axis</h3><pre><code>.collections {
+    display: flex;
+    min-height: 250px;
+    align-items: center;
+}
+
+/* Also try:
+   stretch
+   flex-start
+   flex-end
+*/</code></pre></div>
+<p>A familiar centering pattern is therefore:</p>
+<pre><code>.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}</code></pre>
+<p>It works because we are centering along <em>both axes</em>, not because Flexbox has a special “center everything” command.</p>
+
+<h2>6. Use <code>gap</code> for spacing between items</h2>
+<p>Week 5 introduced margins as space outside individual boxes. Flex and Grid containers also support <code>gap</code>, which directly describes spacing <em>between</em> layout items.</p>
+<div class="example"><h3>A clear container-level spacing rule</h3><pre><code>.collections {
+    display: flex;
+    gap: 1rem;
+}</code></pre></div>
+<div class="note"><strong>Why this is useful:</strong> <code>gap</code> expresses the layout intention directly. You do not need to add a right margin to every item and then remove it from the last item.</div>
+
+<h2>7. What happens when items no longer fit?</h2>
+<p>By default, flex items stay on one flex line. Shrink the browser or add more cards and observe what happens before changing the CSS.</p>
+<div class="example"><h3>Allow additional flex lines</h3><pre><code>.collections {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}</code></pre></div>
+<div class="demo"><div class="wrap-demo"><div class="item">Manuscripts</div><div class="item">Newspapers</div><div class="item">Photographs</div><div class="item">Maps</div><div class="item">Letters</div></div></div>
+<p class="checkpoint"><strong>Responsive idea #1:</strong> Flexbox itself can already adapt to changing available space. A responsive page does not require a media query for every change.</p>
+
+<h2>8. Let flex items grow and shrink</h2>
+<p>Flex items can use available space instead of having one rigid width. Three underlying concepts control this behavior: <code>flex-grow</code>, <code>flex-shrink</code>, and <code>flex-basis</code>.</p>
+<div class="example"><h3>Useful card pattern</h3><pre><code>.collection {
+    flex: 1 1 220px;
+}</code></pre></div>
+<table>
+<thead><tr><th>Part</th><th>Meaning in this example</th></tr></thead>
+<tbody>
+<tr><td><code>flex-grow: 1</code></td><td>The item may grow when free space is available.</td></tr>
+<tr><td><code>flex-shrink: 1</code></td><td>The item may shrink when space is tight.</td></tr>
+<tr><td><code>flex-basis: 220px</code></td><td>Use about 220px as the item's starting size on the main axis.</td></tr>
+</tbody>
+</table>
+<p>You will usually use the <code>flex</code> shorthand rather than calculate the complete Flexbox sizing algorithm by hand. The important concept is that available space is distributed among flex items.</p>
+
+<h2>9. An individual item can be different</h2>
+<p>Most alignment rules belong on the container, but an individual flex item can override cross-axis alignment with <code>align-self</code>.</p>
+<div class="example"><h3>One item uses different alignment</h3><pre><code>.featured {
+    align-self: flex-start;
+}</code></pre></div>
+<p>The <code>order</code> property can change visual ordering, but use it cautiously:</p>
+<pre><code>.featured {
+    order: -1;
+}</code></pre>
+<div class="warning"><strong>Accessibility and semantics:</strong> visual reordering does not rewrite the HTML document. Prefer meaningful source order so reading, keyboard, and visual order do not become unnecessarily inconsistent.</div>
+
+<h2>10. A flex item can also be a flex container</h2>
+<p>Layout roles can be nested. A collection card can be an item in the outer layout while also arranging its own children with Flexbox.</p>
+<div class="example"><h3>Nested Flexbox</h3><pre><code>.collections {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.collection {
+    flex: 1 1 220px;
+
+    display: flex;
+    flex-direction: column;
+}</code></pre></div>
+<p>This is useful for cards whose heading, description, metadata, and link need their own internal arrangement.</p>
+
+<h2>11. Put Flexbox together: a collection gallery</h2>
+<div class="example"><h3>HTML</h3><pre><code>&lt;section class="collections"&gt;
+    &lt;article class="collection"&gt;
+        &lt;h2&gt;Manuscripts&lt;/h2&gt;
+        &lt;p&gt;Digitized handwritten documents.&lt;/p&gt;
+        &lt;a href="#"&gt;Explore collection&lt;/a&gt;
+    &lt;/article&gt;
+
+    &lt;article class="collection"&gt;
+        &lt;h2&gt;Newspapers&lt;/h2&gt;
+        &lt;p&gt;Historical periodicals and newspapers.&lt;/p&gt;
+        &lt;a href="#"&gt;Explore collection&lt;/a&gt;
+    &lt;/article&gt;
+
+    &lt;article class="collection"&gt;
+        &lt;h2&gt;Photographs&lt;/h2&gt;
+        &lt;p&gt;Historical photographic collections.&lt;/p&gt;
+        &lt;a href="#"&gt;Explore collection&lt;/a&gt;
+    &lt;/article&gt;
+&lt;/section&gt;</code></pre></div>
+<div class="example"><h3>CSS using Week 5 + Week 6 concepts</h3><pre><code>* {
+    box-sizing: border-box;
+}
+
+.collections {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.collection {
+    flex: 1 1 240px;
+    padding: 1rem;
+    border: 1px solid #b8c2cc;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.collection h2 {
+    margin-top: 0;
+}</code></pre></div>
+<p class="checkpoint"><strong>Inspect it:</strong> resize the browser slowly. At what widths do the cards fit comfortably? At what point does wrapping improve the layout? Notice that no device names are involved.</p>
+
+<h2 id="responsive">12. What does responsive design mean?</h2>
+<p><strong>Responsive web design</strong> means creating pages that adapt to different available spaces and user environments rather than assuming one fixed screen size. Flexible sizing, Flexbox, Grid, responsive media, and media queries can all contribute.</p>
+<p>The viewport declaration already present in our pages is important on mobile browsers:</p>
+<pre><code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code></pre>
+<div class="note"><strong>Avoid “designing for devices.”</strong> There is no reliable set of phone/tablet/desktop widths. Resize the page and introduce a breakpoint where the <em>content and layout</em> need one.</div>
+
+<h2>13. Media queries: conditional CSS</h2>
+<p>A media query applies a group of CSS rules only when its condition matches. For our first responsive examples, viewport width is enough.</p>
+<div class="example"><h3>A first media query</h3><pre><code>@media (min-width: 700px) {
+    nav {
+        flex-direction: row;
+    }
+}</code></pre></div>
+<p>Read it literally: <strong>when the viewport is at least 700px wide, apply these rules.</strong></p>
+<p>You may also encounter the opposite style:</p>
+<pre><code>@media (max-width: 699px) {
+    /* rules for this narrower range */
+}</code></pre>
+<p>Both forms are valid. For our examples we will usually build the narrow layout first and enhance it with <code>min-width</code> queries.</p>
+
+<h2>14. Mobile-first CSS</h2>
+<p>A simple page often works naturally as one column on a narrow viewport. We can make that our default and add a wider layout only when there is room.</p>
+<div class="example"><h3>Narrow layout first, wider enhancement second</h3><pre><code>.site-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Add the wider arrangement when there is room. */
+@media (min-width: 700px) {
+    .site-nav {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}</code></pre></div>
+<p class="checkpoint"><strong>Live test:</strong> open responsive/device mode in browser Developer Tools and drag the viewport through 700px. Watch the computed <code>flex-direction</code> change as the media query starts and stops matching.</p>
+
+<h2>15. Flexbox + media queries</h2>
+<p>Use Flexbox for the flexible relationship between items. Add a breakpoint only when the design needs a structural change.</p>
+<div class="example"><h3>Example · archive page</h3><pre><code>.page-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+@media (min-width: 800px) {
+    .page-layout {
+        flex-direction: row;
+    }
+
+    .filters {
+        flex: 0 0 220px;
+    }
+
+    .results {
+        flex: 1;
+    }
+}</code></pre></div>
+<p>On a narrow viewport the filters and results form a readable vertical sequence. When enough width exists, the same semantic HTML becomes a sidebar-and-content layout.</p>
+
+<h2>16. Common Flexbox and responsive-design mistakes</h2>
+<table>
+<thead><tr><th>Symptom</th><th>Likely cause</th><th>What to inspect</th></tr></thead>
+<tbody>
+<tr><td>The intended elements do not line up.</td><td><code>display: flex</code> is on the wrong element.</td><td>Find the common parent of the items you want to arrange.</td></tr>
+<tr><td><code>justify-content</code> moves things in an unexpected direction.</td><td>The main axis is misunderstood.</td><td>Check <code>flex-direction</code>.</td></tr>
+<tr><td><code>align-items</code> appears to do little.</td><td>There may be no visible free space on the cross axis.</td><td>Inspect container size and item sizes.</td></tr>
+<tr><td>Items become cramped on narrow screens.</td><td>Wrapping is disabled or sizing is too rigid.</td><td>Check <code>flex-wrap</code>, fixed widths, and <code>flex-basis</code>.</td></tr>
+<tr><td>A breakpoint does nothing.</td><td>The condition does not match or another rule wins the cascade.</td><td>Use DevTools to inspect matched and overridden rules.</td></tr>
+<tr><td>Many nearly identical breakpoints accumulate.</td><td>The layout is being designed around device labels.</td><td>Ask where the content actually needs to change.</td></tr>
+<tr><td>Visual and reading order disagree.</td><td><code>order</code> or reverse directions are being overused.</td><td>Compare DOM/source order with visual order.</td></tr>
+</tbody>
+</table>
+
+<h2>17. Flexbox versus Grid</h2>
+<p>Do not treat Flexbox and Grid as competing versions of the same feature. They solve related but different layout problems.</p>
+<div class="grid">
+<section class="card"><h3>Flexbox · Week 6</h3><p><strong>One dimension at a time.</strong> Think primarily in terms of a row or a column and the distribution/alignment of items along its axes.</p></section>
+<section class="card"><h3>Grid · Week 7</h3><p><strong>Two dimensions together.</strong> Grid gives explicit control over rows and columns and is especially useful when both dimensions matter to the layout.</p></section>
+</div>
+<p class="note"><strong>Looking ahead:</strong> Week 7 will introduce CSS Grid and continue responsive layout practice. The concepts learned today—available space, gaps, alignment, breakpoints, and semantic source order—will carry forward.</p>
+
+<h2 id="practice">18. Optional at-home practice</h2>
+<p>Start from a small semantic HTML page rather than building a large site. A collection, bibliography, archive, museum-object list, or ordinary set of cards works well.</p>
+<ol class="tasks">
+<li>Place three or more sibling elements inside one container.</li>
+<li>Turn the parent into a flex container and identify the flex items.</li>
+<li>Try both <code>row</code> and <code>column</code> and identify the main and cross axes each time.</li>
+<li>Experiment with at least three <code>justify-content</code> values.</li>
+<li>Use <code>align-items</code> and explain which axis it affects.</li>
+<li>Replace item margins with a container <code>gap</code> where appropriate.</li>
+<li>Add enough items to create a space problem, then use <code>flex-wrap: wrap</code>.</li>
+<li>Give cards a flexible starting size such as <code>flex: 1 1 220px</code>.</li>
+<li>Create one mobile-first <code>min-width</code> media query that changes the layout when the content needs more room.</li>
+<li>Use DevTools responsive mode and inspect which CSS declarations are active on both sides of the breakpoint.</li>
+</ol>
+<p><strong>Optional challenge:</strong> make a navigation component that is a column on narrow viewports and a row on wider viewports. Do not use JavaScript.</p>
+
+<h2>19. What you should be able to do after Week 6</h2>
+<ul class="checklist">
+<li>Explain the relationship between a flex container and its direct-child flex items.</li>
+<li>Explain why Flexbox is described as one-dimensional.</li>
+<li>Identify the main and cross axes for both row and column layouts.</li>
+<li>Use <code>flex-direction</code>, <code>justify-content</code>, and <code>align-items</code>.</li>
+<li>Use <code>gap</code> to control spacing between flex items.</li>
+<li>Use <code>flex-wrap</code> when items should move onto additional flex lines.</li>
+<li>Explain at a practical level what grow, shrink, and basis mean.</li>
+<li>Use a simple <code>flex</code> shorthand for flexible cards.</li>
+<li>Recognize when nested Flexbox is useful.</li>
+<li>Explain responsive design as adaptation to available space rather than a list of device sizes.</li>
+<li>Read and write a basic width-based <code>@media</code> rule.</li>
+<li>Build a simple mobile-first layout with a <code>min-width</code> breakpoint.</li>
+<li>Use browser Developer Tools to test Flexbox and responsive behavior.</li>
+<li>State the basic distinction between one-dimensional Flexbox and two-dimensional Grid.</li>
+</ul>
+
+<h2 id="references">20. Flexbox and responsive-design references</h2>
+<div class="grid">
+<section class="card"><h3>Flexbox · primary references</h3><ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Flexbox">MDN: Flexbox tutorial</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Flexible_box_layout/Basic_concepts">MDN: Basic concepts of Flexbox</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Flexible_box_layout">MDN: CSS flexible box layout</a></li>
+</ul></section>
+<section class="card"><h3>Responsive design</h3><ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design">MDN: Responsive web design</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Media_queries">MDN: Media query fundamentals</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Media_queries/Using">MDN: Using media queries</a></li>
+</ul></section>
+<section class="card"><h3>Visual practice and supplemental reference</h3><ul>
+<li><a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/">CSS-Tricks: A Complete Guide to Flexbox</a></li>
+<li><a href="https://flexboxfroggy.com/">Flexbox Froggy</a></li>
+</ul><p>These are useful visual/practice supplements; use MDN as the primary technical reference.</p></section>
+<section class="card"><h3>Next week</h3><ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Grids">MDN: CSS Grid layout</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout">MDN: CSS Grid layout guide</a></li>
+</ul><p>Week 7 will move from Flexbox's one-dimensional model to Grid's rows-and-columns model.</p></section>
+</div>
+</main>
+<footer class="page-footer"><div>DE0824 Web Development · Riga Technical University · DITEF · Fall 2026</div></footer>
+</body>
+</html>
