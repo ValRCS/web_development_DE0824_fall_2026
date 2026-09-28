@@ -1,9 +1,13 @@
+/*
+    Style sheet for the lectures/week04/css_intro.html page
+*/
 body {
+    /* this is for body */
     background-color: lightgray;
 }
 
 h1 {
-    color: blue;
+    /* color: blue; */
     text-align: center;
     font-family: Arial, sans-serif;
     font-size: 40px;
