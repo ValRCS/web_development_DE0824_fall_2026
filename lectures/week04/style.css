@@ -1,0 +1,12 @@
+h1 {
+    color: blue;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 40px;
+}
+p {
+    color: rgb(128, 0, 0);
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+    font-style: italic;
+}
