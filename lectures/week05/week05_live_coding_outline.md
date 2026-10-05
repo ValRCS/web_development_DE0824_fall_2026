@@ -19,6 +19,51 @@ By the end of the live coding session, students should have seen and modified:
 
 **Deliberate boundary:** no Flexbox and no Grid. Flexbox is Week 6 and Grid is Week 7.
 
+## Core message for students
+
+The single most important idea for Week 5 is:
+
+> **A web page is already a layout of boxes. HTML elements generate boxes, normal flow arranges them, and CSS changes the size and spacing of those boxes.**
+
+The box-model vocabulary gives us a way to reason about that geometry:
+
+> **content → padding → border → margin**
+
+Students do not need to memorize every property or shorthand shown today. They should leave able to reason about questions such as:
+
+- What box is taking up this space?
+- Is the unwanted space **inside** the border (`padding`) or **outside** it (`margin`)?
+- What does the declared `width` actually measure?
+- Why is content overflowing?
+- What does normal flow do before we introduce a more advanced layout system?
+- What does the browser say in DevTools about the element's actual computed size and spacing?
+
+If students can inspect an element in DevTools, identify its **content, padding, border, and margin**, and explain why it occupies its current amount of space, the central Week 5 objective has been achieved.
+
+## Readiness and priorities for the live session
+
+The Week 5 student reference page and this live-coding outline are sufficient for the session. No additional prepared demonstration page is necessary; creating the page incrementally in class is pedagogically preferable.
+
+### Must cover
+
+These are the non-negotiable parts of the live session:
+
+1. normal document flow;
+2. block versus inline behavior at a practical level;
+3. content → padding → border → margin;
+4. the difference between padding and margin;
+5. `width` and the default `content-box` model;
+6. `box-sizing: border-box`;
+7. inspecting and changing these values in DevTools.
+
+### Cover if the core material is secure
+
+- `max-width` and avoiding unnecessarily rigid fixed widths;
+- a short overflow demonstration;
+- a brief introduction to `position: relative` / `absolute`.
+
+Do **not** rush the box model in order to reach positioning. Overflow and positioning are useful Week 5 topics, but they are secondary to students acquiring the correct mental model of boxes, spacing, sizing, and normal flow.
+
 ---
 
 ## Suggested live-coding page
@@ -225,6 +270,8 @@ Main point:
 - with `border-box`, the declared width includes content, padding, and border;
 - this usually makes sizing easier to reason about.
 
+At this point, the **minimum successful Week 5 lesson has been delivered**. If necessary, move directly to the DevTools debugging pass and closing recap rather than rushing the remaining topics.
+
 ---
 
 ## Checkpoint 8 — Fixed width versus responsive width
@@ -382,6 +429,21 @@ Optional challenge:
 
 ---
 
+## End-of-session check
+
+A useful final test is to select one visible element and ask a student to explain it using the browser's box-model diagram.
+
+They should be able to answer, in ordinary language:
+
+1. What is the element's content box?
+2. How much padding is inside it?
+3. Where is its border?
+4. What margin separates it from other boxes?
+5. What determines its width?
+6. Where would the next normal-flow block element appear?
+
+A student who can reason through those questions has acquired the Week 5 foundation needed for Flexbox and Grid later.
+
 ## Suggested closing recap
 
 Ask students to explain, rather than merely recognize, these distinctions:
@@ -396,7 +458,11 @@ Ask students to explain, rather than merely recognize, these distinctions:
 
 Final mental model:
 
-> HTML provides the structure. CSS gives each element a box. Normal flow arranges those boxes. Padding, borders, margins, and sizing change their geometry. DevTools lets us see what the browser actually calculated.
+> **HTML provides the structure. The browser turns that structure into boxes. Normal flow arranges the boxes. CSS changes their geometry. DevTools shows us what the browser actually calculated.**
+
+If students remember only one sequence from today, it should be:
+
+> **content → padding → border → margin**
 
 ## Bridge to Week 6
 
