@@ -166,6 +166,16 @@
 
         th { background: var(--accent-soft); }
 
+        .hero-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            margin: 0 0 1.75rem;
+            border: 1px solid var(--border);
+            border-radius: 0.65rem;
+            background: var(--surface);
+        }
+
         .diagram {
             margin: 1.25rem auto;
             padding: 1rem;
@@ -227,6 +237,12 @@
     </nav>
 
     <main>
+        <img
+            class="hero-image"
+            src="../../img/week5/Week5_css_normal_flow_box_model.jpg"
+            alt="Illustration of CSS layout foundations showing normal document flow with block and inline elements alongside the CSS box model with content, padding, border, and margin"
+        >
+
         <p class="lead">
             <strong>Week 5 goal:</strong> understand the browser's basic layout model. By the end of
             the session you should be able to reason about normal flow, content, padding, borders,
