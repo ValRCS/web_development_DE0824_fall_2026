@@ -51,3 +51,25 @@ uncomment this to show how these paragaphs are inline elements and will not resp
     top: 15px;
     left: 30px;
 }
+
+.absolute-container {
+    /* comment next line to see how absolute positioning works */
+    display: none;
+    position: absolute;
+    top: 15px;
+    left: 30px;
+}
+
+.fixed-element {
+    position: fixed;
+    /* top: 10px;
+    left: 10px; */
+    bottom: 10px;
+    right: 10px;
+    background-color: maroon;
+    color: white;
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    border: 5px solid #1ea013;
+}
