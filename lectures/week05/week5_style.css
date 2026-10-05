@@ -2,3 +2,21 @@ body {
     background-color: #f0f0f0;
     font-family: Arial, sans-serif;
 }
+
+span {
+    background-color: #b6a572;
+}
+
+/* reminder that .record means selecting ALL elements with class="record" */
+.record {
+    background-color: #f4f1e8;
+    color: #2678cf;
+    font-size: 18px;
+    /* display: none; would hide the element */
+    /* display: none; */
+}
+/* 
+uncomment this to show how these paragaphs are inline elements and will not respect the width/height properties
+.adjust-me {
+    display: inline;
+} */
