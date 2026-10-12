@@ -722,3 +722,12 @@ Week 7: Grid — two-dimensional layout
 ```
 
 Do not implement the Grid solution during Week 6.
+
+---
+
+## Supplemental resources to point students toward
+
+- **[Flexbox Froggy](https://flexboxfroggy.com/)** — interactive alignment exercises; useful after the main-axis/cross-axis and `justify-content` / `align-items` demonstrations or as optional homework.
+- **[CSS-Tricks: A Complete Guide to Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)** — illustrated quick reference for flex container and item properties; useful when experimenting with additional values.
+
+These supplement the MDN documentation linked from the Week 6 student page; they do not replace understanding the container/item and axis models.
