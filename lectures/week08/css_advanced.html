@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 8: CSS Motion, Libraries, and Modern Styling | DE0824</title>
+<style>
+:root{color-scheme:light;--page:#f7f8fa;--surface:#fff;--text:#172033;--muted:#526078;--accent:#005ea8;--accent-dark:#0f2842;--accent-soft:#e9f3fb;--border:#d9e0e8;--code:#f1f3f6;--code-text:#1b2738;--success-soft:#edf8f1;--warning-soft:#fff8e7;--max-width:1050px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.65}
+header.page-header{background:var(--accent-dark);color:white;padding:3.25rem 1.25rem 2.75rem}
+header.page-header>div,nav.course-nav>div,main,footer.page-footer>div{width:min(var(--max-width),calc(100% - 2rem));margin:0 auto}
+header.page-header .course{margin:0 0 .5rem;font-size:.95rem;letter-spacing:.04em;text-transform:uppercase}
+header.page-header h1{margin:0;font-size:clamp(2.15rem,5vw,3.6rem);line-height:1.1}
+header.page-header p{max-width:850px;margin-bottom:0;color:#dce8f4;font-size:1.12rem}
+nav.course-nav{border-bottom:1px solid var(--border);background:var(--surface)}
+nav.course-nav>div{display:flex;flex-wrap:wrap;gap:1rem;padding:.85rem 0}
+nav.course-nav a{font-weight:650;text-decoration:none}
+main{padding:2rem 0 4rem}
+h2{margin-top:3rem;padding-bottom:.4rem;border-bottom:2px solid var(--border);font-size:1.75rem;line-height:1.3}
+h3{margin-top:1.65rem;line-height:1.35}
+a{color:#005a9c}
+.lead,.note,.checkpoint,.warning{margin:1.25rem 0;padding:1rem 1.2rem;border-left:5px solid var(--accent);background:var(--surface)}
+.lead{font-size:1.08rem}.checkpoint{background:var(--success-soft)}
+.warning{border-left-color:#b46a00;background:var(--warning-soft)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1.25rem 0}
+.card,.example,.diagram,.demo{border:1px solid var(--border);border-radius:.65rem;background:var(--surface)}
+.card{padding:1rem 1.1rem}.card h3{margin-top:0}
+.example{margin:1.25rem 0 1.6rem;overflow:hidden}
+.example h3{margin:0;padding:.8rem 1rem;background:var(--accent-soft);font-size:1.05rem}
+.example .explanation{padding:.9rem 1rem 0}
+pre{margin:0;padding:1rem;overflow-x:auto;background:var(--code);color:var(--code-text);border-top:1px solid var(--border);line-height:1.5;tab-size:4}
+code{font-family:Consolas,"Courier New",monospace}
+p code,li code,td code,th code{padding:.08rem .3rem;border-radius:.25rem;background:var(--code)}
+table{width:100%;margin:1rem 0 1.5rem;border-collapse:collapse;background:var(--surface)}
+th,td{padding:.7rem .8rem;border:1px solid var(--border);text-align:left;vertical-align:top}
+th{background:var(--accent-soft)}
+.diagram,.demo{margin:1.25rem 0;padding:1rem;overflow-x:auto}
+.tasks li,.checklist li{margin-bottom:.55rem}
+footer.page-footer{padding:1.5rem 0 2.5rem;border-top:1px solid var(--border);background:var(--surface);color:var(--muted)}
+/* Static visual introduction: these three ideas are different. */
+.concept-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem;margin:1rem 0 1.8rem}
+.concept-strip div{padding:1.15rem;background:#e9f3fb;border:1px solid #b9d5ea;border-radius:.55rem;text-align:center}
+.concept-strip strong{display:block;color:#113b5c}
+.concept-strip span{display:block;color:var(--muted);font-size:.92rem}
+/* Deliberately immediate transforms: compare with transitions below. */
+.transform-row{display:flex;flex-wrap:wrap;justify-content:center;gap:1.8rem;padding:1.2rem 0}
+.transform-sample{display:flex;align-items:center;justify-content:center;width:130px;min-height:90px;padding:.5rem;border:2px solid #2874a6;border-radius:.4rem;background:#dcecf8;color:#123853;font-weight:700;text-align:center}
+.transform-sample.move:hover,.transform-sample.move:focus-visible{transform:translateY(-12px)}
+.transform-sample.rotate:hover,.transform-sample.rotate:focus-visible{transform:rotate(10deg)}
+.transform-sample.scale:hover,.transform-sample.scale:focus-visible{transform:scale(1.12)}
+.transform-sample:focus-visible{outline:3px solid #b46a00;outline-offset:4px}
+/* This anchor demonstrates a real hover/focus transition. */
+.archive-link{display:block;width:min(100%,310px);padding:1.3rem;margin:.5rem auto;color:#17334d;text-decoration:none;background:#e9f3fb;border:2px solid #2874a6;border-radius:.65rem;box-shadow:0 2px 5px #1b273818;transition:background-color 250ms ease,transform 250ms ease,box-shadow 250ms ease}
+.archive-link:hover,.archive-link:focus-visible{background:#cfe8fb;transform:translateY(-6px);box-shadow:0 9px 20px #1b273832}
+.archive-link:focus-visible{outline:3px solid #b46a00;outline-offset:4px}
+.archive-link strong,.archive-link span{display:block}
+.archive-link span{font-size:.91rem;color:var(--muted)}
+/* The focusable demonstration area triggers keyframes without JavaScript. */
+.keyframe-stage{padding:1.4rem;border:2px dashed #7b8da3;border-radius:.45rem;overflow:hidden}
+.keyframe-stage:focus-visible{outline:3px solid #b46a00;outline-offset:3px}
+.keyframe-slip{max-width:260px;padding:1rem;background:#dcecf8;border:2px solid #2874a6;border-radius:.4rem;font-weight:700}
+@keyframes reveal-record{
+  from{opacity:.15;transform:translateX(-35px)}
+  to{opacity:1;transform:translateX(0)}
+}
+.keyframe-stage:hover .keyframe-slip,.keyframe-stage:focus-visible .keyframe-slip{animation:reveal-record 800ms ease-out both}
+.demo-instructions{color:var(--muted);font-size:.92rem;margin:.6rem 0 0}
+.sample-button{display:inline-block;padding:.55rem .95rem;border:0;border-radius:.35rem;background:#0d6efd;color:white;font:inherit;font-weight:600}
+.mini-layout{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem}
+.mini-layout article{padding:1rem;border:1px solid var(--border);border-radius:.45rem;background:var(--accent-soft)}
+.mini-layout h3{font-size:1.04rem;margin:0 0 .3rem}
+.mini-layout p{margin:0;font-size:.91rem}
+@media(prefers-reduced-motion:reduce){
+  .archive-link{transition:none}
+  .keyframe-stage:hover .keyframe-slip,.keyframe-stage:focus-visible .keyframe-slip{animation:none}
+}
+@media(max-width:650px){
+  table{font-size:.92rem}th,td{padding:.55rem}
+  .concept-strip{grid-template-columns:1fr}
+  .transform-row{gap:1rem}
+  .transform-sample{width:105px;min-height:75px}
+}
+</style>
+</head>
+<body>
+<header class="page-header"><div>
+<p class="course">DE0824 Web Development · Week 8</p>
+<h1>CSS motion, libraries, and modern styling</h1>
+<p>Our final CSS week: make existing layouts respond visually, explore reusable styling libraries, and learn how to evaluate modern CSS and AI-assisted design before we begin JavaScript.</p>
+</div></header>
+<nav class="course-nav" aria-label="Course navigation"><div>
+<a href="../../index.html">Course home</a>
+<a href="../week07/css_grid.html">Week 7 CSS Grid</a>
+<a href="#transitions">Transitions</a>
+<a href="#animations">Animations</a>
+<a href="#frameworks">Frameworks</a>
+<a href="#practice">Practice</a>
+<a href="#references">References</a>
+</div></nav>
+<main>
+<div class="concept-strip" aria-label="Three CSS motion concepts">
+<div><strong>Transform</strong><span>Change visual position, scale, or angle</span></div>
+<div><strong>Transition</strong><span>Make a style change gradual</span></div>
+<div><strong>Animation</strong><span>Define a sequence of visual states</span></div>
+</div>
+<p class="lead"><strong>Week 8 goal:</strong> use CSS transforms, transitions, and keyframe animations; make sensible accessibility choices; explain what CSS libraries provide; compare Bootstrap and Tailwind; and evaluate modern and AI-generated styling critically.</p>
+<div class="note"><strong>Connection to Week 7:</strong> we already have a responsive layout of digital archive cards built with Grid and Flexbox. This week we improve how those cards <em>look and respond</em>. We are not changing their semantic HTML or introducing JavaScript yet.</div>
+
+<h2>1. From layout to visual behavior</h2>
+<p>CSS can already respond to states such as <code>:hover</code> and <code>:focus-visible</code> (introduced last week). It can also describe movement and gradual changes without any JavaScript. Imagine a card in a digital collection: a small visual response can communicate that the record can be opened.</p>
+<div class="example"><h3>Starting HTML: one archive record</h3><pre><code>&lt;a class="archive-card" href="manuscripts.html"&gt;
+    &lt;strong&gt;Manuscripts&lt;/strong&gt;
+    &lt;span&gt;Explore the collection&lt;/span&gt;
+&lt;/a&gt;</code></pre></div>
+<p>We'll keep this example and add just one concept at a time. In real work, the linked page must exist; while experimenting, use a valid destination in your own project.</p>
+
+<h2>2. Transforms: move, rotate, scale</h2>
+<p>The <code>transform</code> property changes an element's visual appearance or position without re-laying out its surrounding boxes in normal flow. The original layout space remains allocated. Some transformed elements may visually overlap their neighbors.</p>
+<div class="example"><h3>Three useful transform functions</h3><pre><code>.archive-card:hover {
+    transform: translateY(-8px);
+}
+
+/* Other values to try, one at a time */
+transform: rotate(5deg);
+transform: scale(1.1);
+transform: translateX(20px) rotate(3deg);</code></pre></div>
+<div class="demo">
+<div class="transform-row">
+<div class="transform-sample move" tabindex="0">translateY()</div>
+<div class="transform-sample rotate" tabindex="0">rotate()</div>
+<div class="transform-sample scale" tabindex="0">scale()</div>
+</div>
+<p class="demo-instructions">Hover over a box or focus it with the keyboard (Tab). The change is immediate: no transition has been defined.</p>
+</div>
+<p class="checkpoint"><strong>Prediction:</strong> if the left box moves upwards, do the other boxes move to fill the space? Inspect the layout and then check the result in the browser.</p>
+<div class="warning"><strong>Distinguish two ideas:</strong> <code>translateY(-8px)</code> visually moves the element; changing <code>margin-top</code> may affect layout. Both can change what you see, but they work differently.</div>
+
+<h2 id="transitions">3. Transitions: change between two states</h2>
+<p>Without a transition, a style change from <code>:hover</code> normally appears immediately. A CSS <strong>transition</strong> tells the browser to interpolate supported property values over a specified duration.</p>
+<div class="example"><h3>First: instant color change</h3><pre><code>.archive-card {
+    background-color: #e9f3fb;
+}
+
+.archive-card:hover {
+    background-color: #cfe8fb;
+}</code></pre></div>
+<div class="example"><h3>Then: tell the browser how to transition</h3><pre><code>.archive-card {
+    background-color: #e9f3fb;
+    transition: background-color 250ms ease;
+}
+
+.archive-card:hover {
+    background-color: #cfe8fb;
+}</code></pre></div>
+<p>Put the <code>transition</code> on the element's normal rule, not only on <code>:hover</code>, so that it works when the pointer enters <em>and</em> leaves.</p>
+<table>
+<thead><tr><th>Part</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td><code>background-color</code></td><td>The CSS property that changes gradually.</td></tr>
+<tr><td><code>250ms</code></td><td>Duration: 250 milliseconds (0.25 seconds).</td></tr>
+<tr><td><code>ease</code></td><td>Timing function: a non-linear change of speed.</td></tr>
+<tr><td>Optional delay</td><td>Wait before starting the transition (often unnecessary).</td></tr>
+</tbody></table>
+<div class="example"><h3>Combine the transition with a small transform</h3><pre><code>.archive-card {
+    transition:
+        background-color 250ms ease,
+        transform 250ms ease,
+        box-shadow 250ms ease;
+}
+
+.archive-card:hover,
+.archive-card:focus-visible {
+    background-color: #cfe8fb;
+    transform: translateY(-6px);
+    box-shadow: 0 9px 20px rgb(0 0 0 / 0.18);
+}</code></pre></div>
+<div class="demo">
+<a class="archive-link" href="#practice"><strong>Manuscripts</strong><span>Explore the archive · try hover or keyboard focus</span></a>
+<p class="demo-instructions">This is a real link to the practice section. Inspect the transition in DevTools, then try changing 250ms to 1s in a copy of the example.</p>
+</div>
+<div class="note"><strong>Easing:</strong> compare <code>linear</code>, <code>ease</code>, <code>ease-in</code>, <code>ease-out</code>, and <code>ease-in-out</code>. The timing function changes the progression, not the final style.</div>
+<p class="checkpoint"><strong>Debugging checkpoint:</strong> temporarily remove the <code>transition</code> declaration and test again. Restore it, then remove <code>transform</code> from the hover rule. Which change controls the movement, and which controls its smoothness?</p>
+
+<h2>4. Transition or transform?</h2>
+<table>
+<thead><tr><th>CSS concept</th><th>What it does</th><th>Typical usage</th></tr></thead>
+<tbody>
+<tr><td><code>transform</code></td><td>Alters how the element is rendered.</td><td>Move or slightly enlarge a card.</td></tr>
+<tr><td><code>transition</code></td><td>Animates a change between property values.</td><td>Make hover/focus feedback gradual.</td></tr>
+<tr><td><code>:hover</code>, <code>:focus-visible</code></td><td>Select elements in a particular interaction state.</td><td>Specify <em>when</em> different styles apply.</td></tr>
+</tbody></table>
+<p>These features work together but are not interchangeable. A transition can animate a changing color without any transform, and a transform can apply immediately without any transition.</p>
+
+<h2 id="animations">5. Keyframe animations: describe a sequence</h2>
+<p>Unlike a transition that interpolates a change between states, a CSS <strong>animation</strong> can run through a named sequence of keyframes. The sequence may run automatically, repeat, or be activated by a CSS state.</p>
+<div class="example"><h3>A simple entrance for an archive record</h3><pre><code>@keyframes reveal-record {
+    from {
+        opacity: 0;
+        transform: translateX(-35px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.archive-card {
+    animation: reveal-record 800ms ease-out both;
+}</code></pre></div>
+<p><code>from</code> means 0% of the animation and <code>to</code> means 100%. Additional stops such as <code>50%</code> are possible. Here <code>both</code> is an <code>animation-fill-mode</code> value: styles from the keyframes can apply before and after execution as appropriate.</p>
+<div class="demo">
+<div class="keyframe-stage" tabindex="0" aria-label="Keyframe animation demonstration: hover or focus to play">
+<div class="keyframe-slip">Archive record appears →</div>
+</div>
+<p class="demo-instructions">Hover or keyboard-focus the dashed demonstration area to replay the movement. The demo uses a CSS state as the trigger, not JavaScript.</p>
+</div>
+<div class="example"><h3>Other animation controls to recognize</h3><pre><code>.archive-card {
+    animation-name: reveal-record;
+    animation-duration: 800ms;
+    animation-timing-function: ease-out;
+    animation-delay: 200ms;
+    animation-iteration-count: 1;
+    animation-fill-mode: both;
+}</code></pre></div>
+<p>The shorthand <code>animation: reveal-record 800ms ease-out both</code> combines common settings. Use <code>animation-iteration-count: infinite</code> only when genuinely justified; repeating movement can be distracting.</p>
+<p class="checkpoint"><strong>Prediction:</strong> what changes if the second keyframe uses <code>translateX(60px)</code> rather than <code>translateX(0)</code>? What happens if the duration is doubled?</p>
+
+<h2>6. Choosing between transitions and animations</h2>
+<table>
+<thead><tr><th>Question</th><th>Transition</th><th>Keyframe animation</th></tr></thead>
+<tbody>
+<tr><td>Needs a style change, such as hover?</td><td>Usually yes</td><td>Not necessarily</td></tr>
+<tr><td>Defines intermediate stages explicitly?</td><td>No</td><td>Yes: <code>@keyframes</code></td></tr>
+<tr><td>Can start on initial page rendering?</td><td>Not by itself for ordinary initial styles</td><td>Yes</td></tr>
+<tr><td>Good for simple button/card feedback?</td><td>Usually the simpler choice</td><td>Often unnecessary</td></tr>
+</tbody></table>
+<div class="note"><strong>Performance idea:</strong> animations using <code>transform</code> and <code>opacity</code> are often easier for the browser to optimize than animations that repeatedly change layout-related properties. Avoid motion that serves no useful purpose.</div>
+
+<h2>7. Accessible motion: respect user preferences</h2>
+<p>Some people prefer less visual movement. Operating systems can communicate this preference to the browser. CSS provides the media feature <code>prefers-reduced-motion</code>.</p>
+<div class="example"><h3>Remove nonessential movement when requested</h3><pre><code>@media (prefers-reduced-motion: reduce) {
+    .archive-card {
+        transition: none;
+        animation: none;
+    }
+}</code></pre></div>
+<p>This is the same <code>@media</code> mechanism used for responsive layout, but it responds to a user preference rather than viewport width. Not all motion must always be removed: retain information and feedback while reducing unnecessary movement.</p>
+<p class="checkpoint"><strong>Inspection:</strong> in Developer Tools, find the CSS media emulation controls (browser support varies) and emulate reduced motion. Check that the example remains usable even when the transition or animation is disabled.</p>
+<div class="warning"><strong>Accessibility rule:</strong> do not rely only on a hover animation to communicate essential information. Keyboard focus must remain visible, and the interface must make sense without animation.</div>
+
+<h2 id="frameworks">8. External CSS libraries: what are we importing?</h2>
+<p>A CSS library distributes styles written by someone else. A framework usually offers a broader set of reusable conventions, utilities, and components. The browser still interprets CSS; the framework does not replace the browser's layout engine.</p>
+<div class="cards">
+<section class="card"><h3>Bootstrap</h3><p>Ready-made component styles and utilities, useful for quickly assembling conventional interfaces.</p></section>
+<section class="card"><h3>Tailwind CSS</h3><p>A utility-first approach: compose many small classes directly in HTML to create a design.</p></section>
+<section class="card"><h3>Animate.css</h3><p>A specialized library providing predefined CSS animations via class names.</p></section>
+</div>
+<p>There are also smaller libraries and alternatives, including Bulma and Hover.css. We will recognize the main approaches, not attempt to learn an additional framework in one session.</p>
+
+<h2>9. Bootstrap: components and utility classes</h2>
+<p>Bootstrap provides conventional styles for buttons, cards, forms, navigation, and responsive layouts. Its <code>btn</code> and <code>btn-primary</code> classes are meaningful because Bootstrap supplies the corresponding CSS rules.</p>
+<div class="example"><h3>Bootstrap 5.3: CSS link in the document head</h3><pre><code>&lt;link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+    crossorigin="anonymous"
+&gt;</code></pre></div>
+<div class="example"><h3>Bootstrap component example</h3><pre><code>&lt;button class="btn btn-primary"&gt;
+    Explore archive
+&lt;/button&gt;</code></pre></div>
+<p>The class names are not built into HTML. Remove the Bootstrap stylesheet and they no longer create Bootstrap's visual appearance. Many Bootstrap interactive components also use JavaScript; a styled button does not require the Bootstrap JavaScript bundle.</p>
+<p class="checkpoint"><strong>DevTools exercise:</strong> inspect a Bootstrap button in an independent demo page. Which rules come from the external stylesheet? What happens when you disable that stylesheet in the Network or Styles panel?</p>
+
+<h2>10. Tailwind CSS: utilities rather than predefined components</h2>
+<p>Tailwind emphasizes composing small, single-purpose classes. The classes often correspond closely to CSS concepts you already know: spacing, background colors, typography, borders, and responsive variants. This is commonly described as <strong>utility-first CSS</strong>, related to the broader idea of atomic CSS.</p>
+<div class="example"><h3>Tailwind 4: browser playground setup (development only)</h3><pre><code>&lt;script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"&gt;&lt;/script&gt;</code></pre></div>
+<div class="example"><h3>Tailwind button: styling composed in class attributes</h3><pre><code>&lt;button class="bg-blue-600 text-white px-4 py-2 rounded"&gt;
+    Explore archive
+&lt;/button&gt;</code></pre></div>
+<p>Compare the classes with their rough underlying CSS ideas: <code>bg-blue-600</code> chooses a background color; <code>text-white</code> sets text color; <code>px-4</code> and <code>py-2</code> set horizontal and vertical padding; <code>rounded</code> sets a border radius.</p>
+<div class="warning"><strong>Current setup matters:</strong> Tailwind 4's Play CDN is for experimenting in the browser, <em>not</em> the recommended production workflow. Tailwind's normal workflow generates CSS from the classes used in the project. We do not need to install a build tool for this course.</div>
+
+<h2>11. Same task, three styling approaches</h2>
+<table>
+<thead><tr><th>Approach</th><th>Typical code</th><th>Trade-off</th></tr></thead>
+<tbody>
+<tr><td>Vanilla CSS</td><td><code>.archive-button { ... }</code></td><td>Full control; you write and maintain the rules.</td></tr>
+<tr><td>Bootstrap</td><td><code>class="btn btn-primary"</code></td><td>Fast conventions; appearance and framework dependency come with them.</td></tr>
+<tr><td>Tailwind</td><td><code>class="bg-blue-600 px-4 ..."</code></td><td>Composable styling; HTML can accumulate many utility classes.</td></tr>
+</tbody></table>
+<div class="demo">
+<p><strong>A familiar button appearance</strong> (drawn here by the lecture's own CSS, not by Bootstrap or Tailwind):</p>
+<span class="sample-button">Explore archive</span>
+</div>
+<p>One approach is not universally best. Selection depends on team conventions, design requirements, maintainability, performance, and project setup. For our course, we continue using vanilla CSS to understand the platform.</p>
+<div class="note"><strong>Important:</strong> this lecture page intentionally does not load Bootstrap or Tailwind. Their global styles would interfere with our own course styles. Copy the CDN examples into a separate experimental HTML file if you want to compare the live results.</div>
+
+<h2>12. A small specialized library: Animate.css</h2>
+<p>Animate.css provides ready-made keyframe animations. It offers a clear demonstration of the idea that an external stylesheet can attach animation behavior to class names.</p>
+<div class="example"><h3>Example: load Animate.css and add its classes</h3><pre><code>&lt;link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"&gt;
+
+&lt;div class="animate__animated animate__fadeIn"&gt;
+    Newly added record
+&lt;/div&gt;</code></pre></div>
+<p>A predefined class is convenient, but inspect what it does. Unnecessary animation, large dependencies, and conflicts with existing styles are possible. The same small effect may be easy to write directly using <code>@keyframes</code>.</p>
+
+<h2>13. Modern CSS: the platform continues to evolve</h2>
+<p>CSS frameworks are important, but modern browsers have also gained capabilities that once often required workarounds or additional tools. These topics are for recognition and later exploration, not extra required syntax for Week 8.</p>
+<table>
+<thead><tr><th>Feature</th><th>What it helps with</th><th>Connection to earlier weeks</th></tr></thead>
+<tbody>
+<tr><td>CSS custom properties (<code>--accent</code>, <code>var()</code>)</td><td>Reusable color, spacing, and theme values</td><td>Week 4 colors and cascade</td></tr>
+<tr><td>Native CSS nesting</td><td>Organizing related rules</td><td>Week 4 selectors</td></tr>
+<tr><td><code>:has()</code></td><td>Styling based on related elements</td><td>Week 7 pseudo-classes</td></tr>
+<tr><td>Container queries</td><td>Adapting components to their container, not only the viewport</td><td>Week 6 responsive design</td></tr>
+<tr><td>Cascade layers (<code>@layer</code>)</td><td>Managing competing CSS sources and precedence</td><td>The CSS cascade and frameworks</td></tr>
+<tr><td>View transitions</td><td>Coordinating visual changes between UI states or pages</td><td>Today's transitions and animations</td></tr>
+</tbody></table>
+<div class="example"><h3>One small example of reusable theme variables</h3><pre><code>:root {
+    --archive-accent: #005ea8;
+}
+
+.archive-heading {
+    color: var(--archive-accent);
+}
+
+.archive-link {
+    border-color: var(--archive-accent);
+}</code></pre></div>
+<p>This is ordinary native CSS, not a framework feature. Many modern CSS frameworks also rely on browser-native capabilities.</p>
+
+<h2>14. AI-assisted styling: use it, inspect it, understand it</h2>
+<p>AI coding assistants can suggest visual designs, generate CSS rules, and help explain an unfamiliar stylesheet. They are also capable of producing redundant declarations, incorrect selectors, inaccessible effects, unnecessary dependencies, and code that works only at one screen size.</p>
+<div class="example"><h3>Classroom experiment: give an AI tool a constrained task</h3>
+<div class="explanation"><p><strong>Example prompt:</strong> "Improve the appearance of these digital heritage cards using vanilla CSS only. Keep the existing semantic HTML and responsive Grid layout. Add subtle hover and keyboard-focus feedback. Respect reduced-motion preferences. Explain each CSS rule and do not introduce a framework."</p></div></div>
+<p>Evaluate the result by examining the generated code rather than relying only on a screenshot:</p>
+<ol class="tasks">
+<li>Can you explain every CSS selector and declaration it added?</li>
+<li>Do the new declarations duplicate or conflict with existing rules?</li>
+<li>Does the result work at narrow and wide viewport sizes?</li>
+<li>Are text contrast, keyboard focus, and reduced-motion behavior appropriate?</li>
+<li>Can the same result be achieved with fewer, clearer rules?</li>
+</ol>
+<p class="checkpoint"><strong>Live debugging:</strong> compare a long generated stylesheet with a minimal handwritten version. In DevTools, disable rules one by one and determine which are actually responsible for the desired effect.</p>
+<div class="warning"><strong>Course principle:</strong> using AI does not replace the obligation to understand, test, and explain submitted code. Do not accept invented CSS properties or API names without checking documentation.</div>
+
+<h2>15. A practical workflow for external styles and generated CSS</h2>
+<div class="mini-layout">
+<article><h3>1. Inspect</h3><p>Read the HTML and identify the element or class you want to style.</p></article>
+<article><h3>2. Predict</h3><p>State what rule should produce the intended visible change.</p></article>
+<article><h3>3. Test</h3><p>Use Developer Tools, resize the page, and try keyboard navigation.</p></article>
+<article><h3>4. Simplify</h3><p>Remove unnecessary rules; keep a small comprehensible result.</p></article>
+</div>
+<p>If styles do not work, check whether the stylesheet loaded in the Network panel, whether the selector matches in Elements, and whether another declaration wins in the computed styles. A framework does not remove the need to understand the cascade.</p>
+
+<h2 id="practice">16. Integrated practice: polish a digital heritage collection</h2>
+<p>Start from the responsive archive cards created in Week 7. Do not start a new large site. Improve the existing page incrementally and observe each change in the browser.</p>
+<ol class="tasks">
+<li><strong>Required:</strong> select a collection card and apply a small visual transform on <code>:hover</code>.</li>
+<li><strong>Required:</strong> add a transition to make its color or transform change gradually.</li>
+<li><strong>Required:</strong> ensure a keyboard user can identify the focused card or its link.</li>
+<li><strong>Required:</strong> add a <code>prefers-reduced-motion</code> rule for nonessential effects.</li>
+<li><strong>Required:</strong> use DevTools to find the rule controlling movement and the rule controlling timing.</li>
+<li><strong>Optional:</strong> create a one-time entrance animation using <code>@keyframes</code>.</li>
+<li><strong>Optional:</strong> reproduce one small component in a separate Bootstrap or Tailwind demo file, then explain how it differs from vanilla CSS.</li>
+<li><strong>Optional:</strong> ask an AI assistant to suggest an improvement; retain only code you can justify and test.</li>
+</ol>
+<div class="note"><strong>Completion criterion:</strong> a student can explain which CSS property changes an element, what triggers that change, what controls its timing, and why the page remains usable without motion.</div>
+
+<h2>17. Week 8 review: finish the CSS sequence</h2>
+<ul class="checklist">
+<li>I can distinguish <code>transform</code>, <code>transition</code>, and <code>animation</code>.</li>
+<li>I know how to combine a pseudo-class with a transition.</li>
+<li>I can write a small <code>@keyframes</code> rule.</li>
+<li>I can explain why transitions on the base rule work in both directions.</li>
+<li>I can use <code>prefers-reduced-motion</code> for nonessential effects.</li>
+<li>I recognize Bootstrap's component classes and Tailwind's utility-first classes.</li>
+<li>I understand that imported CSS still follows the cascade and must be debugged.</li>
+<li>I can critically evaluate CSS generated by an AI assistant.</li>
+</ul>
+
+<h2 id="references">18. References and further study</h2>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Transforms/Using" target="_blank" rel="noopener noreferrer">MDN: Using CSS transforms</a> — <code>translate()</code>, <code>rotate()</code>, and <code>scale()</code>.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Transitions/Using" target="_blank" rel="noopener noreferrer">MDN: Using CSS transitions</a> — properties, duration, and easing.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Animations/Using" target="_blank" rel="noopener noreferrer">MDN: Using CSS animations</a> — <code>@keyframes</code> and animation settings.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/%40media/prefers-reduced-motion" target="_blank" rel="noopener noreferrer">MDN: prefers-reduced-motion</a> — accessible motion preferences.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Nesting" target="_blank" rel="noopener noreferrer">MDN: CSS nesting</a> — modern native CSS organization.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment/Container_size_and_style_queries" target="_blank" rel="noopener noreferrer">MDN: Container size and style queries</a> — component-oriented responsiveness.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Cascade_layers" target="_blank" rel="noopener noreferrer">MDN: Cascade layers</a> — managing style precedence.</li>
+<li><a href="https://getbootstrap.com/docs/5.3/getting-started/introduction/" target="_blank" rel="noopener noreferrer">Bootstrap 5.3 documentation</a> — official component framework guide.</li>
+<li><a href="https://tailwindcss.com/docs/installation/play-cdn" target="_blank" rel="noopener noreferrer">Tailwind CSS: Play CDN</a> — browser-only exploration; not for production.</li>
+<li><a href="https://tailwindcss.com/docs/styling-with-utility-classes" target="_blank" rel="noopener noreferrer">Tailwind CSS: Styling with utility classes</a> — understanding the approach.</li>
+<li><a href="https://animate.style/" target="_blank" rel="noopener noreferrer">Animate.css</a> — predefined CSS animation library.</li>
+<li><a href="https://survey.devographics.com/" target="_blank" rel="noopener noreferrer">State of CSS surveys</a> — self-selected developer survey results; interpret carefully.</li>
+<li><a href="https://github.com/ValRCS/web_development_DE0824_fall_2025/blob/main/day8.html" target="_blank" rel="noopener noreferrer">Previous course: Day 8 materials (2025)</a> — historical examples.</li>
+</ul>
+<div class="note"><strong>Next week — Week 9: JavaScript begins.</strong> HTML describes the document, CSS controls its presentation and visual response, and JavaScript adds general-purpose computation and programmable interaction. CSS can highlight a card when hovered; JavaScript will eventually let us filter a collection of records and change the document based on user input.</div>
+</main>
+<footer class="page-footer"><div>
+<p>DE0824 Web Development · Riga Technical University · Week 8</p>
+<p><a href="../../index.html">Course home</a> · <a href="../week07/css_grid.html">Previous: Week 7</a> · <a href="#references">References</a></p>
+</div></footer>
+</body>
+</html>
