@@ -2,3 +2,25 @@ body {
     background-color: #f0f0f0;
     font-family: Arial, sans-serif;
 }
+
+.collections {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+}
+
+.collection {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* let's add hover effect on each .collection
+hover is a pseudo-class meaning 
+when the user hovers over the element */
+.collection:hover {
+    /* transform: scale(1.05);
+    transition: transform 0.3s ease; */
+    background-color: #be1919;
+}
