@@ -6,9 +6,14 @@ body {
 
 .collections {
     display: grid;
-    grid-template-columns: 1fr 2fr 120px;
-    grid-template-rows: 100px 200px;
+    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-rows: 100px 100px 100px;
     gap: 1rem;
+    /* now we can use grid-template-areas to assign names to each area of the grid */
+    grid-template-areas:
+        "manuscript manuscript photographs maps"
+        "newspapers newspapers books books"
+        "letters letters books books";
 }
 
 .collection {
@@ -17,6 +22,31 @@ body {
     border-radius: 5px;
     border: 3px solid #1c38c6;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* lets ass ign grid area to each collection */
+.manuscript {
+    grid-area: manuscript;
+}
+
+.newspapers {
+    grid-area: newspapers;
+}
+
+.photographs {
+    grid-area: photographs;
+}
+
+.maps {
+    grid-area: maps;
+}
+
+.letters {
+    grid-area: letters;
+}
+
+.books {
+    grid-area: books;
 }
 
 /* let's add hover effect on each .collection
@@ -33,8 +63,12 @@ when the user hovers over the element */
 /* we can introduce screen width based media queries to change the layout of the grid */
 @media (max-width: 768px) {
     .collections {
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto;
+        grid-template-columns: 25% 75%;
+        grid-template-rows: 200px 200px 200px;
+        grid-template-areas:
+            "manuscript newspapers"
+            "photographs maps"
+            "letters books";
     }
 
     .collection {
@@ -47,6 +81,13 @@ when the user hovers over the element */
     .collections {
         grid-template-columns: 1fr;
         grid-template-rows: auto;
+        grid-template-areas:
+            "manuscript"
+            "newspapers"
+            "photographs"
+            "maps"
+            "letters"
+            "books";
     }
 
     .collection {
