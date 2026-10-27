@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="RTU DE0824 Week 9: beginner-friendly introduction to JavaScript, the browser Console, variables, types, expressions, and debugging.">
+<title>Week 9: Introduction to JavaScript | DE0824</title>
+<style>
+:root{color-scheme:light;--page:#f7f8fa;--surface:#fff;--text:#172033;--muted:#526078;--accent:#005ea8;--accent-dark:#0f2842;--accent-soft:#e9f3fb;--border:#d9e0e8;--code:#f1f3f6;--code-text:#1b2738;--success-soft:#edf8f1;--warning-soft:#fff8e7;--max-width:1050px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--page);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.65}
+header.page-header{background:var(--accent-dark);color:white;padding:3.25rem 1.25rem 2.75rem}
+header.page-header>div,nav.course-nav>div,main,footer.page-footer>div{width:min(var(--max-width),calc(100% - 2rem));margin:0 auto}
+header.page-header .course{margin:0 0 .5rem;font-size:.95rem;letter-spacing:.04em;text-transform:uppercase}
+header.page-header h1{margin:0;font-size:clamp(2.15rem,5vw,3.6rem);line-height:1.1}
+header.page-header p{max-width:850px;margin-bottom:0;color:#dce8f4;font-size:1.12rem}
+nav.course-nav{border-bottom:1px solid var(--border);background:var(--surface)}
+nav.course-nav>div{display:flex;flex-wrap:wrap;gap:1rem;padding:.85rem 0}
+nav.course-nav a{font-weight:650;text-decoration:none}
+main{padding:2rem 0 4rem}
+h2{margin-top:3rem;padding-bottom:.4rem;border-bottom:2px solid var(--border);font-size:1.75rem;line-height:1.3;scroll-margin-top:1rem}
+h3{margin-top:1.65rem;line-height:1.35}
+a{color:#005a9c}
+a:focus-visible,summary:focus-visible{outline:3px solid #b46a00;outline-offset:3px}
+.lead,.note,.checkpoint,.warning{margin:1.25rem 0;padding:1rem 1.2rem;border-left:5px solid var(--accent);background:var(--surface)}
+.lead{font-size:1.08rem}.checkpoint{background:var(--success-soft)}.warning{border-left-color:#b46a00;background:var(--warning-soft)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1.25rem 0}
+.card,.example,.diagram,.demo,.file-tree,.answer{border:1px solid var(--border);border-radius:.65rem;background:var(--surface)}
+.card{padding:1rem 1.1rem}.card h3{margin-top:0}
+.example{margin:1.25rem 0 1.6rem;overflow:hidden}
+.example h3{margin:0;padding:.8rem 1rem;background:var(--accent-soft);font-size:1.05rem}
+.example .explanation{padding:.9rem 1rem}
+pre{margin:0;padding:1rem;overflow-x:auto;background:var(--code);color:var(--code-text);border-top:1px solid var(--border);line-height:1.5;tab-size:4}
+pre code{font-size:.95rem}
+code{font-family:Consolas,"Courier New",monospace}
+p code,li code,td code,th code,summary code{padding:.08rem .3rem;border-radius:.25rem;background:var(--code)}
+table{width:100%;margin:1rem 0 1.5rem;border-collapse:collapse;background:var(--surface)}
+th,td{padding:.7rem .8rem;border:1px solid var(--border);text-align:left;vertical-align:top}th{background:var(--accent-soft)}
+.diagram,.demo{margin:1.25rem 0;padding:1rem;overflow-x:auto}
+.tasks li,.checklist li{margin-bottom:.65rem}
+footer.page-footer{padding:1.5rem 0 2.5rem;border-top:1px solid var(--border);background:var(--surface);color:var(--muted)}
+/* A native CSS diagram, not a required image file. */
+.platform-overview{margin:0 0 1.75rem;border:1px solid var(--border);border-radius:.65rem;padding:1.3rem;background:var(--surface)}
+.platform-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.85rem}
+.platform-tile{padding:1.3rem .9rem;border:1px solid #b9d5ea;border-radius:.55rem;background:var(--accent-soft);text-align:center}
+.platform-tile strong{display:block;font-size:1.2rem;color:#113b5c}
+.platform-tile span{display:block;color:var(--muted);font-size:.93rem}
+.platform-tile.javascript{background:#fff4c9;border-color:#d5b65b}
+.platform-tile.javascript strong{color:#614900}
+.platform-arrow{text-align:center;font-size:1.5rem;line-height:1.4;color:#667993}
+.platform-browser{border:1px dashed #8998ab;border-radius:.5rem;padding:.8rem 1rem;background:#f6f9fc;text-align:center}
+.platform-browser strong{display:block}
+.platform-browser span{font-size:.91rem;color:var(--muted)}
+.demo-console{margin:1.2rem 0;border:1px solid #405064;border-radius:.65rem;overflow:hidden;background:#1b2738;color:#ecf3fc}
+.console-title{padding:.55rem .8rem;background:#35445a;color:#fff;font-size:.9rem;font-weight:700}
+.demo-console pre{border:0;background:#1b2738;color:#e8eef8;margin:0}
+.console-prompt{color:#98d6ff}
+.console-result{color:#b7e4c7}
+.file-tree{margin:1.25rem 0;padding:1rem 1.2rem;max-width:470px}
+.file-tree p{margin:.25rem 0;font-family:Consolas,"Courier New",monospace}
+.file-tree .indent{padding-left:1.6rem}
+.small{font-size:.93rem;color:var(--muted)}
+.flow-line{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.8rem}
+.flow-box{min-width:120px;text-align:center;padding:.7rem 1rem;border:1px solid #b9d5ea;border-radius:.4rem;background:#e9f3fb;font-weight:650}
+.flow-arrow{font-size:1.25rem;font-weight:700;color:#4f708a}
+.answer{padding:.7rem 1rem;margin:.75rem 0}
+.answer summary{cursor:pointer;font-weight:700}
+.answer p{margin:.55rem 0 0}
+.preview-output{padding:1rem;border:2px solid #b9d5ea;border-radius:.5rem;background:#f5fbff;font-weight:650}
+@media(max-width:650px){table{display:block;max-width:100%;overflow-x:auto;font-size:.92rem}th,td{padding:.55rem}.platform-row{grid-template-columns:1fr}.flow-line{flex-direction:column}.flow-arrow{transform:rotate(90deg)}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header class="page-header"><div>
+<p class="course">DE0824 Web Development · Week 9</p>
+<h1>Introduction to JavaScript</h1>
+<p>From static pages to programming: write your first browser-based instructions, work with values and variables, perform calculations, and learn to read the Console.</p>
+</div></header>
+<nav class="course-nav" aria-label="Course navigation"><div>
+<a href="../../index.html">Course home</a>
+<a href="../week08/css_advanced.html">Week 8 CSS</a>
+<a href="#console">Browser Console</a>
+<a href="#variables">Variables</a>
+<a href="#types">Data types</a>
+<a href="#practice">Practice</a>
+<a href="#references">References</a>
+</div></nav>
+<main>
+<section class="platform-overview" aria-label="Three core Web technologies">
+<div class="platform-row">
+<div class="platform-tile"><strong>HTML</strong><span>Content and structure</span></div>
+<div class="platform-tile"><strong>CSS</strong><span>Appearance and layout</span></div>
+<div class="platform-tile javascript"><strong>JavaScript</strong><span>Computation and behavior</span></div>
+</div>
+<div class="platform-arrow" aria-hidden="true">↓</div>
+<div class="platform-browser"><strong>One webpage in the browser</strong><span>HTML is parsed into a document (DOM); CSS styles it; JavaScript executes instructions and can use browser APIs.</span></div>
+</section>
+<p class="lead"><strong>Week 9 goal:</strong> understand what JavaScript does, execute basic code in the browser, attach a <code>.js</code> file to HTML, use <code>let</code> and <code>const</code>, recognize common data types, calculate expressions, and diagnose simple mistakes with Developer Tools.</p>
+<p class="note"><strong>Connection to Weeks 1–8:</strong> HTML described our archive records, and CSS arranged and styled them. JavaScript adds the ability to calculate and make decisions. Today we focus on <strong>the fundamentals of programming</strong>; substantial DOM manipulation and event handling come later.</p>
+
+<h2>1. Why introduce a programming language?</h2>
+<p>Imagine a digital archive page listing historical newspapers. With HTML, we mark up the records; with CSS, we organize them into responsive cards. What if we also need to count the records, calculate an average, check whether an item matches a query, or update the results when someone selects a filter?</p>
+<div class="cards">
+<section class="card"><h3>HTML answers: What is here?</h3><p>Headings, text, links, forms, and document structure.</p></section>
+<section class="card"><h3>CSS answers: How does it look?</h3><p>Colors, typography, spacing, layout, hover effects, and animation.</p></section>
+<section class="card"><h3>JavaScript answers: What happens?</h3><p>Calculations, stored values, decisions, repeated operations, and programmable interaction.</p></section>
+</div>
+<p><strong>JavaScript</strong> is a general-purpose programming language that browsers can execute. It was first created in 1995 at Netscape by Brendan Eich; its standardized language specification is known as <strong>ECMAScript</strong>. Despite their names, JavaScript and Java are distinct languages. JavaScript also runs in environments outside web browsers.</p>
+<p>A useful distinction for the rest of this course: JavaScript is a <em>language</em>; the <strong>DOM</strong> and methods such as <code>document.querySelector()</code> belong to <em>browser APIs</em> used from JavaScript. We will return to this distinction when we begin changing pages with code.</p>
+<p class="checkpoint"><strong>Discuss:</strong> Is changing a card's color on hover necessarily a JavaScript task? No: CSS already supports this. Is calculating the average number of pages across a collection a natural JavaScript task? Yes.</p>
+
+<h2 id="console">2. First steps: the browser Console</h2>
+<p>Open this page in a browser, press <kbd>F12</kbd> (or use the browser menu to open <strong>Developer Tools</strong>), and select <strong>Console</strong>. The Console can evaluate JavaScript you type and display diagnostic messages. You may need to enable pasting in the Console if the browser protects against unexpected pasted code; for this exercise, type the short examples yourself.</p>
+<div class="example"><h3>Try one line at a time</h3>
+<pre><code>2 + 3
+10 * 4
+"Riga"
+"Digital" + " Humanities"
+console.log("Hello, JavaScript!");</code></pre>
+<div class="explanation"><strong>Observe:</strong> the Console may display the value of an entered expression. <code>console.log()</code> explicitly prints a message; its own return value is <code>undefined</code>, which some consoles show after the message.</div>
+</div>
+<div class="demo-console" aria-label="Illustrative browser console output"><div class="console-title">Console — illustrative output</div><pre><code><span class="console-prompt">&gt;</span> 2 + 3
+<span class="console-result">5</span>
+<span class="console-prompt">&gt;</span> "Digital" + " Humanities"
+<span class="console-result">'Digital Humanities'</span>
+<span class="console-prompt">&gt;</span> console.log("Hello, JavaScript!")
+Hello, JavaScript!
+<span class="console-result">undefined</span></code></pre></div>
+<p><strong>Three new words:</strong> a <em>value</em> is data such as <code>5</code> or <code>"Riga"</code>; an <em>expression</em> is code evaluated to produce a value, such as <code>2 + 3</code>; a <em>statement</em> is an instruction or declaration, such as <code>const count = 5;</code>. A program consists of JavaScript code that is executed according to the language's rules.</p>
+<p class="checkpoint"><strong>Predict, then test:</strong> what is the result of <code>10 + 5 * 2</code>? What changes when you use <code>(10 + 5) * 2</code>? Parentheses can change the order of operations.</p>
+
+<h2>3. JavaScript inside an HTML page</h2>
+<p>Like CSS, JavaScript may be included directly in an HTML document or placed in its own file. For our live coding, prefer <strong>two small files</strong>: one for the HTML document and one for JavaScript.</p>
+<div class="file-tree" aria-label="Recommended file structure"><p>📁 week09/</p><p class="indent">📄 index.html</p><p class="indent">📄 script.js</p></div>
+<div class="example"><h3>File 1: <code>index.html</code></h3>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;My First JavaScript&lt;/title&gt;
+    &lt;script src="script.js" defer&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Learning JavaScript&lt;/h1&gt;
+    &lt;p&gt;Open the browser Console!&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>
+<div class="example"><h3>File 2: <code>script.js</code></h3>
+<pre><code>// My first JavaScript file
+console.log("My JavaScript file is running!");</code></pre>
+</div>
+<p>The <code>&lt;script&gt;</code> element references the JavaScript file using <code>src</code>, a path relative to the HTML document. The <code>defer</code> attribute tells the browser to download this classic external script without blocking HTML parsing and execute it after the document has been parsed, before <code>DOMContentLoaded</code>. We will use this pattern in later lessons.</p>
+<p>JavaScript may also be written directly between <code>&lt;script&gt;</code> and <code>&lt;/script&gt;</code> tags, but separating it from the HTML usually makes our examples easier to read and maintain.</p>
+<p class="checkpoint"><strong>Live-coding checkpoint:</strong> create both files, open the HTML file in the browser, inspect the Console, and then change the message in <code>script.js</code>. Reload the page. Do you see the new message?</p>
+<p class="warning"><strong>Common problem:</strong> if <code>script.js</code> is actually named <code>scripts.js</code>, the file cannot be loaded. Inspect the <strong>Console</strong> or <strong>Network</strong> panel and check the filename and relative path. If Developer Tools show unrelated page-extension warnings, focus first on errors tied to your files.</p>
+
+<h2 id="variables">4. Values, variables, and constants</h2>
+<p>Programs frequently need to remember information. A <strong>variable</strong> is a named binding that gives us a way to refer to a value. Choose names that convey meaning rather than using <code>x</code> everywhere.</p>
+<div class="example"><h3>An archive record count</h3>
+<pre><code>const collectionName = "Historical Photographs";
+let recordCount = 12;
+
+console.log(collectionName);
+console.log(recordCount);
+
+recordCount = 15;
+console.log(recordCount); // 15</code></pre>
+</div>
+<table><thead><tr><th>Syntax</th><th>Meaning</th><th>When to use</th></tr></thead><tbody>
+<tr><td><code>const collectionName = "Maps";</code></td><td>Declare a binding and initialize it. It cannot be reassigned.</td><td>Preferred when reassignment is not needed.</td></tr>
+<tr><td><code>let recordCount = 12;</code></td><td>Declare a binding whose value can be reassigned.</td><td>When a value is expected to change.</td></tr>
+<tr><td><code>recordCount = 15;</code></td><td>Assign a new value to an existing binding.</td><td>Update a variable previously declared with <code>let</code>.</td></tr>
+</tbody></table>
+<p><code>=</code> means <strong>assignment</strong> here, not a mathematical claim that two things are equal. The older <code>var</code> syntax exists, but we will use <code>const</code> and <code>let</code> in our exercises.</p>
+<div class="example"><h3>Why not reassign a constant?</h3>
+<pre><code>const archiveName = "Riga Maps";
+// archiveName = "Riga Photographs"; // Error if uncommented</code></pre>
+<div class="explanation">A <code>const</code> binding cannot be reassigned. It does not mean that an object or array stored in a constant can never be modified; we will examine structured data later.</div>
+</div>
+<p><strong>Names matter:</strong> <code>recordCount</code> and <code>recordcount</code> are different identifiers. Prefer descriptive names such as <code>documentCount</code>, <code>totalPages</code>, and <code>averagePages</code>.</p>
+<p class="checkpoint"><strong>Predict:</strong> What happens if we change <code>let recordCount = 12</code> to <code>const recordCount = 12</code> and leave the later assignment in place? Test and read the error in the Console.</p>
+
+<h2 id="types">5. Data types: not all values are the same</h2>
+<p>JavaScript values have types. The same characters can mean different things depending on how they are written.</p>
+<table><thead><tr><th>Type</th><th>Example</th><th>Explanation</th></tr></thead><tbody>
+<tr><td><strong>number</strong></td><td><code>42</code>, <code>3.14</code></td><td>Ordinary numeric values, with or without a decimal part.</td></tr>
+<tr><td><strong>string</strong></td><td><code>"Riga"</code>, <code>'1920'</code></td><td>Text enclosed in quotation marks.</td></tr>
+<tr><td><strong>boolean</strong></td><td><code>true</code>, <code>false</code></td><td>One of two logical values; useful for conditions later.</td></tr>
+<tr><td><strong>undefined</strong></td><td><code>undefined</code></td><td>A value often found when a variable has been declared but not initialized.</td></tr>
+<tr><td><strong>null</strong></td><td><code>null</code></td><td>An intentionally specified absence of a value.</td></tr>
+</tbody></table>
+<div class="example"><h3>Inspect values with <code>typeof</code></h3>
+<pre><code>console.log(typeof 42);       // "number"
+console.log(typeof "42");     // "string"
+console.log(typeof true);     // "boolean"
+
+const publicationYear = 1920;
+const yearAsText = "1920";
+console.log(typeof publicationYear);
+console.log(typeof yearAsText);</code></pre>
+</div>
+<p>JavaScript is <strong>dynamically typed</strong>: a binding declared with <code>let</code> can later refer to a value of a different type. This flexibility also means programmers must pay attention to the types involved in expressions.</p>
+<p class="note"><strong>Good to know, not needed today:</strong> JavaScript also has arrays, objects, <code>bigint</code>, <code>symbol</code>, and other behaviors surrounding types. We will study collections and objects near the end of the course. The surprising <code>typeof null === "object"</code> result is a historical language quirk, not something to memorize this week.</p>
+
+<h2>6. Arithmetic and expressions</h2>
+<p>An <strong>operator</strong> combines or transforms values. Start with arithmetic that works much like familiar mathematics.</p>
+<table><thead><tr><th>Operator</th><th>Meaning</th><th>Example result</th></tr></thead><tbody>
+<tr><td><code>+</code></td><td>Addition (or string concatenation)</td><td><code>10 + 3</code> → <code>13</code></td></tr>
+<tr><td><code>-</code></td><td>Subtraction</td><td><code>10 - 3</code> → <code>7</code></td></tr>
+<tr><td><code>*</code></td><td>Multiplication</td><td><code>10 * 3</code> → <code>30</code></td></tr>
+<tr><td><code>/</code></td><td>Division</td><td><code>10 / 4</code> → <code>2.5</code></td></tr>
+<tr><td><code>%</code></td><td>Remainder</td><td><code>10 % 3</code> → <code>1</code></td></tr>
+<tr><td><code>**</code></td><td>Exponentiation</td><td><code>2 ** 3</code> → <code>8</code></td></tr>
+</tbody></table>
+<div class="example"><h3>Compute a collection statistic</h3>
+<pre><code>const totalPages = 240;
+const documentCount = 8;
+const averagePages = totalPages / documentCount;
+
+console.log("Average pages:", averagePages); // 30
+console.log("Extra pages:", totalPages % 7); // 2</code></pre>
+</div>
+<p>Expressions are evaluated according to operator precedence, so multiplication normally happens before addition. Parentheses make the intended calculation explicit.</p>
+<div class="example"><h3>Operator precedence</h3>
+<pre><code>console.log(10 + 5 * 2);   // 20
+console.log((10 + 5) * 2); // 30</code></pre>
+</div>
+<p class="checkpoint"><strong>Predict and change:</strong> try different values for <code>totalPages</code> and <code>documentCount</code>. What changes in <code>averagePages</code>? What happens if you divide 240 by 0? JavaScript numbers can also represent <code>Infinity</code>; this is a value, not a thrown exception.</p>
+
+<h2>7. Strings and the meaning of <code>+</code></h2>
+<p>The plus operator has more than one use. If string concatenation is involved, it can combine text rather than add numbers. This is one of the first behaviors that new programmers need to recognize.</p>
+<div class="example"><h3>Three similar-looking expressions</h3>
+<pre><code>console.log(10 + 5);           // 15
+console.log("10" + 5);         // "105"
+console.log(Number("10") + 5); // 15</code></pre>
+<div class="explanation"><strong>Why?</strong> <code>"10"</code> is a string, not a number. The function <code>Number()</code> can convert a numeric string into a number, but not all text can be converted successfully.</div>
+</div>
+<div class="example"><h3>Build a message using values</h3>
+<pre><code>const city = "Riga";
+const recordCount = 15;
+
+console.log(city + " archive: " + recordCount + " records");
+
+// Template literals use backticks (optional for Week 9):
+console.log(`${city} archive: ${recordCount} records`);</code></pre>
+</div>
+<p>For now, either form is acceptable. The important idea is that text and numbers are different types even when they look similar on the screen. Later, this distinction will matter when reading values from HTML form inputs.</p>
+<p class="checkpoint"><strong>Check your understanding:</strong> what does <code>"5" + "5"</code> produce? What does <code>5 + 5</code> produce? Use <code>typeof</code> on both results.</p>
+
+<h2>8. Comments and readable programs</h2>
+<p>Comments help readers understand the purpose of code. JavaScript ignores comments during execution.</p>
+<div class="example"><h3>Single-line and multi-line comments</h3>
+<pre><code>// Number of catalogued manuscripts
+const manuscriptCount = 25;
+
+/* This calculation estimates the number of pages
+   when each manuscript contains 12 pages. */
+const estimatedPages = manuscriptCount * 12;
+
+console.log(estimatedPages);</code></pre>
+</div>
+<p>Use comments to clarify <em>why</em> something is done. Good variable names often eliminate the need for comments that merely repeat the code. Indentation and consistent spacing also make a program easier to follow.</p>
+
+<h2>9. A simple debugging method</h2>
+<p>Code frequently fails when learning. A useful debugging process is: <strong>observe the result → read the message → identify the line → formulate a cause → make one change → run again</strong>. Do not immediately rewrite the entire program.</p>
+<div class="diagram" aria-label="Debugging sequence"><div class="flow-line"><span class="flow-box">Observe</span><span class="flow-arrow" aria-hidden="true">→</span><span class="flow-box">Locate</span><span class="flow-arrow" aria-hidden="true">→</span><span class="flow-box">Explain</span><span class="flow-arrow" aria-hidden="true">→</span><span class="flow-box">Fix &amp; test</span></div></div>
+<table><thead><tr><th>Problem</th><th>Example</th><th>What to investigate</th></tr></thead><tbody>
+<tr><td><strong>SyntaxError</strong></td><td><code>console.log("Riga);</code></td><td>Unclosed quotation mark: the source is not valid JavaScript syntax.</td></tr>
+<tr><td><strong>ReferenceError</strong></td><td><code>console.log(documentCountt);</code></td><td>Misspelled or undeclared identifier. Compare exact names and capitalization.</td></tr>
+<tr><td><strong>TypeError</strong></td><td><code>const n = 5; n = 6;</code></td><td>Attempted reassignment of a constant binding.</td></tr>
+<tr><td><strong>Wrong result, no exception</strong></td><td><code>"10" + 5</code> produces <code>"105"</code></td><td>The program executed, but the types or operation do not match the intended computation.</td></tr>
+</tbody></table>
+<p class="checkpoint"><strong>Deliberately break your program:</strong> introduce one mistake, read the complete browser error (including the source line), fix it, and reload. Repeat with a different mistake. Debugging is part of programming, not a separate activity.</p>
+
+<h2>10. One glimpse ahead: JavaScript changes a page</h2>
+<p>So far, almost everything has appeared in the Console. Ultimately, we will use JavaScript to affect the page users see. The following example runs <em>on this lesson page</em>:</p>
+<div class="demo"><p class="preview-output" id="js-preview-output">If this text remains unchanged, the small preview script did not run.</p><p class="small">A single line of JavaScript replaces the text of an existing HTML element after this page is parsed.</p></div>
+<div class="example"><h3>Preview only — we will explain the DOM in Week 12</h3>
+<pre><code>document.querySelector("#js-preview-output").textContent =
+    "JavaScript changed this paragraph after the page loaded!";</code></pre>
+<div class="explanation">In this preview, <code>document.querySelector()</code> finds an element in the HTML document, and <code>textContent</code> updates its text. <strong>Do not memorize the API yet.</strong> Today it is enough to see why JavaScript can make a webpage dynamic.</div></div>
+<p class="note"><strong>Sequence matters:</strong> before studying detailed DOM manipulation and events, we will learn the fundamentals of branching, loops, and functions in the next lessons. Those concepts will make interactive examples easier to explain rather than merely copy.</p>
+
+<h2 id="practice">11. Guided practice: digital collection statistics</h2>
+<p><strong>Required exercise (10–15 minutes).</strong> Begin with the simple two-file project from Section 3. In <code>script.js</code>, store some facts about a digital collection and compute results.</p>
+<div class="example"><h3>Starting point — complete and modify this program</h3>
+<pre><code>const collectionName = "Historical Newspapers";
+let documentCount = 12;
+const pagesPerDocument = 24;
+
+const totalPages = documentCount * pagesPerDocument;
+
+console.log(collectionName);
+console.log("Documents:", documentCount);
+console.log("Estimated pages:", totalPages);</code></pre>
+</div>
+<ol class="tasks">
+<li><strong>Required:</strong> change the collection name and choose meaningful numbers for your collection.</li>
+<li><strong>Required:</strong> calculate another statistic using an arithmetic operator (for example, half the number of documents, or the average pages per document).</li>
+<li><strong>Required:</strong> inspect the types of <code>collectionName</code> and <code>documentCount</code> with <code>typeof</code>.</li>
+<li><strong>Required:</strong> increase <code>documentCount</code> before calculating <code>totalPages</code>, then predict the output before reloading.</li>
+<li><strong>Required:</strong> deliberately misspell a variable and use Developer Tools to locate and correct the error.</li>
+<li><strong>Optional challenge:</strong> assign the page count as a string, such as <code>"24"</code>, and try both multiplication and addition. Explain the differences and use <code>Number()</code> where appropriate.</li>
+</ol>
+<p class="warning"><strong>Important:</strong> A value computed using <code>const totalPages = ...</code> is not automatically recalculated when you later change <code>documentCount</code>. Put the change <em>before</em> the calculation if you want the new value reflected. JavaScript instructions execute; they are not spreadsheet formulas that recalculate themselves.</p>
+<p class="checkpoint"><strong>Completion criterion:</strong> you can explain what each statement does, what values are stored, which expressions are evaluated, why their results have particular types, and where to look when the program does not work.</p>
+
+<h2>12. Check your understanding</h2>
+<p>Predict the result before opening each answer. If unsure, type the code into the Console and compare your explanation with the result.</p>
+<div class="example"><h3>Question A: multiplication and addition</h3><pre><code>console.log(4 + 3 * 2);</code></pre></div>
+<details class="answer"><summary>Show answer A</summary><p><code>10</code>. Multiplication takes precedence over addition: <code>4 + (3 * 2)</code>.</p></details>
+<div class="example"><h3>Question B: reassignment</h3><pre><code>let records = 10;
+records = records + 5;
+console.log(records);</code></pre></div>
+<details class="answer"><summary>Show answer B</summary><p><code>15</code>. The second statement evaluates the old value plus 5, then assigns the result to the same variable.</p></details>
+<div class="example"><h3>Question C: string versus number</h3><pre><code>console.log("7" + 3);
+console.log(typeof ("7" + 3));</code></pre></div>
+<details class="answer"><summary>Show answer C</summary><p><code>"73"</code>, then <code>"string"</code>. The plus operator concatenates when one operand is a string, converting the other operand to text.</p></details>
+<div class="example"><h3>Question D: a common conceptual trap</h3><pre><code>let documents = 5;
+const pages = documents * 10;
+documents = 8;
+console.log(pages);</code></pre></div>
+<details class="answer"><summary>Show answer D</summary><p><code>50</code>, not <code>80</code>. The value of <code>pages</code> was calculated when the second statement executed and does not automatically change afterward.</p></details>
+
+<h2>13. Week 9 summary: what you should know</h2>
+<ul class="checklist">
+<li>I can explain how JavaScript complements HTML and CSS.</li>
+<li>I understand the basic distinction between JavaScript and browser APIs such as the DOM.</li>
+<li>I can open Developer Tools and run simple JavaScript expressions in the Console.</li>
+<li>I know how to connect an external <code>.js</code> file to an HTML page.</li>
+<li>I recognize values, expressions, statements, and assignment.</li>
+<li>I can use <code>const</code> and <code>let</code> and explain when reassignment is allowed.</li>
+<li>I can distinguish a number, a string, and a boolean.</li>
+<li>I can evaluate arithmetic expressions and recognize operator precedence.</li>
+<li>I can explain why <code>10 + 5</code> and <code>"10" + 5</code> produce different results.</li>
+<li>I can use <code>typeof</code> and <code>console.log()</code> to investigate values.</li>
+<li>I can read basic syntax and reference errors instead of guessing randomly.</li>
+</ul>
+
+<h2 id="references">14. References and further learning</h2>
+<div class="cards">
+<section class="card"><h3>Start here — MDN Learn</h3><ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/What_is_JavaScript" target="_blank" rel="noopener noreferrer">What is JavaScript?</a> — an introduction to the language and adding it to HTML.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Variables" target="_blank" rel="noopener noreferrer">Storing information with variables</a> — <code>let</code>, <code>const</code>, names, and values.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Math" target="_blank" rel="noopener noreferrer">Basic math in JavaScript</a> — operators, types, and precedence.</li>
+</ul></section>
+<section class="card"><h3>Further JavaScript reading</h3><ul>
+<li><a href="https://javascript.info/first-steps" target="_blank" rel="noopener noreferrer">JavaScript.info — JavaScript Fundamentals</a> — a structured alternative tutorial.</li>
+<li><a href="https://javascript.info/variables" target="_blank" rel="noopener noreferrer">JavaScript.info — Variables</a> — additional examples.</li>
+<li><a href="https://javascript.info/types" target="_blank" rel="noopener noreferrer">JavaScript.info — Data types</a> — a somewhat more detailed treatment.</li>
+</ul></section>
+<section class="card"><h3>Tools and reference</h3><ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Tools_and_setup/What_are_browser_developer_tools" target="_blank" rel="noopener noreferrer">MDN — Browser developer tools</a> — using the Console and inspecting problems.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide" target="_blank" rel="noopener noreferrer">MDN — JavaScript Guide</a> — broader reference for later weeks.</li>
+</ul></section>
+<section class="card"><h3>Course connection</h3><ul>
+<li><a href="../week08/css_advanced.html">Week 8: CSS motion, libraries, and modern styling</a> — where we left off.</li>
+<li><a href="https://github.com/ValRCS/web_development_DE0824_fall_2025/blob/main/day9.html" target="_blank" rel="noopener noreferrer">Week 9 examples from Fall 2025</a> — historical course materials.</li>
+</ul></section>
+</div>
+<div class="note"><strong>Next week — Week 10:</strong> we will learn comparisons, logical operators, and <code>if</code>/<code>else</code> statements. Once a program can compare values and choose what to do, it becomes much more useful than a fixed sequence of calculations.</div>
+</main>
+<footer class="page-footer"><div>
+<p>DE0824 Web Development · Riga Technical University · DITEF · Week 9</p>
+<p><a href="../../index.html">Course home</a> · <a href="../week08/css_advanced.html">Previous: Week 8</a> · <a href="#references">References</a></p>
+</div></footer>
+<script>
+// Visual preview of DOM manipulation (fully explained in Week 12).
+document.querySelector("#js-preview-output").textContent =
+    "JavaScript changed this paragraph after the page loaded!";
+</script>
+</body>
+</html>
