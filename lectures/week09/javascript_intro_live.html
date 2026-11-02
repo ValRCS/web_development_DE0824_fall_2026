@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Week 9 - JavaScript Introduction Live Coding</title>
     <script src="week9.js" defer></script>
+    <script>
+        // JavaScript code for live coding examples will go here
+        //without defer this would run first, which is generally not what we want, since the DOM is not yet loaded
+        console.log("I am first but no page is ready!");
+    </script>
 </head>
 <body>
     <header>
@@ -18,11 +23,11 @@
     <footer>
         <p>© 2026 RTU DE0824. All rights reserved.</p>
     </footer>
-<script>
+<!-- <script>
     // JavaScript code for live coding examples will go here
     //this is old inline style code, usually we want to use external JS files for better organization and maintainability
     document.body.style.backgroundColor = "rgb(100, 170, 170)";
     console.log("Welcome to the JavaScript Introduction Live Coding session!");
-    </script>
+    </script> -->
 </body>
 </html>
