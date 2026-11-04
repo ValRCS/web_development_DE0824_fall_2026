@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="DE0824 Week 11: JavaScript switch statements, while and for loops, break, continue, and debugging.">
+<title>Week 11: JavaScript Loops and Control Flow | DE0824</title>
+<style>
+:root{--page:#f7f8fa;--surface:#fff;--text:#172033;--muted:#526078;--accent:#005ea8;--dark:#0f2842;--soft:#e9f3fb;--border:#d9e0e8;--code:#f1f3f6}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--page);color:var(--text);font:1rem/1.65 system-ui,sans-serif}
+header{background:var(--dark);color:white;padding:3rem 1rem}header>div,nav>div,main,footer>div{max-width:1050px;margin:auto}header h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.15;margin:.3rem 0}header p{max-width:800px}
+nav{background:white;border-bottom:1px solid var(--border)}nav>div{display:flex;gap:1rem;flex-wrap:wrap;padding:.8rem 1rem}main{padding:1.5rem 1rem 4rem}
+h2{margin-top:3rem;border-bottom:2px solid var(--border);padding-bottom:.3rem;scroll-margin-top:1rem}a{color:#005a9c}
+pre{background:var(--code);padding:1rem;overflow:auto;line-height:1.5;margin:0}code{font-family:Consolas,"Courier New",monospace}p code,li code,td code{background:var(--code);padding:.1rem .25rem}
+.example,.demo,.note,.checkpoint,.warning{background:white;border:1px solid var(--border);border-radius:.55rem;margin:1.2rem 0;padding:1rem}.example{padding:0;overflow:hidden}.example h3{background:var(--soft);margin:0;padding:.7rem 1rem;font-size:1.05rem}.example p{padding:0 1rem}.note,.checkpoint,.warning{border-left:5px solid var(--accent)}.checkpoint{background:#edf8f1}.warning{background:#fff8e7;border-left-color:#b46a00}
+table{border-collapse:collapse;width:100%;background:white}td,th{border:1px solid var(--border);padding:.6rem;text-align:left}th{background:var(--soft)}li{margin:.5rem 0}footer{border-top:1px solid var(--border);background:white;padding:1.5rem 1rem;color:var(--muted)}
+button{font:inherit;padding:.45rem .8rem;margin:.3rem .5rem .3rem 0;background:var(--accent);color:white;border:0;border-radius:.3rem;cursor:pointer}button:disabled{opacity:.55;cursor:not-allowed}button:focus-visible,a:focus-visible{outline:3px solid #b46a00;outline-offset:2px}
+.result{background:var(--soft);padding:.8rem;white-space:pre-line;min-height:3rem}.small{color:var(--muted)}.step-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem}.step-grid>div{background:var(--soft);padding:.65rem;border-radius:.3rem}.step-grid strong{display:block}
+@media(max-width:650px){table{display:block;overflow:auto}.step-grid{grid-template-columns:1fr}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header><div><p>DE0824 Web Development · Week 11</p><h1>JavaScript: Repetition, Loops, and Control Flow</h1><p>From choosing which code runs to repeating instructions: switch statements, while and for loops, early exits, and debugging.</p></div></header>
+<nav aria-label="Course navigation"><div><a href="../../index.html">Course home</a><a href="../week10/javascript_branching.html">Week 10 branching</a><a href="#switch">Switch</a><a href="#while">While</a><a href="#for">For</a><a href="#debugging">Debugging</a><a href="#practice">Practice</a><a href="#references">References</a></div></nav>
+<main>
+<p class="note"><strong>Connection to Weeks 9–10:</strong> You already know variables, expressions, comparisons, Boolean values, and <code>if</code>/<code>else</code>. This week, you will reuse these concepts to control repeated execution. Arrays come in Week 13; functions and introductory DOM events come in Week 12.</p>
+<p class="checkpoint"><strong>Learning goals:</strong> read and write <code>switch</code>, <code>while</code>, <code>do...while</code>, and <code>for</code>; explain a loop's stopping condition; use <code>break</code> and <code>continue</code>; predict output; and diagnose off-by-one and nonterminating loops.</p>
+<h2>1. Why repeat instructions?</h2>
+<p>Imagine checking publication years in a historical newspaper collection. We could write <code>console.log(1918)</code>, then <code>console.log(1919)</code>, and so on. But a program should describe the <em>pattern</em>, not duplicate every instruction. A <strong>loop</strong> repeats a block of code while its controlling condition permits it.</p>
+<p>First, one more way to choose among alternatives: the <code>switch</code> statement.</p>
+<section aria-labelledby="switch"><h2 id="switch">2. Switch: several choices for one value</h2>
+<p>Like Week 10's <code>if...else if</code>, <code>switch</code> selects a branch. It is convenient when comparing one expression with several exact values. Matching uses strict equality semantics (similar to <code>===</code>).</p>
+<div class="example"><h3>Classify an archive document</h3><pre><code>const documentType = "letter";
+switch (documentType) {
+    case "letter":
+        console.log("Correspondence");
+        break;
+    case "newspaper":
+        console.log("Periodical");
+        break;
+    case "book":
+        console.log("Publication");
+        break;
+    default:
+        console.log("Unknown document type");
+}</code></pre></div>
+<p><code>break</code> exits the <code>switch</code>. Without it, execution continues into following cases, even when their labels do not match. The <code>default</code> branch is optional.</p>
+<div class="example"><h3>Intentional case grouping</h3><pre><code>const month = 11;
+switch (month) {
+    case 12:
+    case 1:
+    case 2:
+        console.log("Winter");
+        break;
+    case 3:
+    case 4:
+    case 5:
+        console.log("Spring");
+        break;
+    default:
+        console.log("Another season");
+}</code></pre></div>
+<p class="checkpoint"><strong>Predict:</strong> What happens if you remove <code>break</code> after <code>"Correspondence"</code> in the first example? What if <code>documentType</code> is <code>"map"</code>? Try both in the Console.</p></section>
+<section aria-labelledby="while"><h2 id="while">3. While: repeat while a condition is truthy</h2>
+<p>A <code>while</code> loop checks its condition <em>before</em> each iteration. If it is false initially, the body never runs. An <strong>iteration</strong> is one execution of the loop body.</p>
+<div class="example"><h3>Print a short historical timeline</h3><pre><code>let year = 1918;          // Starting value
+while (year &lt;= 1923) {   // Continue while true
+    console.log(year);
+    year++;              // Change the value
+}
+// Output: 1918, 1919, 1920, 1921, 1922, 1923</code></pre></div>
+<p>The loop needs an initial value, a condition, and a way to make progress toward termination. Here <code>year++</code> is shorthand for <code>year = year + 1</code>. We can also use <code>year += 2</code> to advance by two.</p>
+<p class="warning"><strong>Infinite-loop risk:</strong> if you forget <code>year++</code>, <code>year &lt;= 1923</code> stays true. A tight infinite loop can freeze a browser tab. Read and reason about this error rather than running it unbounded.</p>
+<p class="checkpoint"><strong>Predict:</strong> If <code>year</code> starts at 1925, how many times does the body execute? Change the initial value and check.</p></section>
+<section aria-labelledby="do-while"><h2 id="do-while">4. Do...while: execute first, check afterward</h2>
+<div class="example"><h3>Runs once even when the condition is false</h3><pre><code>let count = 10;
+do {
+    console.log(count);
+    count++;
+} while (count &lt; 5);
+// Output: 10</code></pre></div>
+<p><code>do...while</code> always executes its body at least once. It is less common than <code>for</code> and <code>while</code>, but useful when the first action must happen before checking whether to repeat.</p></section>
+<section aria-labelledby="for"><h2 id="for">5. For: a compact counter-controlled loop</h2>
+<p>A <code>for</code> loop places three pieces together: <strong>initialization</strong> (once), <strong>condition</strong> (before each iteration), and <strong>update</strong> (after each completed iteration).</p>
+<div class="example"><h3>Same timeline with for</h3><pre><code>for (let year = 1918; year &lt;= 1923; year++) {
+    console.log(year);
+}</code></pre></div>
+<table><thead><tr><th>Part</th><th>Example</th><th>When it happens</th></tr></thead><tbody><tr><td>Initialize</td><td><code>let year = 1918</code></td><td>Once, before the loop</td></tr><tr><td>Condition</td><td><code>year &lt;= 1923</code></td><td>Before each iteration</td></tr><tr><td>Update</td><td><code>year++</code></td><td>After the body, before the next condition check</td></tr></tbody></table>
+<div class="demo"><h3>Step through a for loop</h3><p>Press <strong>Next iteration</strong> to see how the counter changes. The final step shows the failed condition that stops the loop.</p>
+<button type="button" id="next-step">Next iteration</button><button type="button" id="reset-step">Reset</button>
+<div class="step-grid"><div>Counter<strong id="step-year">Not started</strong></div><div>Condition: year ≤ 1923<strong id="step-condition">Not checked</strong></div><div>Status<strong id="step-status">Ready</strong></div></div>
+<p><strong>Console output so far:</strong></p><pre id="step-output" aria-live="polite">(none)</pre>
+</div>
+<p class="checkpoint"><strong>Predict:</strong> What changes if the condition is <code>year &lt; 1923</code>? How many iterations occur? Which year is last?</p>
+<p>Use <code>for</code> when a counter and its progression naturally describe the repetition. Use <code>while</code> when continuation depends on a condition that is not necessarily a fixed number of steps. Both can express many of the same algorithms.</p></section>
+<section aria-labelledby="break-continue"><h2 id="break-continue">6. Break and continue: control individual iterations</h2>
+<p>Inside a loop, <code>break</code> exits the loop immediately. <code>continue</code> skips the rest of the current iteration and proceeds toward the next one. In a <code>for</code> loop, its update expression still runs.</p>
+<div class="example"><h3>Skip a year and stop early</h3><pre><code>for (let year = 1918; year &lt;= 1925; year++) {
+    if (year === 1920) {
+        continue; // Do not print 1920
+    }
+    if (year === 1923) {
+        break;    // Stop before printing 1923
+    }
+    console.log(year);
+}
+// Output: 1918, 1919, 1921, 1922</code></pre></div>
+<p class="warning"><strong>Be careful:</strong> using <code>continue</code> in a <code>while</code> loop before updating its counter may cause a nonterminating loop.</p></section>
+<section aria-labelledby="application"><h2 id="application">7. Practical application: historical dates</h2>
+<p>We can now combine Week 10 conditionals with Week 11 repetition. This example counts years divisible by four in a selected interval. It is an arithmetic exercise, not a complete calendar leap-year rule.</p>
+<div class="example"><h3>Count matching years</h3><pre><code>let matchingYears = 0;
+for (let year = 1900; year &lt;= 1950; year++) {
+    if (year % 4 === 0) {
+        matchingYears++;
+        console.log("Match:", year);
+    }
+}
+console.log("Total:", matchingYears); // 13</code></pre></div>
+<p><code>%</code> returns the remainder. A remainder of zero means that the number is divisible by four. Notice that the counter is declared <em>outside</em> the loop so that its value accumulates across iterations.</p>
+<div class="demo"><h3>See the result on this page</h3><p>This demonstration uses a small amount of DOM code to display output. We will study DOM selection and browser events in detail next week.</p><button id="show-years" type="button">Show matching years (1900–1950)</button><p id="year-results" class="result" aria-live="polite">Click to run the loop.</p></div>
+</section>
+<section aria-labelledby="debugging"><h2 id="debugging">8. Debugging repeated execution</h2>
+<p>Open Developer Tools → <strong>Sources</strong>, set a breakpoint inside a loop, and step through successive iterations. Watch the counter in the Scope panel or use <code>console.log()</code> to inspect values. For script-file examples, remember to reload after editing.</p>
+<table><thead><tr><th>Symptom</th><th>Likely cause</th><th>Investigation</th></tr></thead><tbody><tr><td>One extra result</td><td><code>&lt;=</code> instead of <code>&lt;</code></td><td>Inspect the boundary value.</td></tr><tr><td>No output</td><td>Condition false initially</td><td>Inspect the initial counter and comparison.</td></tr><tr><td>Never stops</td><td>Counter not updated or moves in wrong direction</td><td>Trace whether the condition can become false; do not execute an unbounded example.</td></tr><tr><td>Unexpected extra switch messages</td><td>Missing <code>break</code></td><td>Inspect case fall-through.</td></tr></tbody></table>
+<div class="example"><h3>Find the off-by-one error</h3><pre><code>// Intended: print five values, 0 through 4
+for (let i = 0; i &lt;= 5; i++) {
+    console.log(i);
+}
+// Fix: replace i &lt;= 5 with i &lt; 5</code></pre></div>
+<p class="checkpoint"><strong>Debugging procedure:</strong> predict the result, inspect actual output, identify the first unexpected iteration, change one expression, and test again.</p></section>
+<section aria-labelledby="practice"><h2 id="practice">9. Practice exercises</h2>
+<ol><li><strong>Predict (required):</strong> What does <code>for (let i = 1; i &lt; 5; i += 2) { console.log(i); }</code> print? Explain each step before running it.</li>
+<li><strong>Modify (required):</strong> Print every fifth year from 1900 through 1950 inclusive. Try both <code>for</code> and <code>while</code>.</li>
+<li><strong>Combine (required):</strong> Count years between 1900 and 1950 inclusive that are divisible by four. Predict the total before checking in the Console.</li>
+<li><strong>Optional challenge:</strong> Print years from 1900 onward, skip years divisible by five, and stop before 1940. Use both <code>continue</code> and <code>break</code>.</li></ol>
+<p class="checkpoint"><strong>Self-check:</strong> Can you explain exactly when a loop starts, checks its condition, updates its counter, and stops? Can you explain the difference between <code>break</code> in a <code>switch</code> and in a loop?</p></section>
+<section aria-labelledby="references"><h2 id="references">10. Further reading</h2><ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Loops">MDN — Looping code</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/switch">MDN — switch</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/while">MDN — while</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for">MDN — for</a></li>
+<li><a href="https://javascript.info/while-for">JavaScript.info — while and for</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Test_your_skills/Loops">MDN — Test your skills: Loops</a></li>
+</ul></section>
+</main>
+<footer><div>RTU DE0824 · Week 11 · JavaScript control flow · Next: functions and introductory DOM events</div></footer>
+<script>
+"use strict";
+// Small page demonstrations; DOM and events will be explained in Week 12.
+const years = [1918, 1919, 1920, 1921, 1922, 1923];
+let step = 0;
+const nextButton = document.querySelector("#next-step");
+const stepYear = document.querySelector("#step-year");
+const stepCondition = document.querySelector("#step-condition");
+const stepStatus = document.querySelector("#step-status");
+const stepOutput = document.querySelector("#step-output");
+function renderStep() {
+    stepYear.textContent = step === 0 ? "Not started" : step === 7 ? "1924" : String(years[step - 1]);
+    stepCondition.textContent = step === 0 ? "Not checked" : step === 7 ? "false" : "true";
+    stepStatus.textContent = step === 0 ? "Ready" : step === 7 ? "Finished" : "Iteration " + step + " of 6";
+    stepOutput.textContent = step === 0 ? "(none)" : years.slice(0, Math.min(step, 6)).join("\n");
+    nextButton.disabled = step === 7;
+}
+nextButton.addEventListener("click", function () {
+    if (step < 7) step++;
+    renderStep();
+});
+document.querySelector("#reset-step").addEventListener("click", function () {
+    step = 0;
+    renderStep();
+});
+document.querySelector("#show-years").addEventListener("click", function () {
+    let count = 0;
+    let matches = "";
+    for (let year = 1900; year <= 1950; year++) {
+        if (year % 4 === 0) {
+            count++;
+            matches += (matches ? ", " : "") + year;
+        }
+    }
+    document.querySelector("#year-results").textContent = "Matching years: " + matches + "\nTotal: " + count;
+});
+renderStep();
+</script>
+</body>
+</html>
