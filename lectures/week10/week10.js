@@ -44,6 +44,7 @@ Is it raining? ${isItRaining}
 
 //we can get Boolean variables from operations
 let publicationYear = 1925;
+console.log(`publicationYear: ${publicationYear}`); // 1925
 console.log(`publicationYear > 1900: ${publicationYear > 1900}`);   // true
 console.log(`publicationYear < 1900: ${publicationYear < 1900}`);   // false
 console.log(`publicationYear >= 1925: ${publicationYear >= 1925}`);  // true
