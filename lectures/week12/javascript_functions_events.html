@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="DE0824 Week 12: JavaScript functions, the DOM, click events, and interactive web pages.">
+<title>Week 12: JavaScript Functions, DOM and Events | DE0824</title>
+<style>
+:root{--page:#f7f8fa;--surface:#fff;--text:#172033;--muted:#526078;--accent:#005ea8;--dark:#0f2842;--soft:#e9f3fb;--border:#d9e0e8;--code:#f1f3f6}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--page);color:var(--text);font:1rem/1.65 system-ui,sans-serif}
+header{background:var(--dark);color:white;padding:3rem 1rem}header>div,nav>div,main,footer>div{max-width:1050px;margin:auto}header h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.15;margin:.3rem 0}header p{max-width:800px}
+nav{background:white;border-bottom:1px solid var(--border)}nav>div{display:flex;gap:1rem;flex-wrap:wrap;padding:.8rem 1rem}main{padding:1.5rem 1rem 4rem}
+h2{margin-top:3rem;border-bottom:2px solid var(--border);padding-bottom:.3rem;scroll-margin-top:1rem}a{color:#005a9c}pre{background:var(--code);padding:1rem;overflow:auto;line-height:1.5;margin:0}code{font-family:Consolas,"Courier New",monospace}p code,li code,td code{background:var(--code);padding:.1rem .25rem}
+.example,.demo,.note,.checkpoint,.warning{background:white;border:1px solid var(--border);border-radius:.55rem;margin:1.2rem 0;padding:1rem}.example{padding:0;overflow:hidden}.example h3{background:var(--soft);margin:0;padding:.7rem 1rem;font-size:1.05rem}.example p{padding:0 1rem}.note,.checkpoint,.warning{border-left:5px solid var(--accent)}.checkpoint{background:#edf8f1}.warning{background:#fff8e7;border-left-color:#b46a00}
+table{border-collapse:collapse;width:100%;background:white}td,th{border:1px solid var(--border);padding:.6rem;text-align:left}th{background:var(--soft)}li{margin:.5rem 0}footer{border-top:1px solid var(--border);background:white;padding:1.5rem 1rem;color:var(--muted)}
+button,input{font:inherit;padding:.45rem .8rem;margin:.25rem .5rem .25rem 0}button{background:var(--accent);color:white;border:0;border-radius:.3rem;cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #b46a00;outline-offset:2px}.result{background:var(--soft);padding:.8rem;min-height:2.8rem;white-space:pre-line}.small{color:var(--muted)}.steps{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}.steps span{background:var(--soft);border:1px solid #b6cddd;border-radius:.3rem;padding:.45rem}.record{border:1px solid var(--border);padding:1rem;border-radius:.3rem;background:var(--soft)}.record.selected{border-color:#176e4a;background:#e7f7ee}.hero-placeholder{background:var(--soft);border:1px dashed #a3bed3;padding:1rem;border-radius:.5rem;color:var(--muted)}
+@media(max-width:650px){table{display:block;overflow:auto}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header><div><p>DE0824 Web Development · Week 12</p><h1>JavaScript: Functions, DOM and Events</h1><p>From reusable instructions to interactive web pages: define functions, select HTML elements, and respond to clicks.</p></div></header>
+<nav aria-label="Course navigation"><div><a href="../../index.html">Course home</a><a href="../week11/javascript_loops.html">Week 11 loops</a><a href="#functions">Functions</a><a href="#dom">DOM</a><a href="#events">Events</a><a href="#application">Application</a><a href="#practice">Practice</a><a href="#references">References</a></div></nav>
+<main>
+<!-- Hero image goes here when the Week 12 artwork is committed under img/week12/. -->
+<p class="note"><strong>Connection to Weeks 9–11:</strong> You can already use variables, expressions, <code>if</code> statements and loops. Now we will package instructions into functions and connect JavaScript to the HTML page. Arrays and more detailed input events follow in Week 13.</p>
+<p class="checkpoint"><strong>Learning goals:</strong> define and call functions; distinguish parameters, arguments, and return values; recognize local scope; explain the DOM; select an element with <code>querySelector()</code>; change <code>textContent</code>; register a <code>click</code> handler with <code>addEventListener()</code>; and debug common mistakes.</p>
+<h2>1. From instructions to interactions</h2>
+<p>Previously we ran JavaScript when a page loaded or when we typed code into the Console. A browser can also run our code <em>later</em>, when someone clicks a button. Functions give these instructions names; the DOM gives JavaScript access to the page.</p>
+<div class="steps" aria-label="Interaction sequence"><span>HTML document</span> → <span>DOM</span> → <span>JavaScript selects an element</span> → <span>User clicks</span> → <span>Handler changes DOM</span> → <span>Visible result</span></div>
+<section aria-labelledby="functions"><h2 id="functions">2. Functions: reusable instructions</h2>
+<p>A <strong>function declaration</strong> defines a named block of instructions. Defining it does not run its body. To run it, <strong>call</strong> the function using parentheses.</p>
+<div class="example"><h3>Classify a historical publication</h3><pre><code>function classifyYear(year) {
+    if (year &lt; 1900) {
+        return "Before 1900";
+    } else if (year &lt; 2000) {
+        return "20th century";
+    } else {
+        return "21st century or later";
+    }
+}
+
+console.log(classifyYear(1925)); // 20th century
+console.log(classifyYear(1850)); // Before 1900</code></pre></div>
+<p><code>year</code> in the declaration is a <strong>parameter</strong>; <code>1925</code> in the call is an <strong>argument</strong>. <code>return</code> sends a value back to the caller and ends that function call. This simplified classifier assumes valid positive CE years.</p>
+<div class="example"><h3>Zero, one, or two parameters</h3><pre><code>function announce() {
+    console.log("Archive opened");
+}
+function greet(name) {
+    return "Hello, " + name + "!";
+}
+function addNumbers(a, b) {
+    return a + b;
+}
+
+announce();
+console.log(greet("Marta"));
+console.log(addNumbers(5, 10));</code></pre></div>
+<p><strong>Returning versus printing:</strong> <code>console.log()</code> displays a value in the Console but does not return that value from your function. A function with no explicit <code>return</code> returns <code>undefined</code>.</p>
+<div class="example"><h3>Compare two behaviors</h3><pre><code>function makeGreeting(name) {
+    return "Hello, " + name;
+}
+function printGreeting(name) {
+    console.log("Hello, " + name);
+}
+
+const first = makeGreeting("Anna");
+const second = printGreeting("Anna");
+console.log(first);  // Hello, Anna
+console.log(second); // undefined</code></pre></div>
+<p class="checkpoint"><strong>Predict before running:</strong> How many greetings appear? What is stored in <code>first</code> and <code>second</code>? Change the argument and test in Developer Tools → Console.</p>
+</section>
+<section aria-labelledby="scope"><h2 id="scope">3. Local variables and scope</h2>
+<p>A variable declared inside a function is <strong>local</strong> to that function. Code outside it cannot directly access that variable. Parameters are local too.</p>
+<div class="example"><h3>Local calculation</h3><pre><code>function describePages(pageCount) {
+    const label = pageCount &gt;= 100 ? "Long" : "Short";
+    return label + " document";
+}
+console.log(describePages(120));
+// console.log(label); // ReferenceError: label is not defined</code></pre></div>
+<p>The conditional expression <code>condition ? a : b</code> is a compact alternative to a simple <code>if...else</code>; it is not required for today's exercises. You may rewrite it using the branching statements from Week 10.</p>
+</section>
+<section aria-labelledby="dom"><h2 id="dom">4. The DOM: HTML as objects</h2>
+<p>The browser parses HTML into the <strong>Document Object Model (DOM)</strong>: a tree of nodes, including elements. JavaScript can access these objects through <code>document</code>. The DOM is not the HTML source file; changing it updates the current page without rewriting that file.</p>
+<div class="example"><h3>Start with familiar HTML</h3><pre><code>&lt;h2 id="message"&gt;Welcome to the archive&lt;/h2&gt;
+&lt;button id="change-button" type="button"&gt;Change message&lt;/button&gt;</code></pre></div>
+<div class="example"><h3>Select an element and change its text</h3><pre><code>const message = document.querySelector("#message");
+message.textContent = "Archive is ready!";</code></pre></div>
+<p><code>#message</code> is the same ID selector syntax you learned in CSS. <code>querySelector()</code> returns the first matching element, or <code>null</code> when nothing matches. <code>textContent</code> sets text, not HTML markup. Inspect the element in Developer Tools → Elements before and after the change.</p>
+<p class="warning"><strong>Common error:</strong> a misspelled ID gives <code>null</code>. Trying to set <code>null.textContent</code> produces a TypeError. Also ensure the HTML elements exist before the script runs: use <code>&lt;script src="script.js" defer&gt;&lt;/script&gt;</code> in the document head, or place a regular script at the end of the body.</p>
+<div class="demo"><h3>Try it: change a heading</h3><p id="demo-message" class="result" aria-live="polite">Welcome to the digital archive</p><button id="demo-change" type="button">Change message</button><button id="demo-restore" type="button">Restore</button></div>
+</section>
+<section aria-labelledby="events"><h2 id="events">5. Events: let the browser call your function</h2>
+<p>A <strong>click event</strong> occurs when the user activates a button. Register a function as an <strong>event listener</strong> so the browser can call it later.</p>
+<div class="example"><h3>A named click handler</h3><pre><code>const message = document.querySelector("#message");
+const button = document.querySelector("#change-button");
+
+function changeMessage() {
+    message.textContent = "Archive is ready!";
+}
+
+button.addEventListener("click", changeMessage);</code></pre></div>
+<p><strong>Crucial distinction:</strong> <code>changeMessage</code> refers to the function. <code>changeMessage()</code> calls it immediately and passes its return value (here <code>undefined</code>) instead of registering the intended handler. For today's examples, prefer named functions so you can see this distinction clearly.</p>
+<p class="checkpoint"><strong>Predict:</strong> What happens if the last line becomes <code>button.addEventListener("click", changeMessage());</code>? When does the text change? Why does clicking later no longer work?</p>
+<h2>6. Events and state: a click counter</h2>
+<p>Sometimes an event needs to remember information between clicks. Declare a counter outside the handler, then update it inside the handler. A <code>let</code> variable can be reassigned.</p>
+<div class="example"><h3>Counter logic</h3><pre><code>let clickCount = 0;
+const output = document.querySelector("#count-output");
+const countButton = document.querySelector("#count-button");
+
+function countClick() {
+    clickCount++;
+    output.textContent = "Clicks: " + clickCount;
+}
+
+countButton.addEventListener("click", countClick);</code></pre></div>
+<div class="demo"><h3>Try it: count and reset</h3><p id="count-output" class="result" aria-live="polite">Clicks: 0</p><button id="count-button" type="button">Count click</button><button id="reset-button" type="button">Reset</button></div>
+<p class="checkpoint"><strong>Modify:</strong> Make each click add two. Then display a different message after the fifth click. What changes if <code>let clickCount = 0</code> is moved inside the handler?</p>
+</section>
+<section aria-labelledby="application"><h2 id="application">7. Integrated example: archive record viewer</h2>
+<p>Combine a function, a conditional, a DOM selection, and a click handler. This example uses a fixed record so that detailed form handling can wait until Week 13.</p>
+<div class="example"><h3>Reusable classification function</h3><pre><code>function classifyYear(year) {
+    if (year &lt; 1900) {
+        return "Before 1900";
+    } else if (year &lt; 2000) {
+        return "20th century";
+    }
+    return "21st century or later";
+}
+
+function showRecord() {
+    const classification = classifyYear(1925);
+    document.querySelector("#record-result").textContent =
+        "1925: " + classification;
+}
+document.querySelector("#record-button")
+    .addEventListener("click", showRecord);</code></pre></div>
+<div class="demo"><h3>Try it: classify a publication</h3><div id="record-card" class="record"><strong>Archive record</strong><p>Publication year: 1925</p><p id="record-result" aria-live="polite">Not yet classified.</p></div><button id="record-button" type="button">Classify record</button><button id="highlight-button" type="button">Toggle highlight</button></div>
+<p>The highlight button demonstrates another kind of DOM change: <code>element.classList.toggle("selected")</code> adds or removes a CSS class. The CSS determines the appearance, while JavaScript decides when the class changes.</p>
+<div class="example"><h3>Change a CSS class without rewriting styles</h3><pre><code>function toggleHighlight() {
+    const card = document.querySelector("#record-card");
+    card.classList.toggle("selected");
+}
+document.querySelector("#highlight-button")
+    .addEventListener("click", toggleHighlight);</code></pre></div>
+</section>
+<section aria-labelledby="debugging"><h2 id="debugging">8. Debugging functions and events</h2>
+<table><thead><tr><th>Symptom</th><th>Likely cause</th><th>What to inspect</th></tr></thead><tbody>
+<tr><td>Nothing happens on click</td><td>Listener not attached, or wrong element</td><td>Console errors; ID selector; listener registration</td></tr>
+<tr><td>Action happens on page load</td><td>Called handler with <code>()</code> during registration</td><td>Argument to <code>addEventListener</code></td></tr>
+<tr><td>Cannot set <code>textContent</code></td><td>Selector returned <code>null</code></td><td>HTML ID and script execution order</td></tr>
+<tr><td>Counter always shows 1</td><td>Counter initialized inside the handler</td><td>Where <code>let clickCount = 0</code> appears</td></tr>
+<tr><td>Console prints a value but caller gets <code>undefined</code></td><td>Missing <code>return</code></td><td>Function body and returned value</td></tr>
+</tbody></table>
+<p class="checkpoint"><strong>Debugging routine:</strong> predict → run → inspect Console → find the first unexpected value or error → fix one cause → test again. In Elements, check that the expected element exists. In Console, try <code>document.querySelector("#demo-message")</code>.</p>
+</section>
+<section aria-labelledby="practice"><h2 id="practice">9. Practice exercises</h2>
+<ol>
+<li><strong>Required — predict:</strong> Explain the results of <code>classifyYear(1899)</code>, <code>classifyYear(2000)</code>, and a function that prints a message but has no <code>return</code>.</li>
+<li><strong>Required — modify:</strong> Create a heading and button. Clicking the button must change the heading's text using a named function and <code>textContent</code>.</li>
+<li><strong>Required — extend:</strong> Build a counter with increment and reset buttons. Show the count on the page, not only in the Console.</li>
+<li><strong>Required — debug:</strong> Correct a wrong selector, a handler registered with parentheses, and a script loaded before its HTML without <code>defer</code>.</li>
+<li><strong>Optional challenge:</strong> Extend the archive viewer to show a different fixed publication year on a second button and toggle a highlight class for matching records.</li>
+</ol>
+<p class="checkpoint"><strong>Self-check:</strong> Can you explain the sequence HTML → DOM → selection → event → function → visible change? Can you explain why a function name without parentheses is passed to <code>addEventListener</code>?</p>
+</section>
+<section aria-labelledby="references"><h2 id="references">10. Further reading</h2><ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions">MDN — Functions</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction">MDN — Introduction to the DOM</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector">MDN — querySelector()</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener">MDN — addEventListener()</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Events">MDN — Events</a></li>
+<li><a href="https://javascript.info/function-basics">JavaScript.info — Function basics</a></li>
+<li><a href="https://javascript.info/introduction-browser-events">JavaScript.info — Browser events</a></li>
+</ul></section>
+</main>
+<footer><div>RTU DE0824 · Week 12 · JavaScript functions, DOM and events · Next: arrays and input events</div></footer>
+<script>
+"use strict";
+// Page demonstrations; the lecture explains each operation above.
+const demoMessage = document.querySelector("#demo-message");
+function changeDemoMessage() {
+    demoMessage.textContent = "The archive is ready to explore!";
+}
+function restoreDemoMessage() {
+    demoMessage.textContent = "Welcome to the digital archive";
+}
+document.querySelector("#demo-change").addEventListener("click", changeDemoMessage);
+document.querySelector("#demo-restore").addEventListener("click", restoreDemoMessage);
+
+let clickCount = 0;
+const countOutput = document.querySelector("#count-output");
+function renderCount() {
+    countOutput.textContent = "Clicks: " + clickCount;
+}
+function countClick() {
+    clickCount++;
+    renderCount();
+}
+function resetCount() {
+    clickCount = 0;
+    renderCount();
+}
+document.querySelector("#count-button").addEventListener("click", countClick);
+document.querySelector("#reset-button").addEventListener("click", resetCount);
+
+function classifyYear(year) {
+    if (year < 1900) {
+        return "Before 1900";
+    } else if (year < 2000) {
+        return "20th century";
+    }
+    return "21st century or later";
+}
+function showRecord() {
+    document.querySelector("#record-result").textContent =
+        "1925: " + classifyYear(1925);
+}
+function toggleHighlight() {
+    document.querySelector("#record-card").classList.toggle("selected");
+}
+document.querySelector("#record-button").addEventListener("click", showRecord);
+document.querySelector("#highlight-button").addEventListener("click", toggleHighlight);
+</script>
+</body>
+</html>
