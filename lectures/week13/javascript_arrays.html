@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="DE0824 Week 13: JavaScript arrays, loops over collections, DOM rendering and input events.">
+<title>Week 13: JavaScript Arrays and DOM Input Events | DE0824</title>
+<style>
+:root{--page:#f7f8fa;--surface:#fff;--text:#172033;--muted:#526078;--accent:#005ea8;--dark:#0f2842;--soft:#e9f3fb;--border:#d9e0e8;--code:#f1f3f6}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--page);color:var(--text);font:1rem/1.65 system-ui,sans-serif}
+header{background:var(--dark);color:white;padding:3rem 1rem}header>div,nav>div,main,footer>div{max-width:1050px;margin:auto}header h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.15;margin:.3rem 0}header p{max-width:800px}
+nav{background:white;border-bottom:1px solid var(--border)}nav>div{display:flex;gap:1rem;flex-wrap:wrap;padding:.8rem 1rem}main{padding:1.5rem 1rem 4rem}
+h2{margin-top:3rem;border-bottom:2px solid var(--border);padding-bottom:.3rem;scroll-margin-top:1rem}a{color:#005a9c}
+pre{background:var(--code);padding:1rem;overflow:auto;line-height:1.5;margin:0}code{font-family:Consolas,"Courier New",monospace}p code,li code,td code{background:var(--code);padding:.1rem .25rem}
+.example,.demo,.note,.checkpoint,.warning{background:white;border:1px solid var(--border);border-radius:.55rem;margin:1.2rem 0;padding:1rem}.example{padding:0;overflow:hidden}.example h3{background:var(--soft);margin:0;padding:.7rem 1rem;font-size:1.05rem}.example p{padding:0 1rem}.note,.checkpoint,.warning{border-left:5px solid var(--accent)}.checkpoint{background:#edf8f1}.warning{background:#fff8e7;border-left-color:#b46a00}
+table{border-collapse:collapse;width:100%;background:white}td,th{border:1px solid var(--border);padding:.6rem;text-align:left}th{background:var(--soft)}li{margin:.5rem 0}footer{border-top:1px solid var(--border);background:white;padding:1.5rem 1rem;color:var(--muted)}
+button,input{font:inherit;padding:.45rem .8rem}button{background:var(--accent);color:white;border:0;border-radius:.3rem;cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #b46a00;outline-offset:2px}.secondary{background:#435b72}.form-row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}.form-row input{flex:1;min-width:12rem}.result{background:var(--soft);padding:.8rem;min-height:2.8rem}.small{color:var(--muted)}.array-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem}.array-cell{background:var(--soft);border:1px solid #b6cddd;padding:.7rem;text-align:center;border-radius:.3rem}.array-cell strong{display:block}.flow{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.flow span{background:var(--soft);padding:.5rem;border-radius:.3rem}.catalogue li{padding:.35rem}.catalogue li:nth-child(even){background:var(--soft)}.hero-placeholder{border:1px dashed #a3bed3;background:var(--soft);border-radius:.5rem;padding:1rem;color:var(--muted)}
+@media(max-width:650px){table{display:block;overflow:auto}.array-grid{grid-template-columns:1fr}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+<script defer src="javascript_arrays.js"></script>
+</head>
+<body>
+<header><div><p>DE0824 Web Development · Week 13</p><h1>JavaScript: Arrays, Collections and Input Events</h1><p>From several values in memory to an interactive digital library: store, iterate, display, and update a collection.</p></div></header>
+<nav aria-label="Course navigation"><div><a href="../../index.html">Course home</a><a href="../week12/javascript_functions_events.html">Week 12 functions and events</a><a href="#arrays">Arrays</a><a href="#iteration">Iteration</a><a href="#rendering">DOM rendering</a><a href="#events">Input events</a><a href="#application">Application</a><a href="#practice">Practice</a><a href="#references">References</a></div></nav>
+<main>
+<div class="hero-placeholder" role="note"><strong>Week 13 hero artwork:</strong> reserved for the course's Old Riga and Daugava illustration, with array indices and an HTML list in the foreground. No image has been added yet.</div>
+<p class="note"><strong>Connection to Weeks 9–12:</strong> You already know values and variables, conditions, loops, functions, DOM selection, and click events. This week you will store <em>multiple</em> values in an array, process them with loops, and update the page when someone enters data. Next week we will represent structured records using objects and JSON.</p>
+<p class="checkpoint"><strong>Learning goals:</strong> create an array; explain indices and <code>length</code>; use <code>push()</code> and <code>pop()</code>; iterate using <code>for</code> and <code>for...of</code>; render elements using <code>createElement()</code> and <code>textContent</code>; handle <code>input</code> and <code>submit</code>; and debug data/DOM synchronization errors.</p>
+<h2>1. Why collections?</h2>
+<p>A library catalogue has many titles. Writing a different variable for each title is difficult to maintain. An <strong>array</strong> is an ordered collection of values stored under one variable. We begin with strings; Week 14 will introduce records containing several fields.</p>
+<section aria-labelledby="arrays"><h2 id="arrays">2. Arrays: one variable, several values</h2>
+<div class="example"><h3>Create an array and inspect it</h3><pre><code>const books = ["Hamlet", "Faust", "Mērnieku laiki"];
+console.log(books[0]);     // Hamlet
+console.log(books[1]);     // Faust
+console.log(books.length); // 3</code></pre></div>
+<p>Array positions are called <strong>indices</strong>. JavaScript starts counting at <strong>zero</strong>, so an array of length 3 has valid indices 0, 1, and 2.</p>
+<div class="array-grid" aria-label="Three array positions"><div class="array-cell"><small>Index 0</small><strong>Hamlet</strong></div><div class="array-cell"><small>Index 1</small><strong>Faust</strong></div><div class="array-cell"><small>Index 2</small><strong>Mērnieku laiki</strong></div></div>
+<p>Reading a missing index returns <code>undefined</code>. The final element of a nonempty array is <code>books[books.length - 1]</code>, not <code>books[books.length]</code>.</p>
+<div class="example"><h3>Change the collection</h3><pre><code>books.push("The Trial");   // Add to the end
+console.log(books.length); // 4
+books[1] = "The Odyssey"; // Replace an element
+const removed = books.pop(); // Remove and return last
+console.log(removed);      // The Trial</code></pre></div>
+<p><code>push()</code> and <code>pop()</code> <strong>mutate</strong> the existing array. A <code>const</code> variable cannot be reassigned to a different array, but the array it refers to can still be changed.</p>
+<p class="checkpoint"><strong>Predict:</strong> After the example above, what are <code>books[1]</code>, <code>books.length</code>, and <code>books[books.length - 1]</code>? Check in the Console.</p></section>
+<section aria-labelledby="iteration"><h2 id="iteration">3. Process every item with a loop</h2>
+<p>Week 11 introduced <code>for</code> loops. Now the counter is an array index, rather than a year.</p>
+<div class="example"><h3>Index-based iteration</h3><pre><code>for (let i = 0; i &lt; books.length; i++) {
+    console.log(i, books[i]);
+}</code></pre></div>
+<div class="example"><h3>Value-based iteration</h3><pre><code>for (const book of books) {
+    console.log(book);
+}</code></pre></div>
+<p>Use <code>for</code> when you need the index; use <code>for...of</code> when you only need each value. <code>for...of</code> is a new loop syntax, not an array method. We will leave methods such as <code>map()</code>, <code>filter()</code>, and <code>reduce()</code> for later study.</p>
+<p class="checkpoint"><strong>Predict:</strong> How many lines print for an empty array <code>[]</code>? What happens if the condition is <code>i &lt;= books.length</code>?</p></section>
+<section aria-labelledby="rendering"><h2 id="rendering">4. From an array to the DOM</h2>
+<p>The array exists in JavaScript memory. The user sees HTML elements in the browser. These are <strong>not automatically synchronized</strong>: changing the array does not by itself change the visible page.</p>
+<div class="flow" aria-label="Data rendering sequence"><span>Array in memory</span> → <span>renderBooks()</span> → <span>DOM list elements</span> → <span>Visible page</span></div>
+<div class="example"><h3>HTML target</h3><pre><code>&lt;ul id="book-list"&gt;&lt;/ul&gt;</code></pre></div>
+<div class="example"><h3>Render the current collection</h3><pre><code>const list = document.querySelector("#book-list");
+
+function renderBooks() {
+    list.replaceChildren(); // Clear old list items
+
+    for (const book of books) {
+        const item = document.createElement("li");
+        item.textContent = book;
+        list.append(item);
+    }
+}
+
+renderBooks();</code></pre></div>
+<p><code>replaceChildren()</code> clears the previous display. <code>createElement()</code> creates a new DOM element; <code>textContent</code> inserts plain text; <code>append()</code> adds it to the list. Avoid inserting user-entered strings through <code>innerHTML</code>.</p>
+<p class="warning"><strong>Debugging:</strong> Remove <code>list.replaceChildren()</code> and call <code>renderBooks()</code> twice. Why are titles duplicated? Restore the line and inspect the DOM in Developer Tools → Elements.</p></section>
+<section aria-labelledby="events"><h2 id="events">5. Reading user input and handling events</h2>
+<p>Week 12 introduced <code>click</code>. A text field also produces <code>input</code> events while its value changes. A <code>change</code> event typically fires when the user commits a change; its timing depends on the control. A form produces a <code>submit</code> event when submitted, including when Enter is pressed in a suitable single-line field.</p>
+<table><thead><tr><th>Event</th><th>Typical use</th></tr></thead><tbody><tr><td><code>input</code></td><td>Update a live preview or character count as someone types</td></tr><tr><td><code>change</code></td><td>React when a control's value is committed</td></tr><tr><td><code>submit</code></td><td>Process and validate a form entry</td></tr></tbody></table>
+<div class="demo"><h3>Try it: live character count</h3><label for="preview-input">Type a catalogue title</label><div class="form-row"><input id="preview-input" type="text" placeholder="Type here..."><output id="preview-count" for="preview-input">0 characters</output></div><p class="small">The <code>input</code> listener updates the count without submitting a form.</p></div>
+<div class="example"><h3>Input event</h3><pre><code>const previewInput = document.querySelector("#preview-input");
+const previewCount = document.querySelector("#preview-count");
+
+previewInput.addEventListener("input", function () {
+    previewCount.textContent =
+        previewInput.value.length + " characters";
+});</code></pre></div>
+<div class="example"><h3>Form submission</h3><pre><code>&lt;form id="book-form"&gt;
+    &lt;label for="book-title"&gt;Book title&lt;/label&gt;
+    &lt;input id="book-title" type="text" required&gt;
+    &lt;button type="submit"&gt;Add title&lt;/button&gt;
+&lt;/form&gt;</code></pre></div>
+<div class="example"><h3>Validate, update the array, then render</h3><pre><code>const form = document.querySelector("#book-form");
+const titleInput = document.querySelector("#book-title");
+
+form.addEventListener("submit", function (event) {
+    event.preventDefault(); // Stay on this page
+
+    const title = titleInput.value.trim();
+    if (title === "") {
+        return;
+    }
+
+    books.push(title);
+    renderBooks();
+    titleInput.value = "";
+});</code></pre></div>
+<p>The browser may reject an empty required field before a <code>submit</code> event fires. The JavaScript <code>trim()</code> check additionally rejects whitespace-only titles. <code>preventDefault()</code> prevents the form's usual navigation/reload.</p></section>
+<section aria-labelledby="application"><h2 id="application">6. Interactive mini digital library</h2>
+<p>This demonstration uses the same ideas as the examples above. Try adding titles with the button or Enter, removing the last title, clearing the collection, and resetting it. Notice that every action updates the <strong>array first</strong>, then calls the rendering function.</p>
+<div class="demo">
+<h3>Mini Digital Library Catalogue</h3>
+<form id="book-form"><label for="book-title">Book title</label><div class="form-row"><input id="book-title" type="text" placeholder="e.g. The Trial" required><button type="submit">Add title</button></div></form>
+<p><strong>Collection size:</strong> <output id="book-count">3</output></p>
+<ul id="book-list" class="catalogue" aria-live="polite"><li>Hamlet</li><li>Faust</li><li>Mērnieku laiki</li></ul>
+<div class="form-row"><button id="remove-last" type="button" class="secondary">Remove last</button><button id="clear-books" type="button" class="secondary">Clear all</button><button id="reset-books" type="button">Reset sample</button></div>
+<p id="catalogue-status" class="small" role="status">Ready.</p>
+</div>
+<p class="checkpoint"><strong>Inspect:</strong> Add a title, then open Developer Tools → Elements. Locate the new <code>&lt;li&gt;</code>. Next remove the last title. Which part of the program changes the array? Which part changes the DOM?</p>
+<p><strong>Implementation detail:</strong> The live demo uses a separate, deferred <a href="javascript_arrays.js">JavaScript file</a>. Read it after studying the smaller examples. Its <code>renderBooks()</code> function is shared by the event handlers, avoiding duplicated DOM-update logic.</p></section>
+<section aria-labelledby="debugging"><h2 id="debugging">7. Debugging collections and events</h2>
+<table><thead><tr><th>Symptom</th><th>Likely cause</th><th>What to inspect</th></tr></thead><tbody>
+<tr><td>Last item is <code>undefined</code></td><td>Used <code>books[books.length]</code></td><td>Indices stop at <code>length - 1</code></td></tr>
+<tr><td>New title does not appear</td><td>Called <code>push()</code> but not the renderer</td><td>Console array versus Elements panel</td></tr>
+<tr><td>Duplicate list items</td><td>Renderer did not clear old children</td><td>Count <code>&lt;li&gt;</code> nodes in Elements</td></tr>
+<tr><td>Page reloads after Enter</td><td>Forgot <code>preventDefault()</code></td><td>Form submit handler</td></tr>
+<tr><td>Whitespace-only entry appears</td><td>Missing <code>trim()</code> check</td><td>Inspect <code>input.value</code></td></tr>
+<tr><td>Cannot read property of <code>null</code></td><td>Wrong selector or script ran too early</td><td>IDs and <code>defer</code></td></tr>
+</tbody></table>
+<p>Use <code>console.log(books)</code> to inspect the data, the Elements panel to inspect the DOM, and breakpoints in the Sources panel to follow event handlers.</p></section>
+<section aria-labelledby="practice"><h2 id="practice">8. Exercises and checkpoints</h2>
+<ol>
+<li><strong>Required:</strong> Starting with the live example, add a fourth title and predict the resulting array length and final index.</li>
+<li><strong>Required:</strong> Modify the initial array to contain three titles of your choice, then verify that the page renders all three.</li>
+<li><strong>Required:</strong> Explain why <code>books.push(title)</code> alone does not update the list. Identify the line that refreshes it.</li>
+<li><strong>Required:</strong> Add a title using Enter, try submitting whitespace, remove the last title, and clear the collection. Describe the behavior.</li>
+<li><strong>Optional:</strong> Add an empty-collection message when <code>books.length === 0</code>.</li>
+<li><strong>Optional:</strong> Add a search field that shows matching titles without deleting them from the original array.</li>
+<li><strong>Optional:</strong> Remove an individual title. Investigate <code>indexOf()</code> and <code>splice()</code> after mastering the core lesson.</li>
+</ol>
+<p class="checkpoint"><strong>Exit question:</strong> A user submits a new book title. Describe the complete sequence: HTML input → event → JavaScript array → rendering function → DOM → visible browser result.</p></section>
+<section aria-labelledby="next"><h2 id="next">9. Looking ahead: structured records</h2>
+<p>Today an array stores strings such as <code>"Hamlet"</code>. A real catalogue also needs author, year, and other metadata. In Week 14 we will represent each book as an <strong>object</strong>, store objects in arrays, and explore JSON as a way to exchange structured data.</p></section>
+<section aria-labelledby="references"><h2 id="references">10. References</h2>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Indexed_collections">MDN — Indexed collections</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">MDN — Array reference</a></li>
+<li><a href="https://javascript.info/array">JavaScript.info — Arrays</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/input_event">MDN — Input event</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit_event">MDN — Submit event</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/replaceChildren">MDN — replaceChildren()</a></li>
+</ul></section>
+</main>
+<footer><div><p>RTU · DE0824 Web Development · Fall 2026</p><p><a href="../../index.html">Course home</a> · <a href="../week12/javascript_functions_events.html">Previous week</a> · <a href="#top" onclick="window.scrollTo(0,0);return false;">Back to top</a></p></div></footer>
+</body></html>
