@@ -43,6 +43,19 @@ The course emphasizes understanding the Web platform itself rather than framewor
 
 Typical sessions combine a short explanation with instructor-led live coding, browser inspection, debugging, modifications, and small exercises. Git and GitHub are used throughout the course for storing and publishing work.
 
+## Instructor guides for the final four weeks
+
+Instructor-facing Markdown plans accompany the student HTML lectures. The standard path in Weeks 11–14 is `lectures/weekNN/instructor_notes.md`.
+
+| Week | Student lecture | Instructor guide |
+| --- | --- | --- |
+| 11 | [Loops and control flow](lectures/week11/javascript_loops.html) | [Week 11 instructor notes](lectures/week11/instructor_notes.md) |
+| 12 | [Functions, DOM and events](lectures/week12/javascript_functions_events.html) | [Week 12 instructor notes](lectures/week12/instructor_notes.md) |
+| 13 | [Arrays and input events](lectures/week13/javascript_arrays.html) | [Week 13 instructor notes](lectures/week13/instructor_notes.md) |
+| 14 | [Objects and JSON](lectures/week14/javascript_objects_json.html) | [Week 14 instructor notes](lectures/week14/instructor_notes.md) |
+
+The Week 13 legacy filename `week13_live_coding_outline.md` remains as a link to the canonical guide. Student-facing lectures remain available on the [course homepage](index.html).
+
 ## Previous course repository
 
 Fall 2025 materials are available at:
