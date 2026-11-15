@@ -75,6 +75,12 @@ document.querySelector("#reset-search").addEventListener("click", function () {
     searchInput.focus();
 });
 
+// Integration checkpoint: show the current array of records as JSON text.
+document.querySelector("#show-catalogue-json").addEventListener("click", function () {
+    const jsonText = JSON.stringify(books, null, 2);
+    document.querySelector("#catalogue-json-output").textContent = jsonText;
+});
+
 document.querySelector("#parse-json").addEventListener("click", function () {
     const source = document.querySelector("#json-input").value;
     const output = document.querySelector("#json-result");
