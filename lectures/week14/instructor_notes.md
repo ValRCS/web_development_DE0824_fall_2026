@@ -23,10 +23,24 @@ Students should be able to create and inspect object literals, read and update p
 6. **JSON (15 min):** Serialize an object with `JSON.stringify`, inspect string type, parse it back, and break a JSON example with an unquoted key or trailing comma. Explain that JSON is text, not an object.
 7. **Record interaction (10–15 min):** Add a Details button to each card. Show the event object and `event.target`; toggle the details paragraph. Do not introduce delegation.
 8. **Debug/exercise (10–20 min):** Students add a fourth record and search for it. Ask them to explain the entire input → processing → DOM flow.
+9. **Optional integrative checkpoint (10–15 min):** Students implement the JSON preview button from the student lecture: click → JSON.stringify(books, null, 2) → textContent. If time is short, assign it as independent practice rather than replacing the required object/search work.
 
 ## Required student exercise
 
 Add a fourth bibliographic record with title, author, year and language. Confirm it renders, search by title and author, explain why data changes alone do not update the DOM, and demonstrate JSON stringify/parse plus one invalid JSON example.
+
+## Integrated practice — JSON catalogue preview
+
+The student lecture now includes a working **Show catalogue as JSON** button and a guided implementation exercise. Ask students to create the button and output element in a copy of the page, then write a named or anonymous click handler using the already familiar `addEventListener` and `textContent` APIs.
+
+Expected result: clicking displays a JSON **string** of the current `books` array (three records initially); after adding a fourth object in the source and reloading, a new click includes all four. The displayed output does **not** update automatically when the data changes, and it is not a download or network operation. Optionally paste this JSON into the earlier parser and inspect the reconstructed array.
+
+Diagnostic questions:
+- What is the value type returned by `JSON.stringify`? (A string.)
+- Why do we use `textContent` rather than `innerHTML`? (The JSON should remain text, not parsed as HTML.)
+- Which element receives the click listener? Which DOM node changes?
+- If the button does nothing, is its selector wrong, the listener missing, or the script failing earlier?
+- What does `JSON.parse(JSON.stringify(books))[0].title` return? (The title of the first record.)
 
 ## Optional challenges
 
@@ -44,6 +58,7 @@ Add a fourth bibliographic record with title, author, year and language. Confirm
 - Forgetting `renderBooks()` leaves stale DOM.
 - Malformed JSON throws `SyntaxError` in `JSON.parse()`.
 - Search should work with uppercase/lowercase and zero matches.
+- JSON preview button displays properly formatted text, preserves non-ASCII characters, and shows the same number of records as the underlying array.
 - Test keyboard input, buttons and focus visibility; inspect Console and Elements.
 
 ## Pedagogical boundaries
