@@ -1,4 +1,11 @@
 console.log("Week 11: JavaScript loops and control flow");
+//let's get const element for our output
+const outputElement = document.getElementById("output");
+//alternative would be select the output element using querySelector
+//then it would be const outputElement = document.querySelector("#output");
+//note the difference between getElementById and querySelector, the first one is faster, but the second one is more flexible, because you can use any CSS selector, not just an id
+
+//you could also use console.log to output to the console, but we will use the outputElement to output to the page
 //first let's look at a switch case statement
 //this is an alternative to if else statements
 //whenever you have a long chain of if else statements, you can use a switch case statement instead
