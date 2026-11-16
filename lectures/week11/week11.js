@@ -62,3 +62,15 @@ do {
 // Output: 9000
 //now show count again
 console.log("Count after do while loop: " + count); //so this will show 9001, because the loop ran once and incremented count
+
+//when you have definite number of iterations, you can use a for loop
+console.log("For loops");
+//for loops are great for when you know how many times you want to loop, or when you have a definite number of iterations
+for (let year = 1918; year <= 1923; year++) {
+    console.log(year);
+    outputElement.innerHTML += year + "<br>";
+}
+//pop quiz what will be value of year here?
+console.log("Year after for loop: " + year);
+//so for loops have ability to shadow variables, so the year variable inside the for loop is different from the year variable outside the for loop, so the year variable outside the for loop is still 1926, because it was not changed by the for loop
+//so year inside for loop has limited scope, it only exists inside the for loop, and is not accessible outside the for loop
