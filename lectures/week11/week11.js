@@ -41,6 +41,8 @@ console.log("While loops");
 let year = 1926;          // Starting value
 while (year <= 1933) {   // Continue while true
     console.log(year);
+    outputElement.innerHTML += year + "<br>"; //so this will output the year to the page, and then add a line break, so that each year is on a new line
+    //again kind of danegours if you are not controlling the value of year, because if you do not change the value of year, then the condition will always be true, and you will get an infinite loop
     //crucially we have some way of changing the value of year, otherwise we will get an infinite loop
     year++;              // Change the value ++ is same as year = year + 1
 }
@@ -53,6 +55,8 @@ console.log("Regular flow resumes here");
 let count = 9000;
 do {
     console.log(count); //so this will always happen at least once, even if the condition is false
+    outputElement.innerHTML += count + "<br>"; //so this will output the count to the page, and then add a line break, so that each count is on a new line
+
     count++; //this also happens at least once, even if the condition is false
 } while (count < 5);
 // Output: 9000
