@@ -10,6 +10,7 @@
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--page);color:var(--text);font:1rem/1.65 system-ui,sans-serif}
 header{background:var(--dark);color:white;padding:3rem 1rem}header>div,nav>div,main,footer>div{max-width:1050px;margin:auto}header h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.15;margin:.3rem 0}header p{max-width:800px}
 nav{background:white;border-bottom:1px solid var(--border)}nav>div{display:flex;gap:1rem;flex-wrap:wrap;padding:.8rem 1rem}main{padding:1.5rem 1rem 4rem}
+.hero-image{display:block;width:100%;height:auto;margin:0 0 1.75rem;border:1px solid var(--border);border-radius:.65rem;background:var(--surface)}
 h2{margin-top:3rem;border-bottom:2px solid var(--border);padding-bottom:.3rem;scroll-margin-top:1rem}a{color:#005a9c}
 pre{background:var(--code);padding:1rem;overflow:auto;line-height:1.5;margin:0}code{font-family:Consolas,"Courier New",monospace}p code,li code,td code{background:var(--code);padding:.1rem .25rem}
 .example,.demo,.note,.checkpoint,.warning{background:white;border:1px solid var(--border);border-radius:.55rem;margin:1.2rem 0;padding:1rem}.example{padding:0;overflow:hidden}.example h3{background:var(--soft);margin:0;padding:.7rem 1rem;font-size:1.05rem}.example p{padding:0 1rem}.note,.checkpoint,.warning{border-left:5px solid var(--accent)}.checkpoint{background:#edf8f1}.warning{background:#fff8e7;border-left-color:#b46a00}
@@ -23,6 +24,7 @@ button{font:inherit;padding:.45rem .8rem;margin:.3rem .5rem .3rem 0;background:v
 <header><div><p>DE0824 Web Development · Week 11</p><h1>JavaScript: Repetition, Loops, and Control Flow</h1><p>From choosing which code runs to repeating instructions: switch statements, while and for loops, early exits, and debugging.</p></div></header>
 <nav aria-label="Course navigation"><div><a href="../../index.html">Course home</a><a href="../week10/javascript_branching.html">Week 10 branching</a><a href="#switch">Switch</a><a href="#while">While</a><a href="#for">For</a><a href="#debugging">Debugging</a><a href="#practice">Practice</a><a href="#references">References</a></div></nav>
 <main>
+<img class="hero-image" src="../../img/week11/Loops%20Over%20Riga%20at%20Sunset.jpg" alt="Week 11 JavaScript loops and iteration illustrated with a five-image collection, collection[i] indexing, loop flowcharts, and Old Riga across the Daugava at sunset.">
 <p class="note"><strong>Connection to Weeks 9–10:</strong> You already know variables, expressions, comparisons, Boolean values, and <code>if</code>/<code>else</code>. This week, you will reuse these concepts to control repeated execution. Arrays come in Week 13; functions and introductory DOM events come in Week 12.</p>
 <p class="checkpoint"><strong>Learning goals:</strong> read and write <code>switch</code>, <code>while</code>, <code>do...while</code>, and <code>for</code>; explain a loop's stopping condition; use <code>break</code> and <code>continue</code>; predict output; and diagnose off-by-one and nonterminating loops.</p>
 <h2>1. Why repeat instructions?</h2>
