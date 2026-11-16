@@ -1,0 +1,25 @@
+/* some basic styling for the week 11 lectures */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 20px;
+}
+
+/* let's set up two box styles for the two different types of content that will be activated by the buttons */
+/* we also want round corners and a subtle shadow to make them look like cards */
+.red-box {
+    background-color: #ffcccc;
+    padding: 20px;
+    margin: 10px 0;
+    border: 1px solid #ff0000;
+    border-radius: 5px;
+    box-shadow: inset 0 0 5px rgba(255, 0, 0, 0.3);
+}
+.blue-box {
+    background-color: #cce5ff;
+    padding: 20px;
+    margin: 10px 0;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    box-shadow: inset 0 0 5px rgba(0, 123, 255, 0.3);
+}
