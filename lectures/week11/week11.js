@@ -23,3 +23,31 @@ switch (documentType) {
 console.log("Regular flow resumes here");
 //so switch case works great for specific matches
 //it does not work so great for greater than or less than comparisons, so if you need to do that, you will need to use if else statements instead
+
+
+console.log("While loops");
+//so let's start with while loops
+//essential idea is that we keep doing something while a condition is true
+// the condition is evaluated before each iteration
+// let year = 1818;          // Starting value
+// let year = 2026;          // Starting value
+let year = 1926;          // Starting value
+while (year <= 1933) {   // Continue while true
+    console.log(year);
+    //crucially we have some way of changing the value of year, otherwise we will get an infinite loop
+    year++;              // Change the value ++ is same as year = year + 1
+}
+// Output: 1926, 1927, 1928, 1929, 1930, 1931, 1932, 1933
+console.log("While loops has completed");
+console.log("Regular flow resumes here");
+//Do while Loops
+//idea is to "shoot first, ask questions later" - the condition is evaluated after each iteration, so the loop will always run at least once
+// let count = 1;
+let count = 9000;
+do {
+    console.log(count); //so this will always happen at least once, even if the condition is false
+    count++; //this also happens at least once, even if the condition is false
+} while (count < 5);
+// Output: 9000
+//now show count again
+console.log("Count after do while loop: " + count); //so this will show 9001, because the loop ran once and incremented count
