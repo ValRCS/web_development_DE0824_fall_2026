@@ -128,3 +128,15 @@ function handleCountButtonClick() {
 
 //so we use addEventListener to add an event listener to the count button element, so that when the user clicks the count button, the handleCountButtonClick function is called, which in turn increments the clickCount variable and updates the output element with the new count
 countButton.addEventListener("click", handleCountButtonClick); //this will add an event listener to the count button element, so that when the user clicks the count button, the handleCountButtonClick function is called, which in turn increments the clickCount variable and updates the output element with the new count
+
+//let's make a handler that upon clicking anywhere on page body will randomly change the background color of the body, so that we can see how to handle events on the body element, and how to change the style of an element in the DOM
+const body = document.querySelector("body");
+
+function handleBodyClick() {
+    //so we can use Math.random() to generate a random number between 0 and 1, and then we can use that random number to generate a random color, and then we can set the background color of the body element to that random color
+    const randomColor = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`; //this will generate a random color in rgb format
+    body.style.backgroundColor = randomColor; //this will change the background color of the body element to the new random color
+}
+//note it does not require a button, because we are adding the event listener to the body element, so that when the user clicks anywhere on the page body, the handleBodyClick function is called, which in turn generates a random color and updates the background color of the body element to that random color
+body.addEventListener("click", handleBodyClick);
+//you could have added it to a paragraph or heading etc, but we are adding it to the body element, so that when the user clicks anywhere on the page body, the handleBodyClick function is called, which in turn generates a random color and updates the background color of the body element to that random color
