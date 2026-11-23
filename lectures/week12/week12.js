@@ -87,3 +87,44 @@ const areaDebug = areaOfCircle(10, true); //what dont I like about this call? Th
 //we should see the debug output in the console, and then we can see the area of the circle with radius 10
 //let's print the area of the circle with radius 10
 console.log("The area of the circle with radius 10 is: " + areaDebug);
+
+//I could change the message area by hand
+//first I find the message element in the DOM, and then I change its text content to something else
+// const message = document.querySelector("#message");
+// message.textContent = "Archive is ready!";
+
+//instead let's make a function that changes the message, and then we can call that function when the user clicks a button
+function changeMessage(newMessage, elementId="message") {
+    //this means that if the user does not provide an elementId, it will default to "message", but if the user provides an elementId, it will use that instead
+    // const message = document.querySelector(`#${elementId}`);
+    //alternative would be
+    const message = document.getElementById(elementId);
+    message.textContent = newMessage; //this will change the text content of the message element to the new message
+}
+
+// changeMessage("Archive is REALLY REALLY ready!"); //this will change the text content of the message element to "Archive is ready!"
+// changeMessage("Archive is corrupted!!"); //this will change the text content of the message element to "Archive is ready!"
+
+//to have the function be called upon some click we find the button element in the DOM, and then we add an event listener to that button element, so that when the user clicks the button, the function is called
+const button = document.querySelector("#change-button");
+
+//let's create a wrapper function that calls changeMessage with the new message, so that we can pass that wrapper function to the event listener, because we cannot pass arguments to the event listener directly
+function handleButtonClick() {
+    changeMessage("Archive is REALLY REALLY ready!");
+}
+//now add handler
+button.addEventListener("click", handleButtonClick); //this will add an event listener to the button element, so that when the user clicks the button, the handleButtonClick function is called, which in turn calls the changeMessage function with the new message
+
+//let's add some global state to count clicks in another button
+let clickCount = 0; //so this is so called global state, because it is defined outside of any function, and can be accessed by any function in this file, so we can use this variable to keep track of how many times the user has clicked the button, and then we can use that variable to update the output element with the new count
+//generally you define global state at the top of the file, so that it is easy to find and understand, and then you can use that global state in your functions, so that you can keep track of the state of your application, and then you can use that state to update the DOM, or to make decisions in your code
+const output = document.querySelector("#count-output");
+const countButton = document.querySelector("#count-button");
+
+function handleCountButtonClick() {
+    clickCount++;
+    output.textContent = `Button clicked ${clickCount} times`; //this will change the text content of the output element to the new message
+};
+
+//so we use addEventListener to add an event listener to the count button element, so that when the user clicks the count button, the handleCountButtonClick function is called, which in turn increments the clickCount variable and updates the output element with the new count
+countButton.addEventListener("click", handleCountButtonClick); //this will add an event listener to the count button element, so that when the user clicks the count button, the handleCountButtonClick function is called, which in turn increments the clickCount variable and updates the output element with the new count
