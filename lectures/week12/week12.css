@@ -1,0 +1,16 @@
+/* lets add some basic styling for the week 12 lecture */
+/* so this * is the weakest selector, it will apply to all elements on the page */
+* {
+  box-sizing: border-box;
+  margin: 10px;
+  padding: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+}
+
+/* any more specific rules will override the * rule above, for example, this rule will apply to all h1 elements */
+h1 {
+  color: #333;
+  font-size: 2em;
+  text-align: center;
+}
